@@ -1,13 +1,32 @@
 import './header.css';
+import { Link } from 'react-router-dom';
 
-export default function Header(){
-    return(
+interface RedirectButtonProps {
+    buttonText: string;
+    redirectUrl: string; 
+}
+
+export default function Header() {
+    return (
         <div className='header'>
             <div className='ndwlogo'>
-                <a href='/'>
-                <img src="/ndw.svg" alt="ndwlogo" />
-                </a>
+                <Link to='/'>
+                    <img src="/ndw.svg" alt="ndwlogo" />
+                </Link>
             </div>
+            <div className='headerButton'>
+                <RedirectButton buttonText="vind data" redirectUrl="/portal" />
+            </div>
+        </div>
+    );
+}
+
+export function RedirectButton({ buttonText, redirectUrl }: RedirectButtonProps) {
+    return (
+        <div className='redirectbuttonwrap'>
+            <Link to={redirectUrl}>
+                <button className='redirectbutton'>{buttonText}</button>
+            </Link>
         </div>
     );
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PortalWrap from './portal';
 import './index.css';
 import Header from './components/ui/header'
 import reportWebVitals from './reportWebVitals';
@@ -7,9 +9,31 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const IndexBody = () => {
+  return (
+    <div className='indexBody'>
+      <p>index items</p>
+    </div>
+  );
+}
+
+const IndexWrap = () => {
+  return (
+    <React.StrictMode>
+      <Header />
+      <IndexBody />
+    </React.StrictMode>
+  );
+}
 root.render(
   <React.StrictMode>
-    <Header />
+    <Router>
+      <Routes>
+        <Route path="/" element={<IndexWrap />} />
+        <Route path="/portal" element={<PortalWrap />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
