@@ -26,6 +26,7 @@ const IndexWrap = () => {
     </React.StrictMode>
   );
 }
+
 root.render(
   <React.StrictMode>
     <Router>
