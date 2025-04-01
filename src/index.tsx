@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PortalWrap from './portal';
 import './index.css';
 import Header from './components/ui/header'
+import Footer from './components/ui/footer';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -23,6 +24,7 @@ const IndexWrap = () => {
     <React.StrictMode>
       <Header />
       <IndexBody />
+      <Footer />
     </React.StrictMode>
   );
 }

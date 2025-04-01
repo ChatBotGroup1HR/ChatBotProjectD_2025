@@ -11,11 +11,14 @@ export default function Header() {
         <div className='header'>
             <div className='ndwlogo'>
                 <Link to='/'>
-                    <img src="/ndw.svg" alt="ndwlogo" />
+                    <img src="/ndw.svg" alt="ndwlogo"/>
                 </Link>
             </div>
             <div className='headerButton'>
                 <RedirectButton buttonText="vind data" redirectUrl="/portal" />
+            </div>
+            <div className='loginButton'>
+                <RedirectButton buttonText="login" redirectUrl="/login" />
             </div>
         </div>
     );

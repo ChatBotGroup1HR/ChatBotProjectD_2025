@@ -1,27 +1,38 @@
-.header{
+.header { 
     background-color: rgb(33, 33, 33);
     display: flex;
     flex-direction: row;
-    border-bottom-style: solid;
-    border-color: #fe5101;
+    border-bottom: 2px solid #fe5101;
+    padding: 10px;
 }
 
-.ndwlogo{
+.ndwlogo {
     margin-left: 16px;
     margin-right: 16px;
 }
 
-.headerButton{
+.headerButton, .loginButton {
+    transition-duration: 0.3s;
+    background-color: #fe5101;
     align-self: center;
     margin-left: 16px;
     margin-right: 16px;
+    border-radius: 50px;
+    padding: 1px 2px;
 }
 
-.redirectbutton{
+.redirectbutton {
+    transition-duration: 0.3s;
     color: #fe5101;
     background-color: rgb(33, 33, 33);
-    border-color: #fe5101;
-    border-radius: 10%;
-    padding: 10px;
-    width: 120%;
+    border: 2px solid #fe5101;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 24px;
+}
+
+.redirectbutton:hover {
+    transition-duration: 0.3s;
+    background-color: #fe5101;
+    color: white;
 }
