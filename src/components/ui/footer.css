@@ -4,6 +4,22 @@
     width: 100%;
     background-color: #333;
     color: white;
-    padding: 20px;
-    text-align: center;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between; /* Pushes items to the edges */
+    align-items: center;
+}
+
+.ndwlogofooter img {
+    width: 50px;
+    height: auto;
+}
+
+.ndwlogofooter img:hover {
+    opacity: 0.8;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
 }

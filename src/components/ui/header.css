@@ -1,5 +1,6 @@
 .header { 
-    background-color: rgb(33, 33, 33);
+    background-color: var(--bg-color);  /* Use the dynamic background color */
+    transition: background-color 0.5s ease, color 0.5s ease;
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid #fe5101;
@@ -9,6 +10,11 @@
 .ndwlogo {
     margin-left: 16px;
     margin-right: 16px;
+}
+
+.ndwlogo img:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }
 
 .headerButton, .loginButton {
@@ -24,7 +30,7 @@
 .redirectbutton {
     transition-duration: 0.3s;
     color: #fe5101;
-    background-color: rgb(33, 33, 33);
+    background-color: var(--bg-color);  /* Use dynamic background */
     border: 2px solid #fe5101;
     border-radius: 50px;
     padding: 10px 20px;
@@ -35,4 +41,5 @@
     transition-duration: 0.3s;
     background-color: #fe5101;
     color: white;
+    cursor: pointer;
 }

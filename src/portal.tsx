@@ -1,6 +1,7 @@
 import React from 'react';
 import './portal.css';
 import Header from './components/ui/header';
+import Footer from './components/ui/footer';
 import reportWebVitals from './reportWebVitals';
 
 const PortalBody = () => {
@@ -16,6 +17,8 @@ const PortalWrap = () => {
     <React.StrictMode>
       <Header />
       <PortalBody />
+      <Footer />
+      
     </React.StrictMode>
   );
 };
