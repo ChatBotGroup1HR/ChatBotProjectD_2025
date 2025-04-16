@@ -1,0 +1,50 @@
+/* Container that wraps the whole TagList component */
+.taglist-container {
+    width: 350px;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    font-family: inherit;
+    background-color: white;
+    border-right: 1px solid #ddd; 
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+  }
+  
+  
+  /* Styles the search input field */
+  .taglist-search {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  
+  /* Wrapper around all the tags */
+  .taglist-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  /* Individual tag item */
+  .taglist-tag {
+    background-color: white;
+    color: #FE5000;
+    border: 2px solid #FE5000;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s, color 0.3s;
+  }
+  
+  /* Styles when you hover over a tag */
+  .taglist-tag:hover {
+    background-color: #FE5000;
+    color: white;
+    transform: scale(1.1);
+  }
+  
