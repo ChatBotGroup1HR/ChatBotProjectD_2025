@@ -25,9 +25,22 @@
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 12px;
+
 }
 
-
+.chatbox-message.user {
+    background-color: #f1f1f1;
+    padding: 10px 14px;
+    border-radius: 18px;
+    margin: 6px 0;
+    max-width: 70%;
+    width: fit-content;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    margin-left: auto; 
+    text-align: right;
+  }
+  
 
 .chatbox-input-area {
     display: flex;
