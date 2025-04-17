@@ -2,7 +2,6 @@
     display: flex;
     justify-content: right;
     margin-top: 0px;
-    height: 100vh;
 }
 
 .chatbox-area {
@@ -11,4 +10,8 @@
     border-left: 3px solid #000000;
     background-color: rgb(255, 255, 255);
     box-sizing: border-box;
+}
+
+body {
+    overflow-y: hidden;
 }
