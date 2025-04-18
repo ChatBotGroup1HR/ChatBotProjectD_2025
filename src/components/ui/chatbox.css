@@ -71,3 +71,8 @@
 .chatbox-button:hover {
     background-color: #0056b3;
 }
+.chatbox-message {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
