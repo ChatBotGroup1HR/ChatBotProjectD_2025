@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Header from './components/ui/header'
+import Chatbox from './components/ui/chatbox';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -10,6 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Header />
+    <Chatbox />
   </React.StrictMode>
 );
 
