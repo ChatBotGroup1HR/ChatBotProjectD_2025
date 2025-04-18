@@ -1,7 +1,13 @@
 import React, { useState } from 'react'; //UseState hook
 import './taglist.css'; 
 
-const initialTags = ['React', 'TypeScript', 'CSS', 'JavaScript'];
+const initialTags = [
+  'GraphQL', 'Next.js', 'Tailwind', 'Python', 'Vue', 'Svelte', 'Docker', 'Kubernetes',
+  'Rust', 'GoLang', 'C++', 'Node.js', 'Express', 'MongoDB', 'PostgreSQL', 'SQLAlchemy',
+  'Django', 'Flask', 'Swift', 'Kotlin', 'Flutter', 'Firebase', 'Supabase', 'Prisma',
+  'Jest', 'Mocha', 'Cypress', 'Jenkins', 'AWS', 'Azure', 'GCP', 'Netlify',
+  'Vercel', 'Figma', 'Photoshop', 'Blender', 'Unity', 'Unreal', 'Redux', 'Zustand'
+];
 
 const TagList: React.FC = () => {
   // search: stores the current text in the search input
@@ -28,7 +34,9 @@ const TagList: React.FC = () => {
       <div className="taglist-tags">
         {filteredTags.map((tag, index) => (
           <div key={index} className="taglist-tag">
-            {tag}
+             <div className="taglist-tag-inner">
+              {tag}
+            </div>
           </div>
         ))}
       </div>
