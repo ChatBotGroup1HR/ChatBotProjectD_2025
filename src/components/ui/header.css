@@ -8,3 +8,14 @@
     margin-left: 16px;
     margin-right: 16px;
 }
+
+body, html {
+    height: 100vh;
+    margin: 0;
+  }
+  
+#root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }

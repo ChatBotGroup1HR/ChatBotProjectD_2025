@@ -1,0 +1,60 @@
+/* Whole TagList component */
+.taglist-container {
+  width: 350px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background-color: white;
+  border-right: 1px solid #ddd;
+}
+
+/* Input field */
+.taglist-search {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+  
+/* Maintain size and don't stretch */
+.taglist-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+  flex: 1;
+  align-content: flex-start;
+}
+
+/* Tag item */
+.taglist-tag {
+  background-color: white;
+  color: #FE5000;
+  border: 2px solid #FE5000;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s, color 0.3s;
+  overflow: hidden;
+}
+
+.taglist-tag-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.3s, color 0.3s;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+}
+
+.taglist-tag:hover .taglist-tag-inner {
+  transform: scale(1.1);
+  background-color: #FE5000;
+  color: white;
+}

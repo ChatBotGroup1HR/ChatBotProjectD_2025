@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Header from './components/ui/header'
 import Chatbox from './components/ui/chatbox';
+import Taglist from './components/ui/taglist'
 import reportWebVitals from './reportWebVitals';
 import PocketBase from 'pocketbase';
 
@@ -12,7 +13,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Header />
-    <Chatbox />
+    <div className="main-container">
+      <Taglist />
+      <Chatbox />
+    </div>
   </React.StrictMode>
 );
 
