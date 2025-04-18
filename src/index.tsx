@@ -4,6 +4,7 @@ import './index.css';
 import Header from './components/ui/header'
 import Chatbox from './components/ui/chatbox';
 import reportWebVitals from './reportWebVitals';
+import PocketBase from 'pocketbase';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
