@@ -1,16 +1,16 @@
 /* Container that wraps the whole TagList component */
 .taglist-container {
-    width: 350px;
-    min-height: 100vh;
-    padding: 1.5rem 1rem;
-    font-family: inherit;
-    background-color: white;
-    border-right: 1px solid #ddd; 
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-  }
-  
-  
+  width: 350px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background-color: white;
+  border-right: 1px solid #ddd;
+}
+
+
   /* Styles the search input field */
   .taglist-search {
     width: 100%;
@@ -22,14 +22,16 @@
     margin-bottom: 1rem;
   }
   
-  
-  /* Wrapper around all the tags */
+  /* Ensure tags maintain their own size and don't stretch */
   .taglist-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.5rem; /* Add spacing between tags */
+    align-items: flex-start;
+    height: calc(100vh - 150px); /* Limit the height of the tag container */
+    overflow-y: auto; /* Enable vertical scrolling if tags overflow */
   }
-  
+
   /* Individual tag item */
   .taglist-tag {
     background-color: white;
