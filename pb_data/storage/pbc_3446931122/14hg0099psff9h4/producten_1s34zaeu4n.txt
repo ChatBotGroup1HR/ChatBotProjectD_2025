@@ -1,0 +1,9 @@
+Producten
+Op dit gedeelte van NDW Docs is informatie te vinden over de producten van NDW.
+
+NDW stelt voor gebruikers producten samen vanuit verschillende datasets in verschillende categoriën:
+
+Statische weggegevens. Dit zijn gegevens over het wegennet die niet vaak of op regelmatige basis veranderen. Voorbeelden zijn: de breedte van de weg, het aantal rijstroken en knooppunten.
+Dynamische weggegevens. Dit zijn gegevens over het wegennet die vaak of regelmatig veranderen en een beschrijving geven van de toestand van de weg. Voorbeelden zijn: sluitingen van wegen, gegevens over ongevallen en incidenten.
+Verkeersgegevens. Dit zijn gegevens over de kenmerken van het wegverkeer. Ook dit betreft dynamische gegevens die regelmatig veranderen. Voorbeelden zijn: verkeersvolume en snelheid.
+Binnen alle categorieën wordt veel van de data ook opgeslagen in DEXTER en komt daarmee als historische data beschikbaar.
