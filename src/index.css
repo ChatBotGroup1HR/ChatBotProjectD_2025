@@ -30,10 +30,12 @@ code {
   --bg-color: #ffffff;
   --text-color: rgb(33, 33, 33);;
   --not-bg-color: rgb(33, 33, 33);;
+  --search-bg-color: rgb(210, 210, 210);;
 }
 
 .dark-mode {
   --bg-color: rgb(33, 33, 33);;
   --text-color: #f1f1f1;
   --not-bg-color: #ffffff;
+  --search-bg-color: #444444;
 }

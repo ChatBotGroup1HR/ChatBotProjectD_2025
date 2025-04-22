@@ -21,6 +21,5 @@
 }
 
 .theme-toggle {
-    display: flex;
-    align-items: center;
+    padding-right: 2rem;
 }
