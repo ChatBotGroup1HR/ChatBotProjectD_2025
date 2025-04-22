@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PortalWrap from './portal';
@@ -14,17 +14,23 @@ const root = ReactDOM.createRoot(
 );
 
 const IndexWrap = () => {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   return (
     <React.StrictMode>
       <Header />
       <div className="main-container">
-       <Taglist />
-       <Chatbox />
+        <Taglist selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+        <Chatbox 
+          selectedTags={selectedTags} 
+          setSelectedTags={setSelectedTags} 
+        />
       </div>
       <Footer />
     </React.StrictMode>
   );
-}
+};
+
 
 root.render(
   <React.StrictMode>

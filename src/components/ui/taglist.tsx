@@ -4,18 +4,20 @@ import './taglist.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
-const TagList: React.FC = () => {
+interface TagListProps {
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
   const [search, setSearch] = useState('');
-  const [tags, setTags] = useState<string[]>([]); 
+  const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const records = await pb.collection('tags').getFullList({
-          sort: '-created',
-        });
+        const records = await pb.collection('tags').getFullList();
 
         const tagNames = records.map(record => record.tag);
         setTags(tagNames);
@@ -27,7 +29,7 @@ const TagList: React.FC = () => {
     };
 
     fetchTags();
-  }, []);
+  }, );
 
   const filteredTags = tags.filter(tag =>
     tag.toLowerCase().includes(search.toLowerCase())
