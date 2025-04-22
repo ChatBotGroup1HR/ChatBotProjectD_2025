@@ -11,7 +11,7 @@ export default function Footer() {
         </Link>
       </div>
       <div className="theme-toggle">
-        <ThemeToggle />
+        <ThemeToggle/>
       </div>
     </div>
   );

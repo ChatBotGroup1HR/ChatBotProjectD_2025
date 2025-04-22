@@ -1,12 +1,15 @@
-.theme-toggle {
+.theme-toggle-button {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     font-size: 16px;
     border-radius: 8px;
-    background-color: var(--text-color);
-    color: var(--bg-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
   }
   
 .theme-toggle:hover {
