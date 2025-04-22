@@ -5,8 +5,9 @@
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
-  background-color: white;
+  background-color: var(--bg-color);
   border-right: 1px solid #ddd;
+  height: 80vh;
 }
 
 /* Input field */
@@ -30,11 +31,12 @@
   overflow-y: auto;
   flex: 1;
   align-content: flex-start;
+  max-height: 80vh;
 }
 
 /* Tag item */
 .taglist-tag {
-  background-color: white;
+  background-color: var(--bg-color);
   color: #FE5000;
   border: 2px solid #FE5000;
   border-radius: 20px;
