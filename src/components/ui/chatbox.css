@@ -76,3 +76,15 @@
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
+.file-upload-area {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.file-upload-area input {
+  padding: 8px;
+  font-size: 16px;
+  background-color: #f7f7f7;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
