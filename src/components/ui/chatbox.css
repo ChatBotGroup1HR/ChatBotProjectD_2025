@@ -9,8 +9,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  border-left: 3px solid #ddd;
-  background-color: var(--not-bg-color);
+  border-left: #FE5000;
+  background-color: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
   padding: 16px;
   box-sizing: border-box;
   overflow: hidden;
@@ -20,19 +21,22 @@
   flex: 1;
   overflow-y: auto;
   background-color: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
   padding: 12px;
+  border: 2px solid #FE5000;
   border-radius: 6px;
   margin-bottom: 12px;
 }
 
 .chatbox-message.user {
-  background-color: invert(var(--bg-color), 0.1);
+  background-color: invert(var(--bg-color));
+  transition: background-color 0.5s ease, color 0.5s ease;
   padding: 10px 14px;
   border-radius: 18px;
   margin: 6px 0;
   max-width: 70%;
   width: fit-content;
-  box-shadow: 0 2px 5px var(--not-bg-color);
+  box-shadow: 0 2px 5px var(--search-bg-color);
   font-size: 15px;
   margin-left: auto; 
   text-align: right;
@@ -41,10 +45,11 @@
 
 .chatbox-input-area {
   display: flex;
-  border: 2px solid #ccc;
   border-radius: 8px;
+  border: 2px solid #FE5000;
   padding: 8px;
   background-color: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .chatbox-input {
@@ -54,6 +59,13 @@
   border-radius: 6px;
   font-size: 16px;
   outline: none;
+  background-color: var(--bg-color);
+  color: var(--not-bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.chatbox-input::placeholder {
+  color: var(--not-bg-color);
 }
 
 .chatbox-button {
@@ -65,9 +77,9 @@
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .chatbox-button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }

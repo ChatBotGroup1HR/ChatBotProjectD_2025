@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d2LogicalModel xmlns="http://datex2.eu/schema/2/2_0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://datex2.eu/schema/2/2_0 TruckParkingTablePublication.xsd" modelBaseVersion="2">
+    <exchange>
+        <supplierIdentification>
+            <country>de</country>
+            <nationalIdentifier>xxxxxxxxxxxx</nationalIdentifier>
+        </supplierIdentification>
+    </exchange>
+    <payloadPublication xsi:type="GenericPublication" lang="de">
+        <publicationTime>2014-01-01T09:00:00.0</publicationTime>
+        <publicationCreator>
+            <country>de</country>
+            <nationalIdentifier>xxxxxxxxxxxxxx</nationalIdentifier>
+        </publicationCreator>
+        <genericPublicationName>ParkingTablePublication</genericPublicationName>
+        <genericPublicationExtension>
+            <parkingTablePublication>
+                <parkingTable id="8E580AC1-4B1B-4205-81A2-E321F207F648B" version="3">
+                    <parkingTableName>
+                        <values>
+                            <value lang="de">LKW-Parkplätze Region Süd</value>
+                        </values>
+                    </parkingTableName>
+                    <parkingTableVersionTime>2014-01-04T18:13:51.0</parkingTableVersionTime>
+                    
+                    <!-- Group of 1200 spaces along motorway A345 (with linear location)
+                         All spaces of this group are only available for lorries -->
+                    <parkingRecord xsi:type="GroupOfParkingSites" id="BCC851F5-CB2E-4EF3-B8BA-02B71D3074E2" version="1">
+                        <parkingName>
+                            <values>
+                                <value>A345</value>
+                            </values>
+                        </parkingName>
+                        <parkingDescription>
+                            <values>
+                                <value lang="de">Reine LKW-Stellplätze entlang der A345</value>
+                            </values>
+                        </parkingDescription>
+                        <parkingRecordVersionTime>2014-01-04T18:13:51.0</parkingRecordVersionTime>
+                        <parkingNumberOfSpaces>1200</parkingNumberOfSpaces>
+                        <operator>
+                            <contactNotDefined>true</contactNotDefined>
+                        </operator>
+                        <parkingLocation xsi:type="Linear">
+                            <alertCLinear xsi:type="AlertCMethod4Linear">
+                                <alertCLocationCountryCode>D</alertCLocationCountryCode>
+                                <alertCLocationTableNumber>1</alertCLocationTableNumber>
+                                <alertCLocationTableVersion>13.0</alertCLocationTableVersion>
+                                <alertCDirection>
+                                    <alertCDirectionCoded>positive</alertCDirectionCoded>
+                                </alertCDirection>
+                                <!-- dummy locations! -->
+                                <alertCMethod4PrimaryPointLocation>
+                                    <alertCLocation>
+                                        <specificLocation>1234</specificLocation>
+                                    </alertCLocation>
+                                    <offsetDistance>
+                                        <offsetDistance>200</offsetDistance>
+                                    </offsetDistance>
+                                </alertCMethod4PrimaryPointLocation>
+                                <alertCMethod4SecondaryPointLocation>
+                                    <alertCLocation>
+                                        <specificLocation>4567</specificLocation>
+                                    </alertCLocation>
+                                    <offsetDistance>
+                                        <offsetDistance>100</offsetDistance>
+                                    </offsetDistance>
+                                </alertCMethod4SecondaryPointLocation>
+                            </alertCLinear>
+                        </parkingLocation>
+                        <onlyAssignedParking>
+                            <vehicleCharacteristics>
+                                <vehicleType>lorry</vehicleType>
+                            </vehicleCharacteristics>
+                        </onlyAssignedParking>
+                    </parkingRecord>
+                    
+                    <!-- Single parking space for lorries. 
+                         There are two options: defining it within the group above or defining it seperated from the group - as it is done here. -->
+                    <parkingRecord xsi:type="InterUrbanParkingSite" id="5CA55AA0-3A6E-4E8F-A0CE-9AF040B9463EB" version="1">
+                        <parkingName>
+                            <values>
+                                <value lang="en">Rastanlage Wald</value>
+                            </values>
+                        </parkingName>
+                        <parkingAlias>
+                            <values>
+                                <value lang="de">Wald West 127/xr8122443</value>
+                            </values>
+                        </parkingAlias>
+                        <parkingRecordVersionTime>2014-01-03T19:14:10.0</parkingRecordVersionTime>
+                        <parkingOccupanyDetectionType>balancing</parkingOccupanyDetectionType>
+                        <operator xsi:type="ContactDetails" id="5D237123-082B-4C65-B71D-BB2066070B85" version="1">
+                            <contactOrganisationName>
+                                <values>
+                                    <value lang="de">LKW-Parken Betreiber GmbH</value>
+                                </values>
+                            </contactOrganisationName>
+                            <contactPersonName>Mustermann</contactPersonName>
+                            <contactPersonFirstName>Max</contactPersonFirstName>
+                            <contactDetailsTelephoneNumber>+49 234 56789</contactDetailsTelephoneNumber>
+                            <contactDetailsEMail>operator@muster-truckparking.de</contactDetailsEMail>
+                            <publishingAgreement>true</publishingAgreement>
+                        </operator>
+
+                        <parkingLocation xsi:type="Point">
+                            <!-- dummy values used here! -->
+                            <alertCPoint xsi:type="AlertCMethod4Point">
+                                <alertCLocationCountryCode>D</alertCLocationCountryCode>
+                                <alertCLocationTableNumber>1</alertCLocationTableNumber>
+                                <alertCLocationTableVersion>13.0</alertCLocationTableVersion>
+                                <alertCDirection>
+                                    <alertCDirectionCoded>positive</alertCDirectionCoded>
+                                </alertCDirection>
+                                <alertCMethod4PrimaryPointLocation>
+                                    <alertCLocation>
+                                        <specificLocation>4567</specificLocation>
+                                    </alertCLocation>
+                                    <offsetDistance>
+                                        <offsetDistance>100</offsetDistance>
+                                    </offsetDistance>
+                                </alertCMethod4PrimaryPointLocation>
+                            </alertCPoint>
+                            <pointByCoordinates>
+                                <pointCoordinates>
+                                    <latitude>50.754432</latitude>
+                                    <longitude>6.020665</longitude>
+                                </pointCoordinates>
+                            </pointByCoordinates>
+                            <pointExtension>
+                                <pointExtended>
+                                    <junction>
+                                        <junctionName>
+                                            <values>
+                                                <value lang="de">Wald West</value>
+                                            </values>
+                                        </junctionName>
+                                        <junctionNumber>3</junctionNumber>
+                                        <motorway>
+                                            <roadIdentifier>
+                                                <values>
+                                                    <value lang="de">A127</value>
+                                                </values>
+                                            </roadIdentifier>
+                                            <typeOfRoad>motorway</typeOfRoad>
+                                            <roadDestination>
+                                                <values>
+                                                    <value lang="de">Musterstadt</value>
+                                                </values>
+                                            </roadDestination>
+                                            <distanceToThisRoad>50</distanceToThisRoad>
+                                        </motorway>
+                                    </junction>
+                                </pointExtended>
+                            </pointExtension>
+                        </parkingLocation>
+                        
+                        <!-- Between 8 PM and 7 AM only lorries allowed -->
+                        <onlyAssignedParking>
+                            <vehicleCharacteristics>
+                                <vehicleType>lorry</vehicleType>
+                            </vehicleCharacteristics>
+                            <timePeriodByHour>
+                                <startTimeOfPeriod>20:00:00</startTimeOfPeriod>
+                                <endTimeOfPeriod>07:00:00</endTimeOfPeriod>
+                            </timePeriodByHour>
+                        </onlyAssignedParking>
+  
+                        <!-- Tariffs are mandatory, even if the schema does not force this for technical reasons -->
+                        <tariffsAndPayment>
+                            <reservationFee>0</reservationFee>
+                            <chargeBand id="EED2BA7E-9883-4062-954A-AC0B8C61151A" version="1">
+                                <!-- 10 Euros per 24 hours -->
+                                <chargeCurrency>eur</chargeCurrency>
+                                <charge>
+                                    <charge>10</charge>
+                                    <chargeInterval>86400</chargeInterval>
+                                </charge>
+                            </chargeBand>
+                            <acceptedPaymentCards>
+                                <paymentCards>creditCard</paymentCards>
+                                <paymentCardBrands>masterCard</paymentCardBrands>
+                                <paymentCardBrands>visa</paymentCardBrands>
+                            </acceptedPaymentCards>
+                        </tariffsAndPayment>
+ 
+                        <!-- Toilets (wheelchar accessible) and petrol station (brand name 'TankGut') no internet available --> 
+                        <parkingEquipmentOrServiceFacility equipmentOrServiceFacilityIndex="1">
+                            <parkingEquipmentOrServiceFacility xsi:type="Equipment">
+                                <availability>available</availability>
+                                <accessibility>wheelChairAccessible</accessibility>
+                                <equipmentType>toilet</equipmentType>
+                            </parkingEquipmentOrServiceFacility>
+                        </parkingEquipmentOrServiceFacility>
+                        <parkingEquipmentOrServiceFacility equipmentOrServiceFacilityIndex="2">
+                            <parkingEquipmentOrServiceFacility xsi:type="ServiceFacility">
+                                <availability>available</availability>
+                                <nameOrBrand>
+                                    <values>
+                                        <value lang="de">TankGut</value>
+                                    </values>
+                                </nameOrBrand>
+                                <serviceFacilityType>petrolStation</serviceFacilityType>
+                            </parkingEquipmentOrServiceFacility>
+                        </parkingEquipmentOrServiceFacility>
+                        <parkingEquipmentOrServiceFacility equipmentOrServiceFacilityIndex="3">
+                            <parkingEquipmentOrServiceFacility xsi:type="Equipment">
+                                <availability>notAvailable</availability>
+                                <equipmentType>internetWireless</equipmentType>
+                            </parkingEquipmentOrServiceFacility>
+                        </parkingEquipmentOrServiceFacility>
+                        
+                        <!-- * Group 1: 120 spaces for lorries
+                             * Group 2: Of these spaces above 3 are for heavy-haulauge vehicles (not adjacent), every one at least 40m long and with 5m width.
+                                        (the fact, that the 3 spaces are part of the 120 is specified by the "realSubsetOfGroup" attribute).
+                                        * One of these heavy-haulage vehicle spaces is described in more detail, among others mit (dummy) coordinates, cctv, but no dynamic truckParkingManagement.
+                                         This space has got an electric charging station and is 6,25m long and has got a widht of 41,5m.
+                             * Group 3: There are no spaces for refrigerated googs transports.
+                        -->
+                        <groupOfParkingSpaces groupIndex="1">
+                            <parkingSpaceBasics xsi:type="GroupOfParkingSpaces">
+                                <parkingSpaceOrGroupIdentifier>
+                                    <values>
+                                        <value lang="de">LKW-Plätze</value>
+                                    </values>
+                                </parkingSpaceOrGroupIdentifier>
+                                <assignedParkingAmongOthers>
+                                    <vehicleCharacteristics>
+                                        <vehicleType>lorry</vehicleType>
+                                    </vehicleCharacteristics>
+                                </assignedParkingAmongOthers>
+                                <parkingNumberOfSpaces>120</parkingNumberOfSpaces>
+                                <parkingTypeOfGroup>statisticsOnly</parkingTypeOfGroup>
+                            </parkingSpaceBasics>
+                        </groupOfParkingSpaces>
+                        <groupOfParkingSpaces groupIndex="2">
+                            <parkingSpaceBasics xsi:type="GroupOfParkingSpaces">
+                                <parkingSpaceOrGroupIdentifier>
+                                    <values>
+                                        <value lang="de">Grossraumschwertransporte</value>
+                                    </values>
+                                </parkingSpaceOrGroupIdentifier>
+                                <onlyAssignedParking>
+                                    <vehicleCharacteristics>
+                                        <vehicleCharacteristicsExtension>
+                                            <vehicleCharacteristicsExtended>
+                                                <vehicleType2>heavyHaulageVehicle</vehicleType2>
+                                            </vehicleCharacteristicsExtended>
+                                        </vehicleCharacteristicsExtension>
+                                    </vehicleCharacteristics>
+                                </onlyAssignedParking>
+                                <parkingNumberOfSpaces>3</parkingNumberOfSpaces>
+                                <parkingTypeOfGroup>nonAdjacentSpaces</parkingTypeOfGroup>
+                                <realSubsetOfGroup>1</realSubsetOfGroup>
+                                <minimumParkingSpaceDimension>
+                                    <dimensionLength>40</dimensionLength>
+                                    <dimensionWidth>5</dimensionWidth>
+                                </minimumParkingSpaceDimension>
+                                <parkingSpace parkingSpaceIndex="1">
+                                    <parkingSpace>
+                                        <parkingSpaceOrGroupIdentifier>
+                                            <values>
+                                                <value lang="en">Stellplatz No. 1 für Grossraumschwertransport</value>
+                                            </values>
+                                        </parkingSpaceOrGroupIdentifier>
+                                        <accessibility>barrierFreeAccessible</accessibility>
+                                        <parkingSpacePhysics>driveThrough</parkingSpacePhysics>
+                                        <parkingSpacePhysics>openAir</parkingSpacePhysics>
+                                        <parkingMode>parallelParking</parkingMode>
+                                        <parkingReservation>notAvailable</parkingReservation>
+                                        <distanceFromPrimaryRoad>500</distanceFromPrimaryRoad>
+                                        <parkingOccupanyDetectionType>singleSpaceDetection</parkingOccupanyDetectionType>
+                                        <parkingSecurity>cctv</parkingSecurity>
+                                        <parkingEquipmentOrServiceFacility equipmentOrServiceFacilityIndex="4">
+                                            <parkingEquipmentOrServiceFacility xsi:type="Equipment">
+                                                <availability>available</availability>
+                                                <equipmentType>electricChargingStation</equipmentType>
+                                            </parkingEquipmentOrServiceFacility>
+                                        </parkingEquipmentOrServiceFacility>
+                                        <parkingUsageScenario scenarioIndex="1">
+                                            <parkingUsageScenario>
+                                                <parkingUsageScenario>truckParking</parkingUsageScenario>
+                                                <truckParkingDynamicManagement>noDynamicParkingManagement</truckParkingDynamicManagement>
+                                            </parkingUsageScenario>
+                                        </parkingUsageScenario>
+                                        <location xsi:type="Point">
+                                            <locationForDisplay>
+                                                <latitude>50.854432</latitude>
+                                                <longitude>6.40665</longitude>
+                                            </locationForDisplay>
+                                        </location>
+                                        <parkingSpaceDimension>
+                                            <dimensionLength>41.5</dimensionLength>
+                                            <dimensionWidth>6.25</dimensionWidth>
+                                        </parkingSpaceDimension>
+                                    </parkingSpace>
+                                </parkingSpace>
+                            </parkingSpaceBasics>
+                        </groupOfParkingSpaces>
+                        <groupOfParkingSpaces groupIndex="3">
+                            <parkingSpaceBasics xsi:type="GroupOfParkingSpaces">
+                                <parkingSpaceOrGroupIdentifier>
+                                    <values>
+                                        <value lang="de">Keine Stellplätze für Kühltransporte</value>
+                                    </values>
+                                </parkingSpaceOrGroupIdentifier>
+                                <assignedParkingAmongOthers>
+                                    <vehicleCharacteristics>
+                                        <vehicleCharacteristicsExtension>
+                                            <vehicleCharacteristicsExtended>
+                                                <loadType2>refrigeratedGoods</loadType2>
+                                            </vehicleCharacteristicsExtended>
+                                        </vehicleCharacteristicsExtension>
+                                    </vehicleCharacteristics>
+                                </assignedParkingAmongOthers>
+                                <parkingNumberOfSpaces>0</parkingNumberOfSpaces>
+                                <parkingTypeOfGroup>statisticsOnly</parkingTypeOfGroup>
+                            </parkingSpaceBasics>
+                        </groupOfParkingSpaces>
+
+                        <!-- Above 130 vehilces, the site is specified as being overcrouded -->
+                        <parkingThresholds>
+                            <overcrowding>130</overcrowding>
+                        </parkingThresholds>
+                        
+                        <!-- The parking site / rest area is located in a wider area - here: Germany (by ALERT-C code); a marker is defined for Berlin. 
+                             This is just an example; the entire area can be defined as anything else, for example some county, some individual polygon or a Truck Parking Priority Zone. -->
+                        <entireArea>
+                            <locationForDisplay>
+                                <latitude>52.518611</latitude>
+                                <longitude>13.408333</longitude>
+                            </locationForDisplay>
+                            <alertCArea>
+                                <alertCLocationCountryCode>D</alertCLocationCountryCode>
+                                <alertCLocationTableNumber>1</alertCLocationTableNumber>
+                                <alertCLocationTableVersion>13.0</alertCLocationTableVersion>
+                                <areaLocation>
+                                    <alertCLocationName>
+                                        <values>
+                                            <value lang="de">Deutchland</value>
+                                        </values>
+                                    </alertCLocationName>
+                                    <specificLocation>1</specificLocation>
+                                </areaLocation>
+                            </alertCArea>
+                        </entireArea>
+                        
+                        <!-- Address of the site, mit with housenumber range 12-42 -->
+                        <parkingSiteAddress xsi:type="ContactDetails" id="5A4E4C52-B16A-4558-8C56-1CFB847D6EE2" version="1">
+                            <contactDetailsStreet>Musterstraße</contactDetailsStreet>
+                            <contactDetailsHouseNumber>12</contactDetailsHouseNumber>
+                            <contactDetailsHouseNumber>42</contactDetailsHouseNumber>
+                            <contactDetailsPostcode>12345</contactDetailsPostcode>
+                            <contactDetailsCity>
+                                <values>
+                                    <value lang="de">Musterstadt</value>
+                                </values>
+                            </contactDetailsCity>
+                            <country>de</country>
+                        </parkingSiteAddress>
+                        
+                        <!-- It's mandatory to provide the truckParking literal -->
+                        <parkingUsageScenario scenarioIndex="2">
+                            <parkingUsageScenario>
+                                <parkingUsageScenario>truckParking</parkingUsageScenario>
+                                <truckParkingDynamicManagement>queueParking</truckParkingDynamicManagement>
+                            </parkingUsageScenario>
+                        </parkingUsageScenario>
+                        <parkingUsageScenario scenarioIndex="3">
+                                <parkingUsageScenario>
+                                <parkingUsageScenario>restArea</parkingUsageScenario>
+                            </parkingUsageScenario>
+                        </parkingUsageScenario>
+                        
+                        <!-- access via A127 -->
+                        <parkingAccess id="5CA55AA0-3A6E-4E8F-A0CE-9AF040B9463E">
+                            <accessCategory>vehicleEntrance</accessCategory>
+                            <primaryRoad>
+                                <roadIdentifier>
+                                    <values>
+                                        <value lang="en">A127</value>
+                                    </values>
+                                </roadIdentifier>
+                                <roadDestination>
+                                    <values>
+                                        <value lang="en">Musterstadt</value>
+                                    </values>
+                                </roadDestination>
+                            </primaryRoad>
+                            <location xsi:type="Point">
+                                <!-- dummy values used here -->
+                                <alertCPoint xsi:type="AlertCMethod4Point">
+                                    <alertCLocationCountryCode>D</alertCLocationCountryCode>
+                                    <alertCLocationTableNumber>1</alertCLocationTableNumber>
+                                    <alertCLocationTableVersion>13.0</alertCLocationTableVersion>
+                                    <alertCDirection>
+                                        <alertCDirectionCoded>positive</alertCDirectionCoded>
+                                    </alertCDirection>
+                                    <alertCMethod4PrimaryPointLocation>
+                                        <alertCLocation>
+                                            <specificLocation>4567</specificLocation>
+                                        </alertCLocation>
+                                        <offsetDistance>
+                                            <offsetDistance>100</offsetDistance>
+                                        </offsetDistance>
+                                    </alertCMethod4PrimaryPointLocation>
+                                </alertCPoint>
+                                <pointByCoordinates>
+                                    <pointCoordinates>
+                                        <latitude>50.854432</latitude>
+                                        <longitude>6.120665</longitude>
+                                    </pointCoordinates>
+                                </pointByCoordinates>
+                            </location>
+                        </parkingAccess>
+                        
+                        <parkingStandardsAndSecurity>
+                            <parkingSecurity>socialControl</parkingSecurity>
+                            <parkingSecurity>cctv</parkingSecurity>
+                            <parkingSecurity>dog</parkingSecurity>
+                            <parkingSecurityNationalClassification>
+                                <values>
+                                    <value lang="de">5</value>
+                                </values>
+                            </parkingSecurityNationalClassification>
+                        </parkingStandardsAndSecurity>
+                        
+                        <interUrbanParkingSiteLocation>motorway</interUrbanParkingSiteLocation>
+
+                    </parkingRecord>
+                </parkingTable>
+            </parkingTablePublication>
+        </genericPublicationExtension>
+    </payloadPublication>
+ </d2LogicalModel>

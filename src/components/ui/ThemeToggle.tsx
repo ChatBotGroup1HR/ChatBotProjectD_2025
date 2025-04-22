@@ -19,7 +19,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setIsDarkMode(!isDarkMode)}
-      className="theme-toggle"
+      className="theme-toggle-button"
     >
       {isDarkMode ? "🌙 Dark Mode" : "☀️ Light Mode"}
     </button>
