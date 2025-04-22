@@ -48,11 +48,11 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
 
       if (tagIds.length === 0) return;
 
-      const tagFilter = tagIds.map(id => `tags ~ "${id}"`).join(' || ');
+      const tagFilter = tagIds.map(id => `tag ~ "${id}"`).join(' || ');
 
       const response = await pb.collection('files').getFullList({
         filter: `(${tagFilter})`,
-        expand: 'tags',
+        expand: 'tag',
       });
   
       const botMessage: ChatMessage = {
