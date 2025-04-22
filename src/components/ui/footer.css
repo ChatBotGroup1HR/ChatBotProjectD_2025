@@ -8,11 +8,12 @@
     display: flex;
     justify-content: space-between; /* Pushes items to the edges */
     align-items: center;
+    height: 5vh;
 }
 
 .ndwlogofooter img {
     width: 50px;
-    height: auto;
+    height: 5vh;
 }
 
 .ndwlogofooter img:hover {
