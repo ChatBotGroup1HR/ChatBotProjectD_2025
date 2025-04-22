@@ -60,3 +60,8 @@
   background-color: #FE5000;
   color: white;
 }
+
+.taglist-tag.selected {
+  background-color: #FE5000;
+  color: white;
+}

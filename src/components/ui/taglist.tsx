@@ -8,6 +8,7 @@ const TagList: React.FC = () => {
   const [search, setSearch] = useState('');
   const [tags, setTags] = useState<string[]>([]); 
   const [loading, setLoading] = useState(true);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -32,6 +33,19 @@ const TagList: React.FC = () => {
     tag.toLowerCase().includes(search.toLowerCase())
   );
 
+  const toggleTagSelection = (tag: string) => {
+    setSelectedTags(prevSelectedTags =>
+      prevSelectedTags.includes(tag)
+        ? prevSelectedTags.filter(t => t !== tag)
+        : [...prevSelectedTags, tag]
+    );
+  };
+
+  const sortedTags = [
+    ...selectedTags,
+    ...filteredTags.filter(tag => !selectedTags.includes(tag))
+  ];
+
   return (
     <div className="taglist-container">
       <input
@@ -46,8 +60,12 @@ const TagList: React.FC = () => {
         <div className="taglist-loading">Loading tags...</div>
       ) : (
         <div className="taglist-tags">
-          {filteredTags.map((tag, index) => (
-            <div key={index} className="taglist-tag">
+          {sortedTags.map((tag, index) => (
+            <div 
+              key={index} 
+              className={`taglist-tag ${selectedTags.includes(tag) ? 'selected' : ''}`}
+              onClick={() => toggleTagSelection(tag)}  // Toggle tag selection on click
+            >
               <div className="taglist-tag-inner">
                 {tag}
               </div>
