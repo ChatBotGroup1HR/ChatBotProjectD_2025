@@ -1,0 +1,33 @@
+.portalBody {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-layout {
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+}
+
+.admin-content h1 {
+  margin-bottom: 20px;
+}
+
+.admin-content p {
+  color: var(--text-color);
+  opacity: 0.8;
+}
