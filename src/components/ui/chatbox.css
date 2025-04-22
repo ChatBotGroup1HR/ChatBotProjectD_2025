@@ -36,7 +36,7 @@
   margin: 6px 0;
   max-width: 70%;
   width: fit-content;
-  box-shadow: 0 2px 5px var(--not-bg-color);
+  box-shadow: 0 2px 5px var(--search-bg-color);
   font-size: 15px;
   margin-left: auto; 
   text-align: right;
@@ -82,4 +82,25 @@
 
 .chatbox-button:hover {
     background-color: #0056b3;
+}
+.chatbox-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid #ddd;
+  background-color: white;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 400px; /* Set a fixed height */
+}
+
+.chatbox-messages {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f1f1f1;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  max-height: calc(100% - 50px); /* Ensure it doesn't grow beyond the container */
 }
