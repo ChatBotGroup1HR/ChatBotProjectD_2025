@@ -20,7 +20,7 @@ const TagList: React.FC = () => {
         const tagNames = records.map(record => record.tag);
         setTags(tagNames);
       } catch (error) {
-        console.error('Failed to fetch tags:', error);
+        console.error('Fout bij het ophalen van tags', error);
       } finally {
         setLoading(false);
       }
@@ -50,21 +50,21 @@ const TagList: React.FC = () => {
     <div className="taglist-container">
       <input
         type="text"
-        placeholder="Search tags..."
+        placeholder="Zoek tags..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="taglist-search"
       />
 
       {loading ? (
-        <div className="taglist-loading">Loading tags...</div>
+        <div className="taglist-loading">Tags laden...</div>
       ) : (
         <div className="taglist-tags">
           {sortedTags.map((tag, index) => (
             <div 
               key={index} 
               className={`taglist-tag ${selectedTags.includes(tag) ? 'selected' : ''}`}
-              onClick={() => toggleTagSelection(tag)}  // Toggle tag selection on click
+              onClick={() => toggleTagSelection(tag)}
             >
               <div className="taglist-tag-inner">
                 {tag}
