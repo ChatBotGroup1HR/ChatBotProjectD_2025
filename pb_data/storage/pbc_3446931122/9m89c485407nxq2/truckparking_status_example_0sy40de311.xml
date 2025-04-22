@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d2:payload xmlns:com="http://datex2.eu/schema/3/common" xmlns:par="http://datex2.eu/schema/3/parking" xmlns:d2="http://datex2.eu/schema/3/d2Payload" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="par:ParkingStatusPublication" lang="en-us" modelBaseVersion="3" extensionName="Traffic Management Plan, Rerouting and Urban Extensions" extensionVersion="00-06-00" profileName="TruckparkingStatus" profileVersion="0.9" xsi:schemaLocation="http://datex2.eu/schema/3/d2Payload DATEXII_3_D2Payload.xsd">
+	<com:publicationTime>2001-12-17T09:30:47Z</com:publicationTime>
+	<com:publicationCreator>
+		<com:country>nl</com:country>
+		<com:nationalIdentifier>NDW</com:nationalIdentifier>
+	</com:publicationCreator>
+	<par:parkingTableReference id="TruckParkingTableId" version="Versie" targetClass="par:ParkingTable"/>
+	<par:parkingRecordStatus xsi:type="par:ParkingSiteStatus">
+		<par:parkingRecordReference id="Id-van-TruckparkTableRecord" version="Versie" targetClass="par:ParkingRecord"/>
+		<par:parkingStatusOriginTime>2001-12-17T09:30:47Z</par:parkingStatusOriginTime>
+		<par:parkingOccupancy>
+			<par:parkingNumberOfVacantSpaces>113</par:parkingNumberOfVacantSpaces>
+			<par:parkingNumberOfOccupiedSpaces>28</par:parkingNumberOfOccupiedSpaces>
+			<par:parkingOccupancy>24</par:parkingOccupancy>
+		</par:parkingOccupancy>
+		<par:groupOfParkingSpacesStatus groupIndex="0">
+			<par:groupOfParkingSpacesStatus>
+				<par:parkingNumberOfVacantSpaces>86</par:parkingNumberOfVacantSpaces>
+				<par:parkingNumberOfOccupiedSpaces>16</par:parkingNumberOfOccupiedSpaces>
+				<par:parkingOccupancy>20</par:parkingOccupancy>
+			</par:groupOfParkingSpacesStatus>
+		</par:groupOfParkingSpacesStatus>
+		<par:groupOfParkingSpacesStatus groupIndex="1">
+			<par:groupOfParkingSpacesStatus>
+				<par:parkingNumberOfVacantSpaces>9</par:parkingNumberOfVacantSpaces>
+				<par:parkingNumberOfOccupiedSpaces>1</par:parkingNumberOfOccupiedSpaces>
+				<par:parkingOccupancy>10</par:parkingOccupancy>
+			</par:groupOfParkingSpacesStatus>
+		</par:groupOfParkingSpacesStatus>
+		<par:groupOfParkingSpacesStatus groupIndex="2">
+			<par:groupOfParkingSpacesStatus>
+				<par:parkingNumberOfVacantSpaces>22</par:parkingNumberOfVacantSpaces>
+				<par:parkingNumberOfOccupiedSpaces>2</par:parkingNumberOfOccupiedSpaces>
+				<par:parkingOccupancy>4</par:parkingOccupancy>
+			</par:groupOfParkingSpacesStatus>
+		</par:groupOfParkingSpacesStatus>
+		<par:parkingSiteStatus>spacesAvailable</par:parkingSiteStatus>
+	</par:parkingRecordStatus>
+</d2:payload>
