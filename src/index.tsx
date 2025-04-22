@@ -13,20 +13,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const IndexBody = () => {
-  return (
-    <div className='indexBody'>
-      <p>index items</p>
-    </div>
-  );
-}
-
 const IndexWrap = () => {
   return (
     <React.StrictMode>
       <Header />
-      <IndexBody />
-      <Chatbox />
       <div className="main-container">
        <Taglist />
        <Chatbox />
