@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 code {
@@ -21,4 +24,14 @@ code {
 
 .taglist-container, .chatbox-container {
   min-width: 300px;
+}
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: rgb(33, 33, 33);;
+}
+
+.dark-mode {
+  --bg-color: rgb(33, 33, 33);;
+  --text-color: #ffffff;
 }
