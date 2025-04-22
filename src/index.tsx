@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PortalWrap from './portal';
 import './index.css';
+import Chatbox from './components/ui/chatbox';
+import Taglist from './components/ui/taglist'
 import Header from './components/ui/header'
 import Footer from './components/ui/footer';
 import reportWebVitals from './reportWebVitals';
@@ -24,6 +26,11 @@ const IndexWrap = () => {
     <React.StrictMode>
       <Header />
       <IndexBody />
+      <Chatbox />
+      <div className="main-container">
+       <Taglist />
+       <Chatbox />
+      </div>
       <Footer />
     </React.StrictMode>
   );
