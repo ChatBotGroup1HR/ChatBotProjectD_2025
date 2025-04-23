@@ -21,7 +21,7 @@
 }
 
 .headerButton, .loginButton {
-  transition-duration: 0.3s;
+  transition: background-color 0.5s ease, color 0.5s ease;
   background-color: #fe5101;
   align-self: center;
   margin-left: 16px;
@@ -31,7 +31,7 @@
 }
 
 .redirectbutton {
-  transition-duration: 0.3s;
+  transition: background-color 0.5s ease, color 0.5s ease;
   color: #fe5101;
   background-color: var(--bg-color);  /* Use dynamic background */
   border: 2px solid #fe5101;
