@@ -10,111 +10,129 @@ interface ChatboxProps {
 }
 
 export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps) {
+  // Definieert de type voor een chatbericht
   type ChatMessage = {
-    sender: 'user' | 'bot';
-    content: string;
-    files?: any[];
+    sender: 'user' | 'bot'; // Heeft de user of de bot het verstuurd
+    content: string; // content van het bericht
+    files?: any[]; // Eventueele bestanden die zijn meegegeven bij het bericht
   };
-  
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState<string>('');
 
+  // State voor de berichten en inputveld
+  const [messages, setMessages] = useState<ChatMessage[]>([]); // Berichten in de chat
+  const [input, setInput] = useState<string>(''); // De waarde van het inputveld
+
+  // Functie om een bericht te versturen
   const sendMessage = async () => {
-    if (input.trim() === '') return;
-  
-    const userMessage: ChatMessage = {
+    if (input.trim() === '') return; // Als de input leeg is, doe dan niets
+    
+    const userMessage: ChatMessage = { // Maak een bericht aan voor de gebruiker
       sender: 'user',
       content: input,
     };
-  
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-  
+    
+    setMessages(prev => [...prev, userMessage]); // Voeg het gebruikersbericht toe aan de chat
+    setInput(''); // Maak het inputveld leeg na het versturen van het bericht
+
     try {
-      if (selectedTags.length === 0) return;
-  
+      if (selectedTags.length === 0) return; // Als er geen geselecteerde tags zijn, doe dan niets
+
+      // Maak een filter aan voor de tags
       const tagFilters = selectedTags
-        .map(tag => `tags.tag ~ "${tag}"`)
-        .join(' || ');
-  
+        .map(tag => `tags.tag ~ "${tag}"`) // Voor elke tag een filter string maken
+        .join(' || '); // Alle filters samenvoegen met een OR conditie
+      
+      // Haal de bijbehorende tag records op uit de database
       const tagRecords = await Promise.all(
         selectedTags.map(async (tagName) => {
           const tagRecord = await pb.collection('tags').getFirstListItem(`tag="${tagName}"`);
-          return tagRecord?.id;
+          return tagRecord?.id; // Retourneer de ID van het tagrecord
         })
       );
 
-      const tagIds = tagRecords.filter(Boolean);
+      const tagIds = tagRecords.filter(Boolean); // Filter alleen de geldige tag IDs
 
-      if (tagIds.length === 0) return;
+      if (tagIds.length === 0) return; // Als er geen geldige tag IDs zijn, doe dan niets
 
+      // Maak een filter string voor de tags die gevonden zijn
       const tagFilter = tagIds.map(id => `tag ~ "${id}"`).join(' || ');
 
+      // Haal bestanden op uit de database die bij de tags horen
       const response = await pb.collection('files').getFullList({
-        filter: `(${tagFilter})`,
-        expand: 'tag',
+        filter: `(${tagFilter})`, // Gebruik de filter string die we zojuist gemaakt hebben
+        expand: 'tag', // Zorg dat de tags bij elk bestand worden meegeleverd
       });
-  
+
+      // Maak een bot bericht aan om de gevonden bestanden te tonen
       const botMessage: ChatMessage = {
         sender: 'bot',
         content: response.length > 0
           ? 'Hier zijn bestanden die overeenkomen met je tags:'
-          : 'Geen bestanden gevonden voor deze tags.',
-        files: response,
+          : 'Geen bestanden gevonden voor deze tags.', 
+        files: response, // Voeg de bestanden toe aan het bericht
       };
       
-      setMessages(prev => [...prev, botMessage]);
-      setSelectedTags([]);
+      setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
+      setSelectedTags([]); // Reset de geselecteerde tags
     } catch (err) {
-      console.error('Fout bij ophalen bestanden:', err);
+      console.error('Fout bij ophalen bestanden:', err); // Log een fout als er iets misgaat
     }
   };
-  
 
+  // Functie om te reageren op keypress in het inputveld (Enter toets)
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => { 
-    if (e.key === 'Enter') {
-      sendMessage();
+    if (e.key === 'Enter') { // Als de Enter toets wordt ingedrukt
+      sendMessage(); // Verstuur het bericht
     }
   };
 
   return (
     <div className="chatbox-container">
+      {/* Container van de hele chatbox */}
       <div className="chatbox-area">
+        
+        {/* Container voor alle chatberichten */}
         <div className="chatbox-messages">
-        {messages.map((msg, index) => (
-        <div
-          key={index}
-          className={`chatbox-message ${msg.sender === 'user' ? 'user' : 'bot'}`}
-        >
-          <div>{msg.content}</div>
-          {msg.files && msg.files.length > 0 && (
-            <div className="chatbox-files">
-              {msg.files.map((file, idx) => (
-                <div key={idx}>
-                  <a
-                    href={pb.getFileUrl(file, file.file)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    📎 {file.name || file.file}
-                  </a>
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chatbox-message ${msg.sender === 'user' ? 'user' : 'bot'}`} // Voeg styling class toe op basis van wie het bericht verzond
+            >
+              {/* Tekstuele inhoud van het bericht */}
+              <div>{msg.content}</div>
+  
+              {/* Als het bericht bestanden bevat, toon dan links naar die bestanden */}
+              {msg.files && msg.files.length > 0 && (
+                <div className="chatbox-files">
+                  {msg.files.map((file, idx) => (
+                    <div key={idx}>
+                      <a
+                        href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        📎 {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
+                      </a>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-          )}
+          ))}
         </div>
-      ))}
-        </div>
+  
+        {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
         <div className="chatbox-input-area">
           <input
             type="text"
             className="chatbox-input"
-            placeholder="Stel een vraag"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
+            placeholder="Stel een vraag" // Placeholdertekst
+            value={input} // Gekoppeld aan state
+            onChange={(e) => setInput(e.target.value)} // Update state bij typen
+            onKeyDown={handleKeyPress} // Verstuur bij Enter-toets
           />
-          <button className="chatbox-button" onClick={sendMessage}>➤</button>
+          <button className="chatbox-button" onClick={sendMessage}>
+            ➤
+          </button>
         </div>
       </div>
     </div>
