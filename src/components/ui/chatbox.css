@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   height: 80vh;
+  max-width: 80%;
 }
 
 .chatbox-area {
@@ -20,10 +21,9 @@
 .chatbox-messages {
   flex: 1;
   overflow-y: auto;
-  background-color: var(--bg-color);
+  background-color: var(--search-bg-color);
   transition: background-color 0.5s ease, color 0.5s ease;
   padding: 12px;
-  border: 2px solid #FE5000;
   border-radius: 6px;
   margin-bottom: 12px;
   display: flex;
@@ -47,20 +47,20 @@
 }
 
 .chatbox-message.user {
-  background-color: #FE5000;
+  background-color: #FF7D00;
   color: white;
   align-self: flex-end;
   text-align: right;
 }
 
-
 .chatbox-input-area {
   display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 8px;
-  border: 2px solid #FE5000;
-  padding: 8px;
   background-color: var(--bg-color);
   transition: background-color 0.5s ease, color 0.5s ease;
+  width: 100%; 
 }
 
 .chatbox-input {
@@ -70,13 +70,21 @@
   border-radius: 6px;
   font-size: 16px;
   outline: none;
-  background-color: var(--bg-color);
+  background-color: var(--search-bg-color);
   color: var(--not-bg-color);
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.chatbox-input::placeholder {
+.chatbox-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--search-bg-color);
   color: var(--not-bg-color);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  flex-shrink: 0;
 }
 
 .chatbox-button {

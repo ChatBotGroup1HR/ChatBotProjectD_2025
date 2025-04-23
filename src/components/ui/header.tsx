@@ -15,7 +15,7 @@ export default function Header() {
                 </Link>
             </div>
             <div className='headerButton'>
-                <RedirectButton buttonText="vind data" redirectUrl="/portal" />
+                <RedirectButton buttonText="Admin portaal" redirectUrl="/portal" />
             </div>
             <div className='loginButton'>
                 <RedirectButton buttonText="login" redirectUrl="/login" />
