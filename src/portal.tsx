@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './portal.css';
 import Header from './components/ui/header';
 import Footer from './components/ui/footer';
 import Sidebar from './components/ui/sidebar';
+import FileUpload from './components/ui/fileupload';
 import reportWebVitals from './reportWebVitals';
 
 const PortalBody = () => {
+  const [activePage, setActivePage] = useState<string>('');
+
+  const handleSidebarItemClick = (path: string) => {
+    setActivePage(path);
+  };
+
   return (
     <div className='portalBody'>
       <div className="admin-layout">
-        <Sidebar />
+        <Sidebar onItemClick={handleSidebarItemClick} />
         <div className="admin-content">
-          <h1>Admin Portal</h1>
-          <p>Selecteer een optie in de sidebar om de pagina te bekijken.</p>
+          {activePage === '/fileupload' ? (
+            <FileUpload />
+          ) : (
+            <>
+              <h1>Admin Portal</h1>
+              <p>Selecteer een optie in de sidebar om de pagina te bekijken.</p>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -25,7 +38,6 @@ const PortalWrap = () => {
       <Header />
       <PortalBody />
       <Footer />
-      
     </React.StrictMode>
   );
 };
