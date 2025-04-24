@@ -44,6 +44,7 @@
   color: white;
   align-self: flex-start;
   text-align: left;
+  max-width: 100ch;
 }
 
 .chatbox-message.user {
@@ -77,6 +78,17 @@
 
 .chatbox-input::placeholder {
   color: var(--not-bg-color);
+}
+
+.chatbox-text-preview {
+  background-color: #FE5000;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .chatbox-button {

@@ -24,22 +24,17 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   // Functie om een bericht te versturen
   const sendMessage = async () => {
     if (input.trim() === '') return; // Als de input leeg is, doe dan niets
-    
+
     const userMessage: ChatMessage = { // Maak een bericht aan voor de gebruiker
       sender: 'user',
       content: input,
     };
-    
+
     setMessages(prev => [...prev, userMessage]); // Voeg het gebruikersbericht toe aan de chat
     setInput(''); // Maak het inputveld leeg na het versturen van het bericht
 
     try {
       if (selectedTags.length === 0) return; // Als er geen geselecteerde tags zijn, doe dan niets
-
-      // Maak een filter aan voor de tags
-      const tagFilters = selectedTags
-        .map(tag => `tags.tag ~ "${tag}"`) // Voor elke tag een filter string maken
-        .join(' || '); // Alle filters samenvoegen met een OR conditie
       
       // Haal de bijbehorende tag records op uit de database
       const tagRecords = await Promise.all(
@@ -67,10 +62,37 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         sender: 'bot',
         content: response.length > 0
           ? 'Hier zijn bestanden die overeenkomen met je tags:'
-          : 'Geen bestanden gevonden voor deze tags.', 
-        files: response, // Voeg de bestanden toe aan het bericht
+          : 'Geen bestanden gevonden voor deze tags.',
+        files: [], // Voeg de bestanden toe aan het bericht
       };
-      
+
+
+      // Doorloop alle bestanden die zijn opgehaald uit de database
+      for (const file of response) {
+        const fileUrl = pb.getFileUrl(file, file.file); // Genereer de volledige URL naar het bestand
+        const isTxt = file.file?.endsWith('.txt'); // Check of het bestand .txt is
+
+        if (isTxt) {
+          try {
+            const res = await fetch(fileUrl);
+            const textContent = await res.text(); // Lees de content van het bestand
+
+            botMessage.files?.push({
+              ...file,
+              textPreview: textContent, // Toon de inhoud van het tekstbestand
+              fileUrl,
+            });
+          } catch (err) {
+            // Als het niet lukt om de tekst te lezen, geef error message terug en stuur URL
+            console.error(`Kon .txt bestand niet lezen: ${fileUrl}`, err);
+            botMessage.files?.push({ ...file, fileUrl });
+          }
+        } else {
+          // Voeg andere bestandstypen gewoon toe met URL
+          botMessage.files?.push({ ...file, fileUrl });
+        }
+      }
+
       setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
       setSelectedTags([]); // Reset de geselecteerde tags
     } catch (err) {
@@ -79,7 +101,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   };
 
   // Functie om te reageren op keypress in het inputveld (Enter toets)
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => { 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') { // Als de Enter toets wordt ingedrukt
       sendMessage(); // Verstuur het bericht
     }
@@ -89,7 +111,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     <div className="chatbox-container">
       {/* Container van de hele chatbox */}
       <div className="chatbox-area">
-        
+
         {/* Container voor alle chatberichten */}
         <div className="chatbox-messages">
           {messages.map((msg, index) => (
@@ -99,19 +121,25 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
             >
               {/* Tekstuele inhoud van het bericht */}
               <div>{msg.content}</div>
-  
+
               {/* Als het bericht bestanden bevat, toon dan links naar die bestanden */}
               {msg.files && msg.files.length > 0 && (
                 <div className="chatbox-files">
                   {msg.files.map((file, idx) => (
                     <div key={idx}>
-                      <a
-                        href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        📎 {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
-                      </a>
+                    {file.textPreview ? (
+                      <div className="chatbox-text-preview">
+                        {file.textPreview}
+                      </div>
+                      ) : (
+                        <a
+                          href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          📎 {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
+                        </a>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -119,7 +147,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
             </div>
           ))}
         </div>
-  
+
         {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
         <div className="chatbox-input-area">
           <input
