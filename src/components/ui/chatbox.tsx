@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent, useEffect, useRef } from 'react';
 import './chatbox.css';
 import PocketBase from 'pocketbase';
 
@@ -17,9 +17,11 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     files?: any[]; // Eventueele bestanden die zijn meegegeven bij het bericht
   };
 
+
   // State voor de berichten en inputveld
   const [messages, setMessages] = useState<ChatMessage[]>([]); // Berichten in de chat
   const [input, setInput] = useState<string>(''); // De waarde van het inputveld
+
 
   // Functie om een bericht te versturen
   const sendMessage = async () => {
@@ -116,12 +118,13 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                   ))}
                 </div>
               )}
+
             </div>
+
           ))}
-        </div>
-  
-        {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
-        <div className="chatbox-input-area">
+
+      </div>
+      <div className="chatbox-input-area">
           <input
             type="text"
             className="chatbox-input"
@@ -135,6 +138,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           </button>
         </div>
       </div>
+
     </div>
   );
 }

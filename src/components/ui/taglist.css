@@ -68,8 +68,9 @@
     #FF7D00 100%
   );
   background-size: 200% 200%;
-  animation: gradient-wash-out 0.8s forwards;
+  animation: gradient-wash-out 0.4s forwards;
 }
+
 
 /* Selected */
 .taglist-tag.selected {
@@ -84,7 +85,7 @@
     #FF7D00 100%
   );
   background-size: 200% 200%;
-  animation: gradient-wash-in 0.8s forwards;
+  animation: gradient-wash-in 0.4s forwards;
 }
 
 /* Animations */
