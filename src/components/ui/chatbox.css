@@ -110,3 +110,16 @@
 .chatbox-files {
   margin-top: 8px;
 }
+
+.chatbox-file-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.chatbox-file-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}

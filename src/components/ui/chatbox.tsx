@@ -127,26 +127,38 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                 <div className="chatbox-files">
                   {msg.files.map((file, idx) => (
                     <div key={idx}>
-                    {file.textPreview ? (
-                      <div className="chatbox-text-preview">
-                        {file.textPreview}
-                      </div>
+                      {file.textPreview ? (
+                        <div>
+                          {/* Plaatst de link boven de tekst preview */}
+                          <a
+                            href={file.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="chatbox-file-link"
+                          >
+                            📁 Download: {file.name || file.file}
+                          </a>
+                          <div className="chatbox-text-preview">
+                            {file.textPreview}
+                          </div>
+                        </div>
                       ) : (
                         <a
                           href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="chatbox-file-link"
                         >
-                          📎 {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
+                          📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
                         </a>
                       )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
 
         {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
         <div className="chatbox-input-area">
