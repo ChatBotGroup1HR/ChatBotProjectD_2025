@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent, useRef, useEffect } from 'react';
 import './chatbox.css';
 import PocketBase from 'pocketbase';
 
@@ -19,6 +19,13 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
   const [botTyping, setBotTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+
 
   const sendMessage = async () => {
     if (input.trim() === '') return;
@@ -30,6 +37,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
 
     setMessages(prev => [...prev, userMessage]);
     setInput('');
+
+
 
     try {
       if (selectedTags.length === 0) return;
@@ -106,6 +115,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                   ))}
                 </div>
               )}
+            <div ref={bottomRef} />
             </div>
           ))}
 
@@ -133,6 +143,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           </button>
         </div>
       </div>
+     
     </div>
+    
   );
 }
