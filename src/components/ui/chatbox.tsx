@@ -56,7 +56,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
 
       const tagFilter = tagIds.map(id => `tag ~ "${id}"`).join(' || ');
 
-      // Show typing indicator before fetching and showing bot message
+      // laat de typing indicator zien
       setBotTyping(true);
 
       const response = await pb.collection('files').getFullList({
@@ -64,7 +64,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         expand: 'tag',
       });
 
-      setTimeout(() => {
+      setTimeout(() => { 
         const botMessage: ChatMessage = {
           sender: 'bot',
           content: response.length > 0
@@ -76,7 +76,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         setMessages(prev => [...prev, botMessage]);
         setBotTyping(false);
         setSelectedTags([]);
-      }, 1000); // Delay before showing bot response
+      }, 1000); // Voor nu er om te laten zien dat er een typing indicator is, haal weg indien de echte bot is geconfigureerd
     } catch (err) {
       console.error('Fout bij ophalen bestanden:', err);
       setBotTyping(false);
@@ -116,10 +116,10 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                 </div>
               )}
             <div ref={bottomRef} />
+            {/* Scroll naar beneden na het toevoegen van een nieuw bericht */}
             </div>
           ))}
 
-          {/* Typing indicator */}
           {botTyping && (
             <div className="chatbox-message bot">
               <div className="typing-indicator">

@@ -9,7 +9,7 @@ const ThemeToggle = () => {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("theme", "dark");
+      localStorage.setItem("theme", "dark"); // Zet de waarde in localStorage, waardoor de pagina in dark mode blijft
     } else {
       document.documentElement.classList.remove("dark-mode");
       localStorage.setItem("theme", "light");
