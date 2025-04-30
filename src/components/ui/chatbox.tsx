@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import './chatbox.css';
 import PocketBase from 'pocketbase';
 
@@ -20,6 +20,14 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   // State voor de berichten en inputveld
   const [messages, setMessages] = useState<ChatMessage[]>([]); // Berichten in de chat
   const [input, setInput] = useState<string>(''); // De waarde van het inputveld
+
+  // Ref voor het einde van de berichtenlijst
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Scrollt naar beneden
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // Functie om een bericht te versturen
   const sendMessage = async () => {
@@ -158,6 +166,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                 )}
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
 
         {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
