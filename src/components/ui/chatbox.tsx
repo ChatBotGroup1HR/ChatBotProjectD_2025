@@ -15,6 +15,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     sender: 'user' | 'bot'; // Heeft de user of de bot het verstuurd
     content: string; // content van het bericht
     files?: any[]; // Eventueele bestanden die zijn meegegeven bij het bericht
+    currentFileIndex?: number; // Voor bladeren door bestanden
   };
 
   // State voor de berichten en inputveld
@@ -43,7 +44,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
 
     try {
       if (selectedTags.length === 0) return; // Als er geen geselecteerde tags zijn, doe dan niets
-      
+
       // Haal de bijbehorende tag records op uit de database
       const tagRecords = await Promise.all(
         selectedTags.map(async (tagName) => {
@@ -72,6 +73,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           ? 'Hier zijn bestanden die overeenkomen met je tags:'
           : 'Geen bestanden gevonden voor deze tags.',
         files: [], // Voeg de bestanden toe aan het bericht
+        currentFileIndex: 0,
       };
 
 
@@ -115,11 +117,27 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     }
   };
 
+  // Functie om door files heen te kunnen klikken
+  const handleFileNavigation = (messageIndex: number, direction: 'next' | 'prev') => {
+    setMessages((prevMessages) =>
+      prevMessages.map((msg, idx) => {
+        if (idx !== messageIndex || !msg.files || msg.files.length <= 1) return msg;
+  
+        const newIndex =
+          direction === 'next'
+            ? Math.min((msg.currentFileIndex || 0) + 1, msg.files.length - 1)
+            : Math.max((msg.currentFileIndex || 0) - 1, 0);
+  
+        return { ...msg, currentFileIndex: newIndex };
+      })
+    );
+  };
+
   return (
     <div className="chatbox-container">
       {/* Container van de hele chatbox */}
       <div className="chatbox-area">
-
+  
         {/* Container voor alle chatberichten */}
         <div className="chatbox-messages">
           {messages.map((msg, index) => (
@@ -129,46 +147,70 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
             >
               {/* Tekstuele inhoud van het bericht */}
               <div>{msg.content}</div>
-
+  
               {/* Als het bericht bestanden bevat, toon dan links naar die bestanden */}
               {msg.files && msg.files.length > 0 && (
-                <div className="chatbox-files">
-                  {msg.files.map((file, idx) => (
-                    <div key={idx}>
-                      {file.textPreview ? (
-                        <div>
+                <div>
+                  {(() => {
+                    const file = msg.files[msg.currentFileIndex ?? 0];
+                    return (
+                      <div>
+                        {file.textPreview ? (
+                          <div>
                           {/* Plaatst de link boven de tekst preview */}
                           <a
-                            href={file.fileUrl}
+                              href={file.fileUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="chatbox-file-link"
+                            >
+                              📁 Download: {file.name || file.file}
+                            </a>
+                            <div className="chatbox-text-preview">
+                              {file.textPreview}
+                            </div>
+                          </div>
+                        ) : (
+                          <a
+                            href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
                             target="_blank"
                             rel="noopener noreferrer"
                             className="chatbox-file-link"
                           >
-                            📁 Download: {file.name || file.file}
+                            📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
                           </a>
-                          <div className="chatbox-text-preview">
-                            {file.textPreview}
-                          </div>
+                        )}
+  
+                        {/* buttons renderen wanneer dit nodig is */}
+                        <div style={{ marginTop: '8px' }}>
+                          {(msg.currentFileIndex ?? 0) > 0 && (
+                            <button
+                              className="chatbox-button"
+                              onClick={() => handleFileNavigation(index, 'prev')}
+                            >
+                              ◀ Vorige
+                            </button>
+                          )}
+                          {(msg.currentFileIndex ?? 0) < msg.files.length - 1 && (
+                            <button
+                              className="chatbox-button"
+                              onClick={() => handleFileNavigation(index, 'next')}
+                              style={{ marginLeft: '8px' }}
+                            >
+                              Volgende ▶
+                            </button>
+                          )}
                         </div>
-                      ) : (
-                        <a
-                          href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="chatbox-file-link"
-                        >
-                          📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
-                        </a>
-                      )}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-
+                    );
+                  })()}
+                </div>
+              )}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+  
         {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
         <div className="chatbox-input-area">
           <input
