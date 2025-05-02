@@ -17,9 +17,9 @@ const AddTagModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       alert('Tag name cannot be empty');
       return;
     }
-
+  
     try {
-      await pb.collection('tags').create({ name: tagName });
+      await pb.collection('tags').create({ tag: tagName });
       alert('Tag added successfully!');
       setTagName('');
       onClose();
@@ -89,10 +89,14 @@ const Sidebar: React.FC<{ onAddTagsClick: () => void; onCloseModal: () => void }
               <li
                 key={item.path}
                 className={activeItem === item.path ? 'active' : ''}
-                onClick={() => handleMenuItemClick(item)}
+                onClick={(e) => {
+                  if (item.label === 'Add tags') e.preventDefault();
+                  handleMenuItemClick(item);
+                }}
               >
                 <a href={item.path}>{item.label}</a>
-              </li>
+            </li>
+            
             ))}
           </ul>
         </nav>
