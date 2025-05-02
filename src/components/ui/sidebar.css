@@ -1,6 +1,6 @@
 .sidebar {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: #f5f5f5;
+  color: #333;
   height: 100vh;
   transition: all 0.3s ease;
   position: relative;
@@ -12,12 +12,10 @@
 
 .sidebar.open {
   width: 250px;
-  background-color: #f5f5f5;
 }
 
 .sidebar.closed {
   width: 50px;
-  background-color: var(--bg-color);
 }
 
 .hamburger-button {
@@ -87,32 +85,11 @@
 }
 
 .sidebar a {
-  color: var(--text-color);
+  color: #333;
   text-decoration: none;
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sidebar.closed a {
   display: none;
 }
-
-.sidebar.closed .hamburger-button {
-  right: 0;
-  left: 0;
-  text-align: center;
-}
-
-.dark-mode .sidebar.open {
-  background-color: #2d2d2d;
-}
-
-.dark-mode .sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.dark-mode .sidebar li.active {
-  background-color: rgba(255, 255, 255, 0.1);
-} 

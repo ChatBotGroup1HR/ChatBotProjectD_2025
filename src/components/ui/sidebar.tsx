@@ -1,25 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './sidebar.css';
 
-interface SidebarItem {
-  label: string;
-  path: string;
+interface SidebarProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
 }
 
-const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeItem, setActiveItem] = useState<string>('');
-
-  const menuItems: SidebarItem[] = [
-    { label: 'Dashboard', path: '/portal' },
-    { label: 'Profiel', path: '/portal' },
-    { label: 'Instellingen', path: '/portal' }
-  ];
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <button className="hamburger-button" onClick={toggleSidebar}>
@@ -31,19 +18,22 @@ const Sidebar: React.FC = () => {
       </button>
       <nav>
         <ul>
-          {menuItems.map((item) => (
-            <li 
-              key={item.path}
-              className={activeItem === item.path ? 'active' : ''}
-              onClick={() => setActiveItem(item.path)}
-            >
-              <a href={item.path}>{item.label}</a>
-            </li>
-          ))}
+          <li>
+            <a href="/portal">Dashboard</a> {/* Link naar dashboard */}
+          </li>
+          <li>
+            <a href="#!" onClick={() => window.location.reload()}>Documents</a> {/* Geen navigatie, maar herlaad de pagina */}
+          </li>
+          <li>
+            <a href="/profile">Profiel</a>
+          </li>
+          <li>
+            <a href="/settings">Instellingen</a>
+          </li>
         </ul>
       </nav>
     </div>
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
