@@ -21,9 +21,6 @@
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;
-  position: relative; /* Zorg ervoor dat de content niet wordt overlapt */
-  z-index: 1; /* Zorg ervoor dat de content boven andere elementen zichtbaar is */
-  padding-bottom: 50px; /* Extra ruimte onderaan om te voorkomen dat inhoud verscholen raakt */
 }
 
 .admin-content h1 {
@@ -33,9 +30,4 @@
 .admin-content p {
   color: var(--text-color);
   opacity: 0.8;
-}
-
-.documents-container {
-  background-color: rgba(255, 0, 0, 0.1); /* Lichtrode achtergrond voor zichtbaarheid van de documenten */
-  padding: 20px;
 }
