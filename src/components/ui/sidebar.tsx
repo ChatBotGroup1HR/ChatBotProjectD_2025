@@ -12,11 +12,36 @@ interface SidebarItem {
 const AddTagModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [tagName, setTagName] = useState('');
 
+  const validateTagName = async (tagName: string): Promise<boolean> => {
+    if (tagName[0] !== tagName[0].toUpperCase()) {
+      alert('The first letter of the tag must be uppercase.');
+      return false;
+    }
+  
+    try {
+      const existingTags = await pb.collection('tags').getFullList();
+      const isDuplicate = existingTags.some((tag: any) => tag.tag === tagName);
+      if (isDuplicate) {
+        alert('This tag already exists.');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking for duplicate tags:', error);
+      alert('Failed to validate tag. Please try again.');
+      return false;
+    }
+  
+    return true;
+  };
+
   const handleAddTag = async () => {
     if (tagName.trim() === '') {
       alert('Tag name cannot be empty');
       return;
     }
+  
+    const isValid = await validateTagName(tagName);
+    if (!isValid) return;
   
     try {
       await pb.collection('tags').create({ tag: tagName });
