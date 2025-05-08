@@ -31,3 +31,88 @@
   color: var(--text-color);
   opacity: 0.8;
 }
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  transition: background-color 0.5s ease;
+  margin-top: -20vh; 
+}
+
+.login-form {
+  background-color: var(--bg-color);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--box-shadow-color);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--border-color);
+  transition: all 0.5s ease;
+  box-sizing: border-box;
+}
+
+.login-form h2 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  transition: color 0.5s ease;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  transition: color 0.5s ease;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  transition: all 0.5s ease;
+  box-sizing: border-box;
+  font-size: 1rem;
+  height: 2.5rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(254, 81, 1, 0.2);
+}
+
+.login-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-bottom: 1rem;
+  text-align: center;
+  transition: color 0.5s ease;
+}
