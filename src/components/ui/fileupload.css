@@ -157,4 +157,38 @@
 .status-message.error {
   background-color: rgba(255, 0, 0, 0.1);
   color: var(--text-color);
+}
+
+.tags-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.no-tags-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.no-tags-checkbox input[type="checkbox"] {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.no-tags-checkbox label {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.tags-search-input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.remove-tag:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 } 

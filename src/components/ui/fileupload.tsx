@@ -6,7 +6,7 @@ const pb = new PocketBase('http://localhost:8090');
 
 interface Tag {
   id: string;
-  name: string;
+  tag: string;
 }
 
 const FileUpload: React.FC = () => {
@@ -17,6 +17,7 @@ const FileUpload: React.FC = () => {
   const [uploadStatus, setUploadStatus] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [noTags, setNoTags] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const FileUpload: React.FC = () => {
         const records = await pb.collection('tags').getFullList();
         const mappedTags: Tag[] = records.map(record => ({
           id: record.id,
-          name: record.name
+          tag: record.tag
         }));
         setAvailableTags(mappedTags);
       } catch (error) {
@@ -69,8 +70,8 @@ const FileUpload: React.FC = () => {
   };
 
   const filteredTags = availableTags.filter(tag => {
-    if (!tag || !tag.name) return false;
-    return tag.name.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!tag || !tag.tag) return false;
+    return tag.tag.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,13 +82,24 @@ const FileUpload: React.FC = () => {
       return;
     }
 
+    if (!noTags && selectedTags.length === 0) {
+      setUploadStatus('Error: Selecteer minimaal 1 tag of selecteer "geen tag(s) toevoegen"');
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('referenceName', referenceName);
-      formData.append('tags', JSON.stringify(selectedTags));
-
+      formData.append('name', referenceName);
+      
       const record = await pb.collection('files').create(formData);
+      
+      if (selectedTags.length > 0) {
+        await pb.collection('files').update(record.id, {
+          tag: selectedTags
+        });
+      }
+
       setUploadStatus('File uploaded successfully!');
       
       // Reset form
@@ -95,6 +107,7 @@ const FileUpload: React.FC = () => {
       setReferenceName('');
       setSelectedTags([]);
       setSearchTerm('');
+      setNoTags(false);
     } catch (error) {
       console.error('Error uploading file:', error);
       setUploadStatus('Error uploading file. Please try again.');
@@ -128,17 +141,35 @@ const FileUpload: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Tags:</label>
+          <div className="tags-header">
+            <label>Tags:</label>
+            <div className="no-tags-checkbox">
+              <input
+                type="checkbox"
+                id="noTags"
+                checked={noTags}
+                onChange={(e) => {
+                  setNoTags(e.target.checked);
+                  if (e.target.checked) {
+                    setSelectedTags([]);
+                    setSearchTerm('');
+                  }
+                }}
+              />
+              <label htmlFor="noTags">geen tag(s) toevoegen</label>
+            </div>
+          </div>
           <div className="tags-search-container" ref={dropdownRef}>
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
-              onFocus={() => setIsDropdownOpen(true)}
+              onFocus={() => !noTags && setIsDropdownOpen(true)}
               placeholder="Search or select tags..."
               className="tags-search-input"
+              disabled={noTags}
             />
-            {isDropdownOpen && (
+            {isDropdownOpen && !noTags && (
               <div className="tags-dropdown">
                 {filteredTags.map(tag => (
                   <div
@@ -149,7 +180,7 @@ const FileUpload: React.FC = () => {
                       setSearchTerm('');
                     }}
                   >
-                    {tag.name}
+                    {tag.tag}
                   </div>
                 ))}
               </div>
@@ -160,11 +191,12 @@ const FileUpload: React.FC = () => {
               const tag = availableTags.find(t => t.id === tagId);
               return tag ? (
                 <div key={tagId} className="selected-tag">
-                  {tag.name}
+                  {tag.tag}
                   <button
                     type="button"
                     className="remove-tag"
                     onClick={() => handleTagToggle(tagId)}
+                    disabled={noTags}
                   >
                     ×
                   </button>
