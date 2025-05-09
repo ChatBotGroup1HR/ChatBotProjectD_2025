@@ -4,9 +4,13 @@ import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('http://localhost:8090');
 
+interface SidebarProps {
+  onMenuItemClick: (page: string) => void; // Callback-prop toegevoegd
+}
+
 interface SidebarItem {
   label: string;
-  path: string;
+  page: string; // Verander 'path' naar 'page' om beter te passen bij je logica
 }
 
 interface SidebarProps {
@@ -59,16 +63,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
       <nav>
         <ul>
           {menuItems.map((item) => (
-            <li 
-              key={item.path}
-              className={activeItem === item.path ? 'active' : ''}
+            <li
+              key={item.page}
+              className={activeItem === item.page ? 'active' : ''}
+              onClick={() => {
+                setActiveItem(item.page);
+                onMenuItemClick(item.page); // Callback aanroepen
+              }}
             >
-              <a 
-                href={item.path}
-                onClick={(e) => handleItemClick(item.path, e)}
-              >
-                {item.label}
-              </a>
+              <span className="sidebar-item">{item.label}</span> {/* Gebruik een span in plaats van een button */}
             </li>
             ))}
           </ul>
