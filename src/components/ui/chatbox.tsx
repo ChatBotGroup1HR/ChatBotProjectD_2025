@@ -10,7 +10,6 @@ interface ChatboxProps {
 }
 
 export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps) {
-  // Definieert de type voor een chatbericht
   type ChatMessage = {
     sender: 'user' | 'bot'; // Heeft de user of de bot het verstuurd
     content: string; // content van het bericht
@@ -18,19 +17,17 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     currentFileIndex?: number; // Voor bladeren door bestanden
   };
 
-  // State voor de berichten en inputveld
-  const [messages, setMessages] = useState<ChatMessage[]>([]); // Berichten in de chat
-  const [input, setInput] = useState<string>(''); // De waarde van het inputveld
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState<string>('');
+  const [botTyping, setBotTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // Ref voor het einde van de berichtenlijst
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  // Scrollt naar beneden
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Functie om een bericht te versturen
+
+
   const sendMessage = async () => {
     if (input.trim() === '') return; // Als de input leeg is, doe dan niets
 
@@ -49,23 +46,25 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
       const tagRecords = await Promise.all(
         selectedTags.map(async (tagName) => {
           const tagRecord = await pb.collection('tags').getFirstListItem(`tag="${tagName}"`);
-          return tagRecord?.id; // Retourneer de ID van het tagrecord
+          return tagRecord?.id;
         })
       );
 
-      const tagIds = tagRecords.filter(Boolean); // Filter alleen de geldige tag IDs
+      const tagIds = tagRecords.filter(Boolean);
 
-      if (tagIds.length === 0) return; // Als er geen geldige tag IDs zijn, doe dan niets
+      if (tagIds.length === 0) return;
 
-      // Maak een filter string voor de tags die gevonden zijn
       const tagFilter = tagIds.map(id => `tag ~ "${id}"`).join(' || ');
 
-      // Haal bestanden op uit de database die bij de tags horen
+      // laat de typing indicator zien
+      setBotTyping(true);
+
       const response = await pb.collection('files').getFullList({
-        filter: `(${tagFilter})`, // Gebruik de filter string die we zojuist gemaakt hebben
-        expand: 'tag', // Zorg dat de tags bij elk bestand worden meegeleverd
+        filter: `(${tagFilter})`,
+        expand: 'tag',
       });
 
+      setTimeout(async () => { 
       // Maak een bot bericht aan om de gevonden bestanden te tonen
       const botMessage: ChatMessage = {
         sender: 'bot',
@@ -102,11 +101,14 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           botMessage.files?.push({ ...file, fileUrl });
         }
       }
-
+      
       setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
+      setBotTyping(false);
       setSelectedTags([]); // Reset de geselecteerde tags
+    }, 1000);
     } catch (err) {
-      console.error('Fout bij ophalen bestanden:', err); // Log een fout als er iets misgaat
+      console.error('Fout bij ophalen bestanden:', err);
+      setBotTyping(false);
     }
   };
 
@@ -135,7 +137,6 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
 
   return (
     <div className="chatbox-container">
-      {/* Container van de hele chatbox */}
       <div className="chatbox-area">
   
         {/* Container voor alle chatberichten */}
@@ -143,12 +144,10 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`chatbox-message ${msg.sender === 'user' ? 'user' : 'bot'}`} // Voeg styling class toe op basis van wie het bericht verzond
+              className={`chatbox-message ${msg.sender === 'user' ? 'user' : 'bot'}`}
             >
-              {/* Tekstuele inhoud van het bericht */}
               <div>{msg.content}</div>
-  
-              {/* Als het bericht bestanden bevat, toon dan links naar die bestanden */}
+
               {msg.files && msg.files.length > 0 && (
                 <div>
                   {(() => {
@@ -206,26 +205,36 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                   })()}
                 </div>
               )}
+            <div ref={bottomRef} />
+            {/* Scroll naar beneden na het toevoegen van een nieuw bericht */}
             </div>
           ))}
-          <div ref={messagesEndRef} />
+
+          {botTyping && (
+            <div className="chatbox-message bot">
+              <div className="typing-indicator">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          )}
         </div>
-  
-        {/* Inputgedeelte onderin waar de gebruiker zijn vraag intypt */}
+
         <div className="chatbox-input-area">
           <input
             type="text"
             className="chatbox-input"
-            placeholder="Stel een vraag" // Placeholdertekst
-            value={input} // Gekoppeld aan state
-            onChange={(e) => setInput(e.target.value)} // Update state bij typen
-            onKeyDown={handleKeyPress} // Verstuur bij Enter-toets
+            placeholder="Stel een vraag"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
           <button className="chatbox-button" onClick={sendMessage}>
             ➤
           </button>
         </div>
       </div>
+     
     </div>
+    
   );
 }

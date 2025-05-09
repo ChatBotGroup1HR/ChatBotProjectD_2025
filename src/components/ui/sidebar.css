@@ -12,12 +12,15 @@
 
 .sidebar.open {
   width: 250px;
-  background-color: #f5f5f5;
 }
 
 .sidebar.closed {
   width: 50px;
   background-color: var(--bg-color);
+}
+
+.sidebar.closed nav {
+  display: none;
 }
 
 .hamburger-button {
@@ -99,6 +102,10 @@
   display: none;
 }
 
+.sidebar.closed .sidebar-item {
+  display: none;
+}
+
 .sidebar.closed .hamburger-button {
   right: 0;
   left: 0;
@@ -115,4 +122,63 @@
 
 .dark-mode .sidebar li.active {
   background-color: rgba(255, 255, 255, 0.1);
-} 
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: none;
+  border: 1px solid transparent;
+}
+
+.modal-content h2 {
+  color: orangered;
+  margin-bottom: 20px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fe5101;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #d64300;
+}
+
+.light-mode .modal-content {
+  background-color: #f5f5f5;
+}
+
+.dark-mode .modal-content {
+  background-color: rgb(33, 33, 33);
+  color: white;
+}
