@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
+
 import './portal.css';
 import Header from './components/ui/header';
 import Footer from './components/ui/footer';
@@ -11,6 +13,7 @@ import reportWebVitals from './reportWebVitals';
 const pb = new PocketBase('http://localhost:8090');
 
 const PortalBody = () => {
+
   const [activePage, setActivePage] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -47,7 +50,7 @@ const PortalBody = () => {
       </div>
     </div>
   );
-}
+};
 
 const PortalWrap = () => {
   return (
