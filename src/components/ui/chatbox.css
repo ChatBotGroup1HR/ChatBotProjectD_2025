@@ -44,6 +44,7 @@
   color: white;
   align-self: flex-start;
   text-align: left;
+  max-width: 100ch;
   opacity: 0;
   animation: fadeIn 0.5s ease forwards;
 }
@@ -100,6 +101,28 @@
   cursor: pointer;
   transition: background-color 0.5s ease, color 0.5s ease;
   flex-shrink: 0;
+}
+
+.chatbox-text-preview {
+  background-color: #FE5000;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.chatbox-text-preview {
+  background-color: #FE5000;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .chatbox-button {
@@ -161,3 +184,57 @@
     transform: scale(1);
   }
 }
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 5px;
+  padding: 8px 0;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.chatbox-file-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.chatbox-file-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
