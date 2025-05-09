@@ -21,7 +21,7 @@
 }
 
 .headerButton, .loginButton {
-  transition-duration: 0.3s;
+  transition: background-color 0.5s ease, color 0.5s ease;
   background-color: #fe5101;
   align-self: center;
   margin-left: 16px;
@@ -30,8 +30,14 @@
   padding: 1px 2px;
 }
 
+.loginButton {
+  align-self: center;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
 .redirectbutton {
-  transition-duration: 0.3s;
+  transition: background-color 0.5s ease, color 0.5s ease;
   color: #fe5101;
   background-color: var(--bg-color);  /* Use dynamic background */
   border: 2px solid #fe5101;
@@ -42,8 +48,25 @@
 }
 
 .redirectbutton:hover {
-  transition-duration: 0.3s;
-  background-color: #fe5101;
   color: white;
-  cursor: pointer;
+  border-color: #FE5000;
+  background: linear-gradient(
+    120deg,
+    #FF7D00 0%,
+    #ff7D00 40%,
+    #ffffff 50%,
+    #FF7D00 60%,
+    #FF7D00 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-wash-out 0.4s forwards;
+}
+
+@keyframes gradient-wash-out {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
 }
