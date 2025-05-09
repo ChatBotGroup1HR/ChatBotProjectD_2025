@@ -9,50 +9,18 @@ interface SidebarItem {
   path: string;
 }
 
-const AddTagModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [tagName, setTagName] = useState('');
+interface SidebarProps {
+  onItemClick: (path: string) => void;
+}
 
-  const handleAddTag = async () => {
-    if (tagName.trim() === '') {
-      alert('Tag name cannot be empty');
-      return;
-    }
-  
-    try {
-      await pb.collection('tags').create({ tag: tagName });
-      alert('Tag added successfully!');
-      setTagName('');
-      onClose();
-    } catch (error) {
-      console.error('Error adding tag:', error);
-      alert('Failed to add tag. Please try again.');
-    }
-  };
-
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Add Tag</h2>
-        <input
-          type="text"
-          value={tagName}
-          onChange={(e) => setTagName(e.target.value)}
-          placeholder="Enter tag name"
-        />
-        <button type="button" onClick={handleAddTag}>Add Tag</button>
-        <button type="button" onClick={onClose}>Cancel</button>
-      </div>
-    </div>
-  );
-};
-
-const Sidebar: React.FC<{ onAddTagsClick: () => void; onCloseModal: () => void }> = ({ onAddTagsClick, onCloseModal }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeItem, setActiveItem] = useState<string>('');
   const [showAddTagModal, setShowAddTagModal] = useState(false);
 
   const menuItems: SidebarItem[] = [
     { label: 'Dashboard', path: '/portal' },
+    { label: 'Bestanden Toevoegen', path: '/fileupload' },
     { label: 'Profiel', path: '/portal' },
     { label: 'Instellingen', path: '/portal' },
     { label: 'Add tags', path: '/portal' },
@@ -73,30 +41,35 @@ const Sidebar: React.FC<{ onAddTagsClick: () => void; onCloseModal: () => void }
     onCloseModal();
   };
 
+  const handleItemClick = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveItem(path);
+    onItemClick(path);
+  };
+
   return (
-    <>
-      <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-        <button className="hamburger-button" onClick={toggleSidebar}>
-          <div className="hamburger-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-        <nav>
-          <ul>
-            {menuItems.map((item) => (
-              <li
-                key={item.path}
-                className={activeItem === item.path ? 'active' : ''}
-                onClick={(e) => {
-                  if (item.label === 'Add tags') e.preventDefault();
-                  handleMenuItemClick(item);
-                }}
+    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+      <button className="hamburger-button" onClick={toggleSidebar}>
+        <div className="hamburger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+      <nav>
+        <ul>
+          {menuItems.map((item) => (
+            <li 
+              key={item.path}
+              className={activeItem === item.path ? 'active' : ''}
+            >
+              <a 
+                href={item.path}
+                onClick={(e) => handleItemClick(item.path, e)}
               >
-                <a href={item.path}>{item.label}</a>
+                {item.label}
+              </a>
             </li>
-            
             ))}
           </ul>
         </nav>
