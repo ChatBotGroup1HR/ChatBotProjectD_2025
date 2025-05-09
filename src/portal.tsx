@@ -10,6 +10,7 @@ import FileUpload from './components/ui/fileupload';
 import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
 import reportWebVitals from './reportWebVitals';
+import AddTagPage from './components/ui/addtags';
 
 
 const pb = new PocketBase('http://localhost:8090');
@@ -47,6 +48,8 @@ const PortalBody = () => {
         return <h1>Profiel Pagina</h1>;
       case 'settings':
         return <h1>Instellingen Pagina</h1>;
+      case 'addtags':
+        return <AddTagPage />;
       default:
         return (
           <>
