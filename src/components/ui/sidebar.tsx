@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import './sidebar.css';
 
-interface SidebarItem {
-  label: string;
-  path: string;
+interface SidebarProps {
+  onMenuItemClick: (page: string) => void; // Callback-prop toegevoegd
 }
 
-const Sidebar: React.FC = () => {
+interface SidebarItem {
+  label: string;
+  page: string; // Verander 'path' naar 'page' om beter te passen bij je logica
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onMenuItemClick }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeItem, setActiveItem] = useState<string>('');
+  const [activeItem, setActiveItem] = useState<string>('dashboard');
 
   const menuItems: SidebarItem[] = [
-    { label: 'Dashboard', path: '/portal' },
-    { label: 'Profiel', path: '/portal' },
-    { label: 'Instellingen', path: '/portal' }
+    { label: 'Dashboard', page: 'dashboard' },
+    { label: 'Profiel', page: 'profile' },
+    { label: 'Instellingen', page: 'settings' },
+    { label: 'Documents', page: 'documents' }, // Nieuw item toegevoegd
   ];
 
   const toggleSidebar = () => {
@@ -32,12 +37,15 @@ const Sidebar: React.FC = () => {
       <nav>
         <ul>
           {menuItems.map((item) => (
-            <li 
-              key={item.path}
-              className={activeItem === item.path ? 'active' : ''}
-              onClick={() => setActiveItem(item.path)}
+            <li
+              key={item.page}
+              className={activeItem === item.page ? 'active' : ''}
+              onClick={() => {
+                setActiveItem(item.page);
+                onMenuItemClick(item.page); // Callback aanroepen
+              }}
             >
-              <a href={item.path}>{item.label}</a>
+              <span className="sidebar-item">{item.label}</span> {/* Gebruik een span in plaats van een button */}
             </li>
           ))}
         </ul>
@@ -46,4 +54,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
