@@ -12,12 +12,15 @@
 
 .sidebar.open {
   width: 250px;
-  background-color: #f5f5f5;
 }
 
 .sidebar.closed {
   width: 50px;
   background-color: var(--bg-color);
+}
+
+.sidebar.closed nav {
+  display: none;
 }
 
 .hamburger-button {
@@ -96,6 +99,10 @@
 }
 
 .sidebar.closed a {
+  display: none;
+}
+
+.sidebar.closed .sidebar-item {
   display: none;
 }
 

@@ -4,51 +4,42 @@ import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('http://localhost:8090');
 
-interface SidebarProps {
-  onMenuItemClick: (page: string) => void; // Callback-prop toegevoegd
-}
-
 interface SidebarItem {
   label: string;
-  page: string; // Verander 'path' naar 'page' om beter te passen bij je logica
+  page: string;
 }
 
 interface SidebarProps {
-  onItemClick: (path: string) => void;
+  onMenuItemClick: (page: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onMenuItemClick }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeItem, setActiveItem] = useState<string>('');
   const [showAddTagModal, setShowAddTagModal] = useState(false);
 
   const menuItems: SidebarItem[] = [
-    { label: 'Dashboard', path: '/portal' },
-    { label: 'Bestanden Toevoegen', path: '/fileupload' },
-    { label: 'Profiel', path: '/portal' },
-    { label: 'Instellingen', path: '/portal' },
-    { label: 'Add tags', path: '/portal' },
+    { label: 'Dashboard', page: 'dashboard' },
+    { label: 'Bestanden Toevoegen', page: 'fileupload' },
+    { label: 'Documenten', page: 'documents' },
+    { label: 'Profiel', page: 'profile' },
+    { label: 'Instellingen', page: 'settings' },
+    { label: 'Add tags', page: 'addtags' },
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleMenuItemClick = (item: SidebarItem) => {
-    setActiveItem(item.path);
+    setActiveItem(item.page);
     if (item.label === 'Add tags') {
       setShowAddTagModal(true);
-      onAddTagsClick();
+    } else {
+      onMenuItemClick(item.page);
     }
   };
 
   const handleCloseModal = () => {
     setShowAddTagModal(false);
-    onCloseModal();
-  };
-
-  const handleItemClick = (path: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    setActiveItem(path);
-    onItemClick(path);
   };
 
   return (
@@ -66,19 +57,23 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
             <li
               key={item.page}
               className={activeItem === item.page ? 'active' : ''}
-              onClick={() => {
-                setActiveItem(item.page);
-                onMenuItemClick(item.page); // Callback aanroepen
-              }}
+              onClick={() => handleMenuItemClick(item)}
             >
-              <span className="sidebar-item">{item.label}</span> {/* Gebruik een span in plaats van een button */}
+              <span className="sidebar-item">{item.label}</span>
             </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      {showAddTagModal && <AddTagModal onClose={handleCloseModal} />}
-    </>
+          ))}
+        </ul>
+      </nav>
+      {showAddTagModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Add Tags</h2>
+            {/* Add your tag form here */}
+            <button onClick={handleCloseModal}>Close</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
