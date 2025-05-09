@@ -28,14 +28,26 @@ code {
 
 :root {
   --bg-color: #ffffff;
-  --text-color: rgb(33, 33, 33);;
-  --not-bg-color: rgb(33, 33, 33);;
-  --search-bg-color: rgb(210, 210, 210);;
+  --text-color: rgb(33, 33, 33);
+  --not-bg-color: rgb(33, 33, 33);
+  --search-bg-color: rgb(210, 210, 210);
+  --border-color: #e0e0e0;
+  --input-bg-color: #ffffff;
+  --primary-color: #fe5101;
+  --primary-color-hover: #d44300;
+  --error-color: #dc3545;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 .dark-mode {
-  --bg-color: rgb(33, 33, 33);;
+  --bg-color: rgb(33, 33, 33);
   --text-color: #f1f1f1;
   --not-bg-color: #ffffff;
-  --search-bg-color: #333;
+  --search-bg-color: #444444;
+  --border-color: #444444;
+  --input-bg-color: #2d2d2d;
+  --primary-color: #fe5101;
+  --primary-color-hover: #d44300;
+  --error-color: #ff6b6b;
+  --box-shadow-color: rgba(0, 0, 0, 0.3);
 }
