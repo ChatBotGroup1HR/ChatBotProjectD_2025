@@ -21,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onMenuItemClick }) => {
     { label: 'Profiel', page: 'profile' },
     { label: 'Instellingen', page: 'settings' },
     { label: 'Tag Toevoegen', page: 'addtags' },
+    { label: 'Tag Overzicht', page: 'tagoverzicht' },
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);

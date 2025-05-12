@@ -1,0 +1,59 @@
+.tagoverzicht-container {
+  padding: 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.tag-zoek-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+}
+
+.tags-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tag-knop {
+  background-color: var(--button-bg, #fe5101);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.tag-knop:hover {
+  background-color: var(--button-hover-bg, #ddd);
+}
+
+.resultaten {
+  margin-top: 30px;
+}
+
+.resultaten ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.resultaten li {
+  margin-bottom: 10px;
+}
+
+.resultaten a {
+  color: var(--primary-color, blue);
+  text-decoration: none;
+}
+
+.resultaten a:hover {
+  text-decoration: underline;
+}
