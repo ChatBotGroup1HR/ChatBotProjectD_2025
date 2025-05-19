@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import './chatbox.css';
 import PocketBase from 'pocketbase';
+import { countMatchingWords } from '../../utils/fileMatcher';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -25,8 +26,6 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-
 
   const sendMessage = async () => {
     if (input.trim() === '') return; // Als de input leeg is, doe dan niets
@@ -64,48 +63,55 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         expand: 'tag',
       });
 
-      setTimeout(async () => { 
-      // Maak een bot bericht aan om de gevonden bestanden te tonen
-      const botMessage: ChatMessage = {
-        sender: 'bot',
-        content: response.length > 0
-          ? 'Hier zijn bestanden die overeenkomen met je tags:'
-          : 'Geen bestanden gevonden voor deze tags.',
-        files: [], // Voeg de bestanden toe aan het bericht
-        currentFileIndex: 0,
-      };
+      setTimeout(async () => {
+        // Maak een bot bericht aan om de gevonden bestanden te tonen
+        const botMessage: ChatMessage = {
+          sender: 'bot',
+          content: response.length > 0
+            ? 'Hier zijn bestanden die overeenkomen met je tags:'
+            : 'Geen bestanden gevonden voor deze tags.',
+          files: [], // Voeg de bestanden toe aan het bericht
+          currentFileIndex: 0,
+        };
 
 
-      // Doorloop alle bestanden die zijn opgehaald uit de database
-      for (const file of response) {
-        const fileUrl = pb.getFileUrl(file, file.file); // Genereer de volledige URL naar het bestand
-        const isTxt = file.file?.endsWith('.txt'); // Check of het bestand .txt is
+        // Doorloop alle bestanden die zijn opgehaald uit de database
+        for (const file of response) {
+          const fileUrl = pb.getFileUrl(file, file.file); // Genereer de volledige URL naar het bestand
+          const isTxt = file.file?.endsWith('.txt'); // Check of het bestand .txt is
 
-        if (isTxt) {
-          try {
-            const res = await fetch(fileUrl);
-            const textContent = await res.text(); // Lees de content van het bestand
+          if (isTxt) {
+            try {
+              const res = await fetch(fileUrl);
+              const textContent = await res.text(); // Lees de content van het bestand
 
-            botMessage.files?.push({
-              ...file,
-              textPreview: textContent, // Toon de inhoud van het tekstbestand
-              fileUrl,
-            });
-          } catch (err) {
-            // Als het niet lukt om de tekst te lezen, geef error message terug en stuur URL
-            console.error(`Kon .txt bestand niet lezen: ${fileUrl}`, err);
-            botMessage.files?.push({ ...file, fileUrl });
+              const matchCount = countMatchingWords(input, textContent);
+
+              botMessage.files?.push({
+                ...file,
+                textPreview: textContent, // Toon de inhoud van het tekstbestand
+                fileUrl,
+                matchCount,
+              });
+            } catch (err) {
+              // Als het niet lukt om de tekst te lezen, geef error message terug en stuur URL
+              console.error(`Kon .txt bestand niet lezen: ${fileUrl}`, err);
+              botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
+            }
+          } else {
+            // Voeg andere bestandstypen gewoon toe met URL
+            botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
           }
-        } else {
-          // Voeg andere bestandstypen gewoon toe met URL
-          botMessage.files?.push({ ...file, fileUrl });
         }
-      }
-      
-      setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
-      setBotTyping(false);
-      setSelectedTags([]); // Reset de geselecteerde tags
-    }, 1000);
+        //Sorteer op relevantie
+        if (botMessage.files) {
+          botMessage.files.sort((a, b) => (b.matchCount ?? 0) - (a.matchCount ?? 0));
+        }
+
+        setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
+        setBotTyping(false);
+        setSelectedTags([]); // Reset de geselecteerde tags
+      }, 1000);
     } catch (err) {
       console.error('Fout bij ophalen bestanden:', err);
       setBotTyping(false);
@@ -119,17 +125,17 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     }
   };
 
-  // Functie om door files heen te kunnen klikken
+    // Functie om door files heen te kunnen klikken
   const handleFileNavigation = (messageIndex: number, direction: 'next' | 'prev') => {
     setMessages((prevMessages) =>
       prevMessages.map((msg, idx) => {
         if (idx !== messageIndex || !msg.files || msg.files.length <= 1) return msg;
-  
+
         const newIndex =
           direction === 'next'
             ? Math.min((msg.currentFileIndex || 0) + 1, msg.files.length - 1)
             : Math.max((msg.currentFileIndex || 0) - 1, 0);
-  
+
         return { ...msg, currentFileIndex: newIndex };
       })
     );
@@ -138,7 +144,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   return (
     <div className="chatbox-container">
       <div className="chatbox-area">
-  
+          
         {/* Container voor alle chatberichten */}
         <div className="chatbox-messages">
           {messages.map((msg, index) => (
@@ -156,8 +162,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                       <div>
                         {file.textPreview ? (
                           <div>
-                          {/* Plaatst de link boven de tekst preview */}
-                          <a
+                            {/* Plaatst de link boven de tekst preview */}
+                            <a
                               href={file.fileUrl}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -165,6 +171,11 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                             >
                               📁 Download: {file.name || file.file}
                             </a>
+                            {file.matchCount !== undefined && (
+                              <div>
+                                🔍 Matches: {file.matchCount}
+                              </div>
+                            )}
                             <div className="chatbox-text-preview">
                               {file.textPreview}
                             </div>
@@ -179,7 +190,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                             📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
                           </a>
                         )}
-  
+
                         {/* buttons renderen wanneer dit nodig is */}
                         <div style={{ marginTop: '8px' }}>
                           {(msg.currentFileIndex ?? 0) > 0 && (
@@ -205,8 +216,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                   })()}
                 </div>
               )}
-            <div ref={bottomRef} />
-            {/* Scroll naar beneden na het toevoegen van een nieuw bericht */}
+              <div ref={bottomRef} />
+              {/* Scroll naar beneden na het toevoegen van een nieuw bericht */}
             </div>
           ))}
 
@@ -233,8 +244,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           </button>
         </div>
       </div>
-     
+
     </div>
-    
+
   );
 }
