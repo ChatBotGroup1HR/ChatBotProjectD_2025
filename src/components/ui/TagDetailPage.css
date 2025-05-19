@@ -1,0 +1,80 @@
+.tagdetail-container {
+  padding: 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.tagdetail-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: -150px;
+}
+
+.tagdetail-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: none;
+  border: 1px solid transparent;
+}
+
+.dark-mode .tagdetail-content {
+  background: rgb(33, 33, 33);
+  color: white;
+}
+
+.tagdetail-title {
+  color: orangered;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.tagdetail-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0 0;
+}
+
+.tagdetail-list li {
+  display: inline-block;
+  background: White;
+  border-radius: 16px;
+  padding: 10px 18px;
+  margin-bottom: 12px;
+  color: #fe5101;
+  font-weight: 500;
+  font-size: 1.05rem;
+  border: 1px solid #fe5101;
+  transition: background 0.2s;
+  min-width: 80px;
+  max-width: 100%;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.dark-mode .tagdetail-list li {
+  background: #2d2d2d;
+  color: #fe5101;
+}
+
+.tagdetail-back-btn {
+  margin-top: 24px;
+  padding: 8px 20px;
+  background: orangered;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tagdetail-back-btn:hover {
+  background: #d44300;
+}

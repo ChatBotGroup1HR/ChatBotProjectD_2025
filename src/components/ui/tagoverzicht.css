@@ -4,36 +4,66 @@
   color: var(--text-color);
 }
 
+.tagoverzicht-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: -150px;
+}
+
+.tagoverzicht-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: none;
+  border: 1px solid transparent;
+}
+
+.dark-mode .tagoverzicht-content {
+  background-color: rgb(33, 33, 33);
+  color: white;
+}
+
+.tagoverzicht-content h1 {
+  color: orangered;
+  margin-bottom: 20px;
+}
+
 .tag-zoek-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1rem;
-  background-color: var(--input-bg-color);
-  color: var(--text-color);
 }
 
 .tags-lijst {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 .tag-knop {
-  background-color: var(--button-bg, #fe5101);
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  padding: 10px;
-  text-align: left;
+  display: inline-block;
+  width: fit-content;
+  min-width: 80px;
+  padding: 6px 14px;
+  background: orangered;
+  border-radius: 16px;
   cursor: pointer;
+  transition: background 0.2s;
   font-size: 1rem;
-  color: var(--text-color);
+  border: 1px solid orangered;
+  margin: 0;
 }
 
 .tag-knop:hover {
-  background-color: var(--button-hover-bg, #ddd);
+  background: #e0e0e0;
 }
 
 .resultaten {

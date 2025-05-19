@@ -5,19 +5,20 @@ import Header from './components/ui/header';
 import Footer from './components/ui/footer';
 import Sidebar from './components/ui/sidebar';
 
-import DocumentsPage from './components/ui/DocumentPage'; // Importeer de documentenpagina
+import DocumentsPage from './components/ui/DocumentPage';
 import FileUpload from './components/ui/fileupload';
 import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
 import reportWebVitals from './reportWebVitals';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
-
+import TagDetailPage from './components/ui/TagDetailPage';
 
 const pb = new PocketBase('http://localhost:8090');
 
 const PortalBody = () => {
   const [activePage, setActivePage] = useState<string>('dashboard');
+  const [activeTagId, setActiveTagId] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,6 +34,9 @@ const PortalBody = () => {
   }
 
   const renderContent = () => {
+    if (activeTagId) {
+      return <TagDetailPage tagId={activeTagId} onBack={() => setActiveTagId(null)} />;
+    }
     switch (activePage) {
       case 'dashboard':
         return (
@@ -52,7 +56,7 @@ const PortalBody = () => {
       case 'addtags':
         return <AddTagPage />;
       case 'tagoverzicht':
-        return <TagOverzicht />;
+        return <TagOverzicht onTagClick={setActiveTagId} />;
       default:
         return (
           <>

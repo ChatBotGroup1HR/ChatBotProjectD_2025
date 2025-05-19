@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import PortalWrap from './portal';
 import './index.css';
 import Chatbox from './components/ui/chatbox';
-import Taglist from './components/ui/taglist'
-import Header from './components/ui/header'
+import Taglist from './components/ui/taglist';
+import Header from './components/ui/header';
 import Footer from './components/ui/footer';
+import TagDetailPage from './components/ui/TagDetailPage';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -31,6 +32,10 @@ const IndexWrap = () => {
   );
 };
 
+const TagDetailPageWrapper = () => {
+  const { tagId } = useParams<{ tagId: string }>();
+  return <TagDetailPage tagId={tagId} />;
+};
 
 root.render(
   <React.StrictMode>
@@ -38,6 +43,7 @@ root.render(
       <Routes>
         <Route path="/" element={<IndexWrap />} />
         <Route path="/portal" element={<PortalWrap />} />
+        <Route path="/tag/:tagId" element={<TagDetailPageWrapper />} />
       </Routes>
     </Router>
   </React.StrictMode>

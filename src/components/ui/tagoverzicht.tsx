@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PocketBase from 'pocketbase';
+import { useNavigate } from 'react-router-dom';
 import './tagoverzicht.css';
 
 const pb = new PocketBase('http://localhost:8090');
@@ -17,11 +18,17 @@ interface Bestand {
   tag: string[];
 }
 
-const TagOverzicht: React.FC = () => {
+interface TagOverzichtProps {
+  onTagClick?: (tagId: string) => void;
+}
+
+const TagOverzicht: React.FC<TagOverzichtProps> = ({ onTagClick }) => {
   const [tags, setTags] = useState<Tag[]>([]);
   const [zoekterm, setZoekterm] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -31,14 +38,14 @@ const TagOverzicht: React.FC = () => {
       try {
         const tagsResponse = await pb.collection('tags').getFullList({
           sort: '-created',
-          $autoCancel: false, // Prevent PocketBase from auto-cancelling
-          fetchOptions: { signal: abortController.signal }, // Pass abort signal
+          $autoCancel: false,
+          fetchOptions: { signal: abortController.signal },
         });
 
         const tagsMetAantal = await Promise.all(
           tagsResponse.map(async (item: any) => {
             const filesResponse = await pb.collection('files').getList(1, 5000, {
-              filter: `tag ~ "${item.id}"`, // <-- aangepast
+              filter: `tag ~ "${item.id}"`,
               $autoCancel: false,
               fetchOptions: { signal: abortController.signal },
             });
@@ -63,13 +70,14 @@ const TagOverzicht: React.FC = () => {
     fetchTagsEnAantal();
 
     return () => {
-      abortController.abort(); // Cancel all ongoing requests on unmount
+      abortController.abort();
     };
   }, []);
 
   const handleZoektermChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
+      setInputValue(term);
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
@@ -86,39 +94,34 @@ const TagOverzicht: React.FC = () => {
   );
 
   return (
-    <div className="tagoverzicht-container">
-      <h1>Tags</h1>
-      <input
-        className="tag-zoek-input"
-        type="text"
-        placeholder="Zoek op tagnaam..."
-        value={zoekterm}
-        onChange={handleZoektermChange}
-      />
+    <div className="tagoverzicht-page">
+      <div className="tagoverzicht-content">
+        <h1>Tags</h1>
+        <input
+          className="tag-zoek-input"
+          type="text"
+          placeholder="Zoek op tagnaam..."
+          value={inputValue}
+          onChange={handleZoektermChange}
+        />
 
-      <div className="tags-lijst">
-        {isLoading ? (
-          <p>Tags laden...</p>
-        ) : (
-          gefilterdeTags.map((tag) => (
-            <div key={tag.id} className="tag-knop">
-              {tag.tag} ({tag.aantal})
-            </div>
-          ))
-        )}
-      </div>
-      {gefilterdeTags.length > 0 && (
-        <div className="zoekresultaten">
-          <h3>Zoekresultaten:</h3>
-          <ul>
-            {gefilterdeTags.map((tag) => (
-              <li key={tag.id}>
+        <div className="tags-lijst">
+          {isLoading ? (
+            <p>Tags laden...</p>
+          ) : (
+            gefilterdeTags.map((tag) => (
+              <div
+                key={tag.id}
+                className="tag-knop"
+                onClick={() => window.open(`/tag/${tag.id}`, '_blank')}
+                style={{ cursor: 'pointer' }}
+              >
                 {tag.tag} ({tag.aantal})
-              </li>
-            ))}
-          </ul>
+              </div>
+            ))
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
