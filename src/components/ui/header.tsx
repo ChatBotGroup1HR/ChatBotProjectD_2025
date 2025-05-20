@@ -1,23 +1,40 @@
 import './header.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import PocketBase from 'pocketbase';
 
-interface RedirectButtonProps {
-  buttonText: string;
-  redirectUrl: string;
-}
-
-interface LoginButtonProps {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-}
+const pb = new PocketBase('http://localhost:8090');
 
 interface User {
     name: string;
+    email: string;
 }
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (pb.authStore.isValid) {
+      setUser({
+        name: pb.authStore.record?.name || pb.authStore.record?.email || 'User',
+        email: pb.authStore.record?.email || ''
+      });
+    }
+  }, []);
+
+  const handleAuth = () => {
+    if (user) {
+      pb.authStore.clear();
+      setUser(null);
+      navigate('/');
+    } else {
+      navigate('/portal');
+    }
+  };
+
+  const showAdminPortalButton = user && location.pathname === '/';
 
   return (
     <div className='header'>
@@ -26,40 +43,18 @@ export default function Header() {
           <img src="/ndw.svg" alt="ndwlogo" />
         </Link>
       </div>
-      <div className='headerButton'>
-        <RedirectButton buttonText="Admin portaal" redirectUrl="/portal" />
-      </div>
+      {showAdminPortalButton && (
+        <div className='headerButton'>
+          <Link to="/portal">
+            <button className='redirectbutton'>Admin portaal</button>
+          </Link>
+        </div>
+      )}
       <div className='loginButton'>
-        <LoginButton user={user} setUser={setUser} />
+        <button className='redirectbutton' onClick={handleAuth}>
+          {user ? `Welkom (${user.name})` : 'Login'}
+        </button>
       </div>
-    </div>
-  );
-}
-
-export function RedirectButton({ buttonText, redirectUrl }: RedirectButtonProps) {
-  return (
-    <div className='redirectbuttonwrap'>
-      <Link to={redirectUrl}>
-        <button className='redirectbutton'>{buttonText}</button>
-      </Link>
-    </div>
-  );
-}
-
-export function LoginButton({ user, setUser }: LoginButtonProps) {
-  const handleLogin = () => {
-    if (user) {
-      setUser(null); // Log out the user
-    } else {
-      setUser({ name: 'TestUser' }); // Log in a temporary test user
-    }
-  };
-
-  return (
-    <div className='redirectbuttonwrap'>
-      <button className='redirectbutton' onClick={handleLogin}>
-        {user ? `Welcome (${user.name})!` : 'Login'}
-      </button>
     </div>
   );
 }
