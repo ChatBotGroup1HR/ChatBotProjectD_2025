@@ -34,9 +34,6 @@ const PortalBody = () => {
   }
 
   const renderContent = () => {
-    if (activeTagId) {
-      return <TagDetailPage tagId={activeTagId} onBack={() => setActiveTagId(null)} />;
-    }
     switch (activePage) {
       case 'dashboard':
         return (
@@ -56,7 +53,21 @@ const PortalBody = () => {
       case 'addtags':
         return <AddTagPage />;
       case 'tagoverzicht':
-        return <TagOverzicht onTagClick={setActiveTagId} />;
+        return (
+          <TagOverzicht
+            onTagClick={(tagId: string) => {
+              setActiveTagId(tagId);
+              setActivePage('tagdetail');
+            }}
+          />
+        );
+      case 'tagdetail':
+        return (
+          <TagDetailPage
+            tagId={activeTagId ?? undefined}
+            onBack={() => setActivePage('tagoverzicht')}
+          />
+        );
       default:
         return (
           <>
@@ -70,7 +81,12 @@ const PortalBody = () => {
   return (
     <div className='portalBody'>
       <div className="admin-layout">
-        <Sidebar onMenuItemClick={setActivePage} />
+        <Sidebar
+          onMenuItemClick={(page) => {
+            setActivePage(page);
+            if (page !== 'tagdetail') setActiveTagId(null);
+          }}
+        />
         <div className="admin-content">
           {renderContent()}
         </div>

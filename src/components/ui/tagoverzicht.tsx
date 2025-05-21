@@ -113,7 +113,7 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ onTagClick }) => {
               <div
                 key={tag.id}
                 className="tag-knop"
-                onClick={() => window.open(`/tag/${tag.id}`, '_blank')}
+                onClick={() => onTagClick && onTagClick(tag.id)}
                 style={{ cursor: 'pointer' }}
               >
                 {tag.tag} ({tag.aantal})
