@@ -1,0 +1,132 @@
+:root {
+  --ndw-orange: #f47c20;
+  --ndw-light-orange: #fbb04c;
+  --ndw-hover: #ffe4cc;
+  --ndw-border: #ddd;
+  --ndw-text: #333;
+  --ndw-background: #fff8f2;
+}
+
+/* Default voor light mode */
+.ndw-container h1 {
+  --ndw-text: #333;
+}
+
+/* Als dark mode aan is */
+.dark-mode .ndw-container h1 {
+  color: white; /* bijvoorbeeld oranje in dark mode */
+}
+
+
+.ndw-error {
+  color: red;
+  font-weight: bold;
+}
+
+.ndw-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.ndw-table thead {
+  background-color: var(--ndw-orange);
+  color: white;
+}
+
+.ndw-table th,
+.ndw-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--ndw-border);
+}
+
+.ndw-table tbody tr:nth-child(even) {
+  background-color: var(--ndw-background);
+}
+
+.ndw-table tbody tr:hover {
+  background-color: var(--ndw-hover);
+}
+
+.ndw-table button {
+  background-color: var(--ndw-orange);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ndw-table button:hover {
+  background-color: var(--ndw-light-orange);
+}
+
+.ndw-form-container {
+  margin-top: 30px;
+  background-color: #fff4ea;
+  padding: 20px;
+  border: 1px solid var(--ndw-light-orange);
+  border-radius: 6px;
+}
+
+.ndw-form-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.ndw-form-container input[type='text'] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border: 1px solid var(--ndw-border);
+  border-radius: 4px;
+}
+
+.ndw-form-container input[type='text']:focus {
+  border-color: var(--ndw-orange);
+  outline: none;
+}
+
+.ndw-form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* DARK MODE STIJLEN VOOR DOCUMENTENTABEL */
+.dark-mode .ndw-table {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+  color: #f5f5f5;
+}
+
+.dark-mode .ndw-table thead {
+  background-color: var(--ndw-orange);
+  color: #ffffff;
+}
+
+.dark-mode .ndw-table tbody tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+.dark-mode .ndw-table tbody tr:hover {
+  background-color: #3a3a3a;
+}
+
+.dark-mode .ndw-table button {
+  background-color: var(--ndw-orange);
+  color: white;
+}
+
+.dark-mode .ndw-table button:hover {
+  background-color: #777777;
+}
+
