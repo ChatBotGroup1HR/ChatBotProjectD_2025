@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PocketBase from 'pocketbase';
+import './TagDetailPage.css';
 
 interface TagDetailPageProps {
   tagId?: string;
@@ -46,36 +47,29 @@ const TagDetailPage: React.FC<TagDetailPageProps> = ({ tagId, onBack }) => {
       : null;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2 style={{ color: 'orangered', fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem' }}>
-        {`📁 Bestanden met ${tagName} tag`}
-      </h2>
+    <div className="ndw-container">
+      <h1>📁 Bestanden met tag: <span>{tagName}</span></h1>
+
       {loading && <p>⏳ Bestanden laden...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="ndw-error">{error}</p>}
       {!loading && files.length === 0 && <p>📭 Geen bestanden gevonden.</p>}
-      <ul style={{ padding: 0, listStyle: 'none' }}>
-        {files.map((file) => {
-          const fileUrl = pb.getFileUrl(file, file.file);
-          const tags = file.expand?.tag;
-          return (
-            <li key={file.id} style={{ marginBottom: '20px', background: '#fff', borderRadius: '10px', padding: '18px', boxShadow: '0 1px 4px #eee' }}>
-              <span
-                style={{
-                  fontWeight: 600,
-                  color: '#fe5101',
-                  fontSize: '1.1rem',
-                  textDecoration: 'none',
-                  cursor: 'default',
-                }}
-              >
-                📎 {file.name || file.file}
-              </span>
-              {/* Tags */}
-              <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                {Array.isArray(tags) && tags.length > 0 ? (
-                  tags.map((tag: any, index: number) => (
+
+      <table className="ndw-table">
+        <thead>
+          <tr>
+            <th>Naam</th>
+            <th>Tags</th>
+          </tr>
+        </thead>
+        <tbody>
+          {files.map((file) => (
+            <tr key={file.id}>
+              <td>{file.name || file.file}</td>
+              <td>
+                {Array.isArray(file.expand?.tag) && (file.expand?.tag?.length ?? 0) > 0 ? (
+                  file.expand?.tag?.map((tag: any) => (
                     <span
-                      key={index}
+                      key={tag.id}
                       style={{
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
@@ -83,9 +77,10 @@ const TagDetailPage: React.FC<TagDetailPageProps> = ({ tagId, onBack }) => {
                         borderRadius: '16px',
                         fontSize: '0.85rem',
                         display: 'inline-block',
+                        marginRight: '4px',
                       }}
                     >
-                      ☁️ {tag.tag}
+                      ☁️ {tag.tag || tag.name}
                     </span>
                   ))
                 ) : (
@@ -102,17 +97,18 @@ const TagDetailPage: React.FC<TagDetailPageProps> = ({ tagId, onBack }) => {
                     🚫 Geen tags
                   </span>
                 )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       {onBack && (
         <button
           style={{
             marginTop: '24px',
             padding: '8px 20px',
-            background: 'orangered',
+            background: '#f47c20',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
