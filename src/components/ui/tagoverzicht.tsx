@@ -1,127 +1,221 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import PocketBase from 'pocketbase';
-import { useNavigate } from 'react-router-dom';
 import './tagoverzicht.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
-interface Tag {
+interface FileRecord {
   id: string;
-  tag: string;
-  aantal: number;
+  name?: string;
+  file: string;
+  expand?: {
+    tag?: any[];
+  };
 }
 
-interface Bestand {
+interface TagRecord {
   id: string;
-  name: string;
-  file: string;
-  tag: string[];
+  tag: string;
 }
 
 interface TagOverzichtProps {
-  onTagClick?: (tagId: string) => void;
+  tagId?: string;
+  onBack?: () => void;
 }
 
-const TagOverzicht: React.FC<TagOverzichtProps> = ({ onTagClick }) => {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [zoekterm, setZoekterm] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const navigate = useNavigate();
+interface FileLink {
+  name: string;
+  url: string;
+}
+
+const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
+  const [tagsWithFiles, setTagsWithFiles] = useState<{ tag: string; files: FileLink[] }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedTagIdx, setSelectedTagIdx] = useState<number | null>(null);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    setLoading(true);
+    setError(null);
 
-    const fetchTagsEnAantal = async () => {
-      setIsLoading(true);
-      try {
-        const tagsResponse = await pb.collection('tags').getFullList({
-          sort: '-created',
-          $autoCancel: false,
-          fetchOptions: { signal: abortController.signal },
+    Promise.all([
+      pb.collection('tags').getFullList(),
+      pb.collection('files').getFullList({ expand: 'tag' }),
+    ])
+      .then(([tags, files]) => {
+        if (!Array.isArray(tags) || !Array.isArray(files)) {
+          console.error('tags:', tags, 'files:', files);
+          throw new Error('Tags of files zijn geen array');
+        }
+
+        const tagMap: { [tagId: string]: { tag: string; files: FileLink[] } } = {};
+        tags.forEach((tag: any) => {
+          if (tag && tag.id && typeof tag.tag === 'string') {
+            tagMap[tag.id] = { tag: tag.tag, files: [] };
+          }
         });
 
-        const tagsMetAantal = await Promise.all(
-          tagsResponse.map(async (item: any) => {
-            const filesResponse = await pb.collection('files').getList(1, 5000, {
-              filter: `tag ~ "${item.id}"`,
-              $autoCancel: false,
-              fetchOptions: { signal: abortController.signal },
-            });
-            const fileCount = filesResponse.totalItems;
-            return {
-              id: item.id,
-              tag: item.tag,
-              aantal: fileCount,
+        files.forEach((file: any) => {
+          try {
+            const tags = file?.expand?.tag;
+            const fileUrl = file.file
+              ? `${pb.baseUrl}/api/files/${file.collectionId || 'files'}/${file.id}/${file.file}`
+              : '#';
+            const fileObj: FileLink = {
+              name: file.name || file.file,
+              url: fileUrl,
             };
-          })
-        );
-        setTags(tagsMetAantal);
-      } catch (error: any) {
-        if (error.name !== 'AbortError') {
-          console.error('Fout bij het ophalen van tags', error);
+            if (Array.isArray(tags)) {
+              tags.forEach((tag: any) => {
+                if (tag && tag.id && tagMap[tag.id]) {
+                  tagMap[tag.id].files.push(fileObj);
+                }
+              });
+            } else if (tags && tags.id && tagMap[tags.id]) {
+              tagMap[tags.id].files.push(fileObj);
+            }
+          } catch (e) {
+            console.error('Fout bij verwerken file:', file, e);
+          }
+        });
+
+        setTagsWithFiles(Object.values(tagMap));
+      })
+      .catch((err) => {
+        if (err?.message?.includes('autocancelled')) {
+          console.warn('PocketBase request werd geannuleerd:', err);
+          return;
         }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTagsEnAantal();
-
-    return () => {
-      abortController.abort();
-    };
+        console.error('PocketBase error:', err, JSON.stringify(err));
+        setError(err?.message || 'Fout bij ophalen tags/bestanden');
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleZoektermChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const term = e.target.value;
-      setInputValue(term);
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-      debounceRef.current = setTimeout(() => {
-        setZoekterm(term);
-      }, 100);
-    },
-    []
-  );
-
-  const zoektermNorm = zoekterm.trim().toLowerCase();
-  const gefilterdeTags = tags.filter((tag) =>
-    tag.tag.toLowerCase().includes(zoektermNorm)
-  );
-
   return (
-    <div className="tagoverzicht-page">
-      <div className="tagoverzicht-content">
-        <h1>Tags</h1>
-        <input
-          className="tag-zoek-input"
-          type="text"
-          placeholder="Zoek op tagnaam..."
-          value={inputValue}
-          onChange={handleZoektermChange}
-        />
+    <div className="ndw-container">
+      <h1>📁 Tagoverzicht</h1>
 
-        <div className="tags-lijst">
-          {isLoading ? (
-            <p>Tags laden...</p>
-          ) : (
-            gefilterdeTags.map((tag) => (
-              <div
-                key={tag.id}
-                className="tag-knop"
-                onClick={() => onTagClick && onTagClick(tag.id)}
-                style={{ cursor: 'pointer' }}
-              >
-                {tag.tag} ({tag.aantal})
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      {loading && <p>⏳ Bestanden laden...</p>}
+      {error && <p className="ndw-error">{error}</p>}
+      {!loading && tagsWithFiles.length === 0 && <p>📭 Geen bestanden gevonden.</p>}
+
+      <table className="ndw-table">
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Gekoppelde Bestanden</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tagsWithFiles.map(({ tag, files }, idx) => {
+            const isSelected = idx === selectedTagIdx;
+
+            return (
+              <React.Fragment key={idx}>
+                <tr
+                  style={{ cursor: files.length > 3 ? 'pointer' : 'default', verticalAlign: 'top' }}
+                  onClick={() => files.length > 3 && setSelectedTagIdx(isSelected ? null : idx)}
+                >
+                  <td>
+                    <span
+                      style={{
+                        backgroundColor: '#e0f7fa',
+                        color: '#00796b',
+                        padding: '4px 8px',
+                        borderRadius: '16px',
+                        fontSize: '0.95rem',
+                        display: 'inline-block',
+                      }}
+                    >
+                      ☁️ {tag}
+                    </span>
+                  </td>
+                  <td>
+                    {files.length === 0 ? (
+                      <span
+                        style={{
+                          backgroundColor: '#fbe9e7',
+                          color: '#d84315',
+                          padding: '4px 8px',
+                          borderRadius: '16px',
+                          fontSize: '0.85rem',
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        🚫 Geen bestanden
+                      </span>
+                    ) : (
+                      <>
+                        {isSelected
+                          ? (() => {
+                              const rows = [];
+                              for (let i = 0; i < files.length; i += 3) {
+                                rows.push(files.slice(i, i + 3));
+                              }
+                              return rows.map((row, rowIdx) => (
+                                <div key={rowIdx}>
+                                  {row.map((file, i) => {
+                                    const isLast =
+                                      rowIdx === rows.length - 1 && i === row.length - 1;
+                                    return (
+                                      <React.Fragment key={i}>
+                                        <a
+                                          href={file.url}
+                                          download
+                                          style={{
+                                            color: '#1a73e8',
+                                            textDecoration: 'underline',
+                                            cursor: 'pointer',
+                                          }}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          {file.name}
+                                        </a>
+                                        {isLast ? '.' : ',' + (i === row.length - 1 ? '' : ' ')}
+                                      </React.Fragment>
+                                    );
+                                  })}
+                                </div>
+                              ));
+                            })()
+                          : (
+                            <>
+                              {files.slice(0, 3).map((file, i, arr) => (
+                                <React.Fragment key={i}>
+                                  <a
+                                    href={file.url}
+                                    download
+                                    style={{
+                                      color: '#1a73e8',
+                                      textDecoration: 'underline',
+                                      cursor: 'pointer',
+                                    }}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {file.name}
+                                  </a>
+                                  {i < arr.length - 1
+                                    ? ', '
+                                    : files.length > 3
+                                    ? ', ...'
+                                    : ''}
+                                </React.Fragment>
+                              ))}
+                            </>
+                          )
+                        }
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </React.Fragment>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

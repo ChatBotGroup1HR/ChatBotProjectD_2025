@@ -12,7 +12,6 @@ import PocketBase from 'pocketbase';
 import reportWebVitals from './reportWebVitals';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
-import TagDetailPage from './components/ui/TagDetailPage';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -55,17 +54,8 @@ const PortalBody = () => {
       case 'tagoverzicht':
         return (
           <TagOverzicht
-            onTagClick={(tagId: string) => {
-              setActiveTagId(tagId);
-              setActivePage('tagdetail');
-            }}
-          />
-        );
-      case 'tagdetail':
-        return (
-          <TagDetailPage
             tagId={activeTagId ?? undefined}
-            onBack={() => setActivePage('tagoverzicht')}
+            onBack={() => setActiveTagId(null)}
           />
         );
       default:
@@ -84,7 +74,7 @@ const PortalBody = () => {
         <Sidebar
           onMenuItemClick={(page) => {
             setActivePage(page);
-            if (page !== 'tagdetail') setActiveTagId(null);
+            if (page !== 'tagoverzicht') setActiveTagId(null);
           }}
         />
         <div className="admin-content">
