@@ -1,0 +1,12 @@
+DEXTER SHIVI
+SHiVi staat voor Samenwerking Historische Verkeersinformatie. NDW en Rijkswaterstaat hebben gezamenlijk de informatieketen voor historische verkeersgegevens op het HoofdWegenNet (HWN) vernieuwd in deze samenwerking. SHiVi bevat intensiteiten per SHiVi verkeersbaan, per 5 minuten, per dag en snelheden per SHiVi segment, per 5 minuten, per dag. Allebei vanaf 3 januari 2019.
+
+Een SHiVi verkeersbaan is een wegdeel waar verkeer in een bepaalde richting rijdt en waar geen verkeer op of af kan (met uitzondering van verzorgingsplaatsen). Iedere verkeersbaan is vervolgens onderverdeeld in één of meerdere (SHiVi-)segmenten. Een segment is dus een deel van een verkeersbaan, met eenzelfde aantal rijstroken, eenzelfde snelheidsregime en een maximale lengte van 300 meter.
+
+Intensiteiten (in voertuigen per uur) zijn berekend uit de beschikbare puntmetingen op een verkeersbaan; als er meerdere metingen op een verkeersbaan beschikbaar zijn wordt per minuut de mediaan bepaald. Hieruit wordt per 5 minuten de intensiteit berekend. Snelheden (in kilometers per uur) worden per SHiVi segment berekend door het middelen van snelheden uit floating car data. Er wordt daarbij rekening gehouden met de lengte van segmenten.
+
+Het resultaat in SHiVi is een eenduidig bepaalde waarde voor intensiteiten en snelheden per verkeersbaan/-segment op het HWN. Voor intensiteiten betreft het zo’n 60% van het gehele HWN; de snelheden zijn, vanwege het gebruik van FCD, nagenoeg landelijk dekkend.
+
+SHiVi gegevens zijn te exporteren via een eenvoudige en geavanceerde export. Het gebruik ervan is gelijk aan de exporters voor intensiteit, snelheid en reistijd. Via de eenvoudige SHiVi export is een datumbereik en aggregatieniveau te kiezen. De geavanceerde export biedt mogelijkheden om tijdvakken, dagselecties en datumreeksen toe te voegen. Daarnaast is het in de geavanceerde export mogelijk om algemene en persoonlijke uitsluitingen te gebruiken. Het resultaat kan als csv of excel bestand worden gedownload.
+
+Start altijd met het kiezen van het datumbereik. De locatieselectie vervalt namelijk bij het wijzigen van het datumbereik. Dit omdat het SHiVi netwerk per maand kan verschillen.
