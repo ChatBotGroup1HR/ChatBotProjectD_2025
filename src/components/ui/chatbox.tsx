@@ -137,7 +137,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     }
   };
 
-    // Functie om door files heen te kunnen klikken
+  // Functie om door files heen te kunnen klikken
   const handleFileNavigation = (messageIndex: number, direction: 'next' | 'prev') => {
     setMessages((prevMessages) =>
       prevMessages.map((msg, idx) => {
@@ -156,7 +156,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
   return (
     <div className="chatbox-container">
       <div className="chatbox-area">
-          
+
         {/* Container voor alle chatberichten */}
         <div className="chatbox-messages">
           {messages.map((msg, index) => (
@@ -174,7 +174,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                       <div>
                         {file.textPreview ? (
                           <div>
-                            {/* Plaatst de link boven de tekst preview */}
+                          {/* Plaatst de link boven de tekst preview */}
                             <a
                               href={file.fileUrl}
                               target="_blank"
