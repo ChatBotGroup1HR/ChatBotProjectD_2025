@@ -2,13 +2,14 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #333;
+    background-color: var(--search-bg-color);
     color: white;
     padding: 15px 20px;
     display: flex;
-    justify-content: space-between; /* Pushes items to the edges */
+    justify-content: space-between;
     align-items: center;
     height: 5vh;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .ndwlogofooter img {

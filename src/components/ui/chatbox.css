@@ -60,7 +60,7 @@
   background-color: #FF7D00;
   color: white;
   align-self: flex-end;
-  text-align: right;
+  text-align: left;
 }
 
 .chatbox-input-area {
