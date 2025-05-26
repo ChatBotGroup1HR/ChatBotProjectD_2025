@@ -205,8 +205,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                               <div>
                                 <iframe
                                   src={file.fileUrl}
-                                  width="100%"
-                                  height="400px"
+                                  width="700px"
+                                  height="600px"
                                   style={{ border: '1px solid #ccc', borderRadius: '8px', marginTop: '8px' }}
                                 ></iframe>
                               </div>
