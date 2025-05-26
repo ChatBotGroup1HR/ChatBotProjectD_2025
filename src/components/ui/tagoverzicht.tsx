@@ -4,31 +4,12 @@ import './tagoverzicht.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
-interface FileRecord {
-  id: string;
-  name?: string;
-  file: string;
-  expand?: {
-    tag?: any[];
-  };
-}
-
-interface TagRecord {
-  id: string;
-  tag: string;
-}
-
-interface TagOverzichtProps {
-  tagId?: string;
-  onBack?: () => void;
-}
-
 interface FileLink {
   name: string;
   url: string;
 }
 
-const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
+const TagOverzicht: React.FC = () => {
   const [tagsWithFiles, setTagsWithFiles] = useState<{ tag: string; files: FileLink[] }[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -110,12 +91,13 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
         <tbody>
           {tagsWithFiles.map(({ tag, files }, idx) => {
             const isSelected = idx === selectedTagIdx;
+            const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
 
             return (
               <React.Fragment key={idx}>
                 <tr
-                  style={{ cursor: files.length > 3 ? 'pointer' : 'default', verticalAlign: 'top' }}
-                  onClick={() => files.length > 3 && setSelectedTagIdx(isSelected ? null : idx)}
+                  style={{ cursor: sortedFiles.length > 3 ? 'pointer' : 'default', verticalAlign: 'top' }}
+                  onClick={() => sortedFiles.length > 3 && setSelectedTagIdx(isSelected ? null : idx)}
                 >
                   <td>
                     <span
@@ -132,7 +114,7 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
                     </span>
                   </td>
                   <td>
-                    {files.length === 0 ? (
+                    {sortedFiles.length === 0 ? (
                       <span
                         style={{
                           backgroundColor: '#fbe9e7',
@@ -150,8 +132,8 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
                         {isSelected
                           ? (() => {
                               const rows = [];
-                              for (let i = 0; i < files.length; i += 3) {
-                                rows.push(files.slice(i, i + 3));
+                              for (let i = 0; i < sortedFiles.length; i += 3) {
+                                rows.push(sortedFiles.slice(i, i + 3));
                               }
                               return rows.map((row, rowIdx) => (
                                 <div key={rowIdx}>
@@ -182,7 +164,7 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
                             })()
                           : (
                             <>
-                              {files.slice(0, 3).map((file, i, arr) => (
+                              {sortedFiles.slice(0, 3).map((file, i, arr) => (
                                 <React.Fragment key={i}>
                                   <a
                                     href={file.url}
@@ -199,7 +181,7 @@ const TagOverzicht: React.FC<TagOverzichtProps> = ({ tagId, onBack }) => {
                                   </a>
                                   {i < arr.length - 1
                                     ? ', '
-                                    : files.length > 3
+                                    : sortedFiles.length > 3
                                     ? ', ...'
                                     : ''}
                                 </React.Fragment>

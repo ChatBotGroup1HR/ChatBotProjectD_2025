@@ -9,7 +9,6 @@ import DocumentsPage from './components/ui/DocumentPage';
 import FileUpload from './components/ui/fileupload';
 import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
-import reportWebVitals from './reportWebVitals';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
 
@@ -17,7 +16,6 @@ const pb = new PocketBase('http://localhost:8090');
 
 const PortalBody = () => {
   const [activePage, setActivePage] = useState<string>('dashboard');
-  const [activeTagId, setActiveTagId] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,10 +51,7 @@ const PortalBody = () => {
         return <AddTagPage />;
       case 'tagoverzicht':
         return (
-          <TagOverzicht
-            tagId={activeTagId ?? undefined}
-            onBack={() => setActiveTagId(null)}
-          />
+          <TagOverzicht />
         );
       default:
         return (
@@ -74,7 +69,6 @@ const PortalBody = () => {
         <Sidebar
           onMenuItemClick={(page) => {
             setActivePage(page);
-            if (page !== 'tagoverzicht') setActiveTagId(null);
           }}
         />
         <div className="admin-content">
