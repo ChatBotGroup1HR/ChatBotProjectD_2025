@@ -11,7 +11,10 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "ajv": "8",
+    "canvas": "^3.1.0",
     "chatbotprojectd_2025": "file:",
+    "pdfjs-dist": "3.11.174",
     "pocketbase": "^0.26.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -45,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "webpack-dev-server": "^5.2.1"
   }
 }

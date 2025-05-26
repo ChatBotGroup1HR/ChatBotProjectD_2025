@@ -98,6 +98,18 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
               console.error(`Kon .txt bestand niet lezen: ${fileUrl}`, err);
               botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
             }
+          } else if (file.file?.endsWith('.pdf')) {
+            try {
+              botMessage.files?.push({
+                ...file,
+                fileUrl,
+                isPDF: true,
+                matchCount: 0,
+              });
+            } catch (err) {
+              console.error(`Kon PDF bestand niet verwerken: ${fileUrl}`, err);
+              botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
+            }
           } else {
             // Voeg andere bestandstypen gewoon toe met URL
             botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
@@ -180,16 +192,35 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                               {file.textPreview}
                             </div>
                           </div>
-                        ) : (
-                          <a
-                            href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="chatbox-file-link"
-                          >
-                            📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
-                          </a>
-                        )}
+                          ) : file.isPDF ? (
+                            <div>
+                              <a
+                                href={file.fileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="chatbox-file-link"
+                              >
+                                📁 Download: {file.name || file.file}
+                              </a>
+                              <div>
+                                <iframe
+                                  src={file.fileUrl}
+                                  width="100%"
+                                  height="400px"
+                                  style={{ border: '1px solid #ccc', borderRadius: '8px', marginTop: '8px' }}
+                                ></iframe>
+                              </div>
+                            </div>
+                          ) : (
+                            <a
+                              href={pb.getFileUrl(file, file.file)} // Haalt correcte URL op voor bestand
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="chatbox-file-link"
+                            >
+                              📁 Download: {file.name || file.file} {/* Toon naam of naam van de file zelf als de naam leeg is */}
+                            </a>
+                          )}
 
                         {/* buttons renderen wanneer dit nodig is */}
                         <div style={{ marginTop: '8px' }}>
