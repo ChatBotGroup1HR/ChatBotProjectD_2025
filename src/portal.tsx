@@ -5,12 +5,12 @@ import Header from './components/ui/header';
 import Footer from './components/ui/footer';
 import Sidebar from './components/ui/sidebar';
 
-import DocumentsPage from './components/ui/DocumentPage'; // Importeer de documentenpagina
+import DocumentsPage from './components/ui/DocumentPage';
 import FileUpload from './components/ui/fileupload';
 import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
-import reportWebVitals from './reportWebVitals';
-
+import AddTagPage from './components/ui/addtags';
+import TagOverzicht from './components/ui/tagoverzicht';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -47,6 +47,12 @@ const PortalBody = () => {
         return <h1>Profiel Pagina</h1>;
       case 'settings':
         return <h1>Instellingen Pagina</h1>;
+      case 'addtags':
+        return <AddTagPage />;
+      case 'tagoverzicht':
+        return (
+          <TagOverzicht />
+        );
       default:
         return (
           <>
@@ -60,7 +66,11 @@ const PortalBody = () => {
   return (
     <div className='portalBody'>
       <div className="admin-layout">
-        <Sidebar onMenuItemClick={setActivePage} />
+        <Sidebar
+          onMenuItemClick={(page) => {
+            setActivePage(page);
+          }}
+        />
         <div className="admin-content">
           {renderContent()}
         </div>

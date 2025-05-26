@@ -1,0 +1,74 @@
+:root {
+  --ndw-orange: #f47c20;
+  --ndw-light-orange: #fbb04c;
+  --ndw-hover: #ffe4cc;
+  --ndw-border: #ddd;
+  --ndw-text: #333;
+  --ndw-background: #fff8f2;
+}
+
+.ndw-container h1 {
+  color: var(--ndw-text);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.ndw-error {
+  color: red;
+  font-weight: bold;
+}
+
+.ndw-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.ndw-table thead {
+  background-color: var(--ndw-orange);
+  color: white;
+}
+
+.ndw-table th,
+.ndw-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--ndw-border);
+}
+
+.ndw-table tbody tr:nth-child(even) {
+  background-color: var(--ndw-background);
+}
+
+.ndw-table tbody tr:hover {
+  background-color: var(--ndw-hover);
+}
+
+/* Dark mode styles */
+.dark-mode .ndw-table {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+  color: #f5f5f5;
+}
+
+.dark-mode .ndw-table thead {
+  background-color: var(--ndw-orange);
+  color: #ffffff;
+}
+
+.dark-mode .ndw-table tbody tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+.dark-mode .ndw-table tbody tr:hover {
+  background-color: #3a3a3a;
+}
+
+.dark-mode .ndw-container h1 {
+  color: #fff;
+}
