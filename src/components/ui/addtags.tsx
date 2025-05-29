@@ -6,35 +6,36 @@ const pb = new PocketBase('http://localhost:8090');
 
 const AddTagPage: React.FC = () => {
   const [tagName, setTagName] = useState('');
+  const [statusMessage, setStatusMessage] = useState<string>('');
 
   const formatTagName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
-    };
+  };
 
-    const handleAddTag = async () => {
-        const formattedTagName = formatTagName(tagName);
+  const handleAddTag = async () => {
+    const formattedTagName = formatTagName(tagName);
 
-        if (formattedTagName.trim() === '') {
-            alert('Tag name cannot be empty');
-            return;
-        }
+    if (formattedTagName.trim() === '') {
+      setStatusMessage('Tagnaam mag niet leeg zijn');
+      return;
+    }
 
-        try {
-            const existingTags = await pb.collection('tags').getFullList({ filter: `tag="${formattedTagName}"` });
+    try {
+      const existingTags = await pb.collection('tags').getFullList({ filter: `tag="${formattedTagName}"` });
 
-            if (existingTags.length > 0) {
-                alert('Tag already exists');
-                return;
-            }
+      if (existingTags.length > 0) {
+        setStatusMessage('Tag bestaat al');
+        return;
+      }
 
-            await pb.collection('tags').create({ tag: formattedTagName });
-            alert('Tag added successfully!');
-            setTagName('');
-        } catch (error) {
-            console.error('Error adding tag:', error);
-            alert('Failed to add tag. Please try again.');
-        }
-    };
+      await pb.collection('tags').create({ tag: formattedTagName });
+      setStatusMessage('Tag succesvol toegevoegd!');
+      setTagName('');
+    } catch (error) {
+      console.error('Error adding tag:', error);
+      setStatusMessage('Toevoegen van tag mislukt. Probeer het opnieuw.');
+    }
+  };
 
   return (
     <div className="add-tag-page">
@@ -48,8 +49,13 @@ const AddTagPage: React.FC = () => {
         />
         <div>
           <button onClick={handleAddTag}>Toevoegen</button>
-          <button onClick={() => setTagName('')}>Annuleren</button>
+          <button onClick={() => { setTagName(''); setStatusMessage(''); }}>Annuleren</button>
         </div>
+        {statusMessage && (
+          <div className={`status-message ${statusMessage.includes('succesvol') ? 'success' : 'error'}`}>
+            {statusMessage}
+          </div>
+        )}
       </div>
     </div>
   );
