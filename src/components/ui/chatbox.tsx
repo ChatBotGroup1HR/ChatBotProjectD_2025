@@ -185,7 +185,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                             </a>
                             {file.matchCount !== undefined && (
                               <div>
-                                🔍 Matches: {file.matchCount}
+                                🔍 Aantal overeenkomsten: {file.matchCount}
                               </div>
                             )}
                             <div className="chatbox-text-preview">
@@ -265,7 +265,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
           <input
             type="text"
             className="chatbox-input"
-            placeholder="Stel een vraag"
+            placeholder="Stel een vraag..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyPress}
