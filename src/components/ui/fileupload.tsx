@@ -100,7 +100,7 @@ const FileUpload: React.FC = () => {
         });
       }
 
-      setUploadStatus('File uploaded successfully!');
+      setUploadStatus('Upload voltooid!');
       
       // Reset form
       setFile(null);
@@ -116,10 +116,10 @@ const FileUpload: React.FC = () => {
 
   return (
     <div className="file-upload-container">
-      <h2>Upload File</h2>
+      <h2>Document Toevoegen</h2>
       <form onSubmit={handleSubmit} className="file-upload-form">
         <div className="form-group">
-          <label htmlFor="file">Select File:</label>
+          <label htmlFor="file">Selecteer Document:</label>
           <input
             type="file"
             id="file"
@@ -129,14 +129,14 @@ const FileUpload: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="referenceName">Reference Name:</label>
+          <label htmlFor="referenceName">Referentienaam:</label>
           <input
             type="text"
             id="referenceName"
             value={referenceName}
             onChange={(e) => setReferenceName(e.target.value)}
             required
-            placeholder="Enter a reference name for the file"
+            placeholder="Voer een referentienaam in..."
           />
         </div>
 
@@ -165,7 +165,7 @@ const FileUpload: React.FC = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               onFocus={() => !noTags && setIsDropdownOpen(true)}
-              placeholder="Search or select tags..."
+              placeholder="Zoek of selecteer tags..."
               className="tags-search-input"
               disabled={noTags}
             />
@@ -207,7 +207,7 @@ const FileUpload: React.FC = () => {
         </div>
 
         <button type="submit" className="upload-button">
-          Upload File
+          Document Uploaden
         </button>
 
         {uploadStatus && (
