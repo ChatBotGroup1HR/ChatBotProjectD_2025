@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import './chatbox.css';
 import PocketBase from 'pocketbase';
 import { countMatchingWords } from '../../utils/fileMatcher';
+import { extractTextFromPdf } from '../../utils/pdfConverter';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -79,6 +80,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         for (const file of response) {
           const fileUrl = pb.getFileUrl(file, file.file); // Genereer de volledige URL naar het bestand
           const isTxt = file.file?.endsWith('.txt'); // Check of het bestand .txt is
+          const isPDF = file.file?.endWith('.pdf'); // Check of het bestand .pdf is
 
           if (isTxt) {
             try {
@@ -98,13 +100,16 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
               console.error(`Kon .txt bestand niet lezen: ${fileUrl}`, err);
               botMessage.files?.push({ ...file, fileUrl, matchCount: 0 });
             }
-          } else if (file.file?.endsWith('.pdf')) {
+          } else if (isPDF) {
             try {
+              const textContent = await extractTextFromPdf(fileUrl);
+              const matchCount = countMatchingWords(input, textContent);
+
               botMessage.files?.push({
                 ...file,
                 fileUrl,
                 isPDF: true,
-                matchCount: 0,
+                matchCount,
               });
             } catch (err) {
               console.error(`Kon PDF bestand niet verwerken: ${fileUrl}`, err);
@@ -123,7 +128,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         setMessages(prev => [...prev, botMessage]); // Voeg het bot bericht toe aan de chat
         setBotTyping(false);
         setSelectedTags([]); // Reset de geselecteerde tags
-      }, 1000);
+    });
     } catch (err) {
       console.error('Fout bij ophalen bestanden:', err);
       setBotTyping(false);
@@ -202,6 +207,11 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                               >
                                 📁 Download: {file.name || file.file}
                               </a>
+                              {file.matchCount !== undefined && (
+                              <div>
+                                🔍 Aantal overeenkomsten: {file.matchCount}
+                              </div>
+                            )}
                               <div>
                                 <iframe
                                   src={file.fileUrl}
