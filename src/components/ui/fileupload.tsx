@@ -69,6 +69,18 @@ const FileUpload: React.FC = () => {
     setIsDropdownOpen(true);
   };
 
+  const doesDocumentExist = async (name: string) => {
+    try {
+      const results = await pb.collection('files').getList(1, 1, {
+        filter: `name="${name}"`,
+      });
+      return results.items.length > 0;
+    } catch (err) {
+      console.error('Error checking for duplicates:', err);
+      return false;
+    }
+  };
+
   const filteredTags = availableTags.filter(tag => {
     if (!tag || !tag.tag) return false;
     return tag.tag.toLowerCase().includes(searchTerm.toLowerCase());
@@ -86,6 +98,12 @@ const FileUpload: React.FC = () => {
       setUploadStatus('Error: Selecteer minimaal 1 tag of selecteer "geen tag(s) toevoegen"');
       return;
     }
+
+    const duplicateExists = await doesDocumentExist(referenceName);
+      if (duplicateExists) {
+        setUploadStatus('Error: Een document met dezelfde naam bestaat al.');
+        return;
+      }
 
     try {
       const formData = new FormData();
