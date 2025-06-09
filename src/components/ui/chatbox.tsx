@@ -17,6 +17,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     content: string; // content van het bericht
     files?: any[]; // Eventueele bestanden die zijn meegegeven bij het bericht
     currentFileIndex?: number; // Voor bladeren door bestanden
+    visibleFileCount?: number; // Aantal bestanden dat zichtbaar is in de chat
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -73,6 +74,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
             : 'Geen bestanden gevonden voor deze tags.',
           files: [], // Voeg de bestanden toe aan het bericht
           currentFileIndex: 0,
+          visibleFileCount: 5,
         };
 
 
@@ -80,7 +82,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
         for (const file of response) {
           const fileUrl = pb.getFileUrl(file, file.file); // Genereer de volledige URL naar het bestand
           const isTxt = file.file?.endsWith('.txt'); // Check of het bestand .txt is
-          const isPDF = file.file?.endWith('.pdf'); // Check of het bestand .pdf is
+          const isPDF = file.file?.endsWith('.pdf'); // Check of het bestand .pdf is
 
           if (isTxt) {
             try {
@@ -158,6 +160,17 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     );
   };
 
+  const handleShowMoreFiles = (messageIndex: number) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((msg, idx) => {
+        if (idx !== messageIndex || !msg.files) return msg;
+
+        const newVisibleCount = Math.min((msg.visibleFileCount ?? 5) + 5, msg.files.length);
+        return { ...msg, visibleFileCount: newVisibleCount };
+      })
+    );
+  };
+
   return (
     <div className="chatbox-container">
       <div className="chatbox-area">
@@ -174,6 +187,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
               {msg.files && msg.files.length > 0 && (
                 <div>
                   {(() => {
+                  const visibleCount = msg.visibleFileCount ?? 5;
                     const file = msg.files[msg.currentFileIndex ?? 0];
                     return (
                       <div>
@@ -233,6 +247,8 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                           )}
 
                         {/* buttons renderen wanneer dit nodig is */}
+                      {(msg.files.length > 1 || (visibleCount < msg.files.length)) && (
+                        <div className="chatbox-file-navigation">
                         <div style={{ marginTop: '8px' }}>
                           {(msg.currentFileIndex ?? 0) > 0 && (
                             <button
@@ -242,7 +258,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                               ◀ Vorige
                             </button>
                           )}
-                          {(msg.currentFileIndex ?? 0) < msg.files.length - 1 && (
+                            {(msg.currentFileIndex ?? 0) < visibleCount - 1 && (
                             <button
                               className="chatbox-button"
                               onClick={() => handleFileNavigation(index, 'next')}
@@ -252,11 +268,19 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
                             </button>
                           )}
                         </div>
-                      </div>
-                    );
-                  })()}
-                </div>
-              )}
+
+                          {visibleCount < msg.files.length && (msg.currentFileIndex ?? 0) === visibleCount - 1 && (
+                            <button className="chatbox-button" onClick={() => handleShowMoreFiles(index)}>
+                              ➕ Toon meer bestanden
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
               <div ref={bottomRef} />
               {/* Scroll naar beneden na het toevoegen van een nieuw bericht */}
             </div>
