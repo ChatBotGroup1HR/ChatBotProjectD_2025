@@ -69,10 +69,10 @@ const FileUpload: React.FC = () => {
     setIsDropdownOpen(true);
   };
 
-  const doesDocumentExist = async (name: string) => {
+  const doesDocumentExist = async (name: string, originalName: string) => {
     try {
       const results = await pb.collection('files').getList(1, 1, {
-        filter: `name="${name}"`,
+        filter: `name="${name}" || originalName="${originalName}"`,
       });
       return results.items.length > 0;
     } catch (err) {
@@ -99,7 +99,7 @@ const FileUpload: React.FC = () => {
       return;
     }
 
-    const duplicateExists = await doesDocumentExist(referenceName);
+    const duplicateExists = await doesDocumentExist(referenceName, file.name.toLowerCase().replace(/[\s+-]/g, '_'));
       if (duplicateExists) {
         setUploadStatus('Error: Een document met dezelfde naam bestaat al.');
         return;
@@ -109,6 +109,7 @@ const FileUpload: React.FC = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('name', referenceName);
+      formData.append('originalName', file.name);
       
       const record = await pb.collection('files').create(formData);
       
