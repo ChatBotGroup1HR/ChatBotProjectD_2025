@@ -1,0 +1,88 @@
+.dashboard {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.logs-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.log-entry {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry:hover {
+    background-color: #f8f9fa;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.log-level {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.log-level.error {
+    background-color: #fee;
+    color: #d32f2f;
+}
+
+.log-level.warn {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.log-level.info {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.log-level.debug {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.log-date {
+    color: #666;
+    font-size: 12px;
+}
+
+.log-message {
+    color: #333;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.dashboard p {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 40px 20px;
+}

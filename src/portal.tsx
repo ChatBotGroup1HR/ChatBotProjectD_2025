@@ -11,6 +11,7 @@ import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
+import Dashboard from './components/ui/dashboard';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -32,13 +33,15 @@ const PortalBody = () => {
 
   const renderContent = () => {
     switch (activePage) {
-      case 'dashboard':
+      case 'home':
         return (
           <>
             <h1>Admin Portal</h1>
             <p>Selecteer een optie in de sidebar om de pagina te bekijken.</p>
           </>
         );
+      case 'dashboard':
+        return <Dashboard />
       case 'documents':
         return <DocumentsPage />;
       case 'fileupload':
