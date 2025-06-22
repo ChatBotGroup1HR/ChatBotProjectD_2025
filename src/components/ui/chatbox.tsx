@@ -41,7 +41,14 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
     setInput(''); // Maak het inputveld leeg na het versturen van het bericht
 
     try {
-      if (selectedTags.length === 0) return; // Als er geen geselecteerde tags zijn, doe dan niets
+      if (selectedTags.length === 0) {
+        const botMessage: ChatMessage = {
+          sender: 'bot',
+          content: 'Voor het tonen van passende bestanden is het selecteren van tags vereist. Kies tags uit de lijst aan de linkerkant.',
+        };
+        setMessages(prev => [...prev, botMessage]);
+        return;
+      }
 
       // Haal de bijbehorende tag records op uit de database
       const tagRecords = await Promise.all(
