@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PocketBase from 'pocketbase';
+import { POCKETBASE_URL } from '../../config';
 import './dashboard.css';
 
-const pb = new PocketBase('http://localhost:8090');
+const pb = new PocketBase(POCKETBASE_URL);
 
 interface LogEntry {
     id: string;
@@ -54,7 +55,7 @@ const Dashboard: React.FC = () => {
                 console.log('Authentication successful');
 
                 console.log('Attempting to fetch logs...');
-                const response = await fetch(`http://localhost:8090/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
+                const response = await fetch(`${POCKETBASE_URL}/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
                     headers: {
                         'Authorization': pb.authStore.token
                     },

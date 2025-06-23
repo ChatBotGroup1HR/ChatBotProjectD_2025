@@ -6,9 +6,71 @@ This is the repository for Team 1's Project D.
  - docker compose
  - bun/npm
 
+# Quick Start (Recommended)
+
+To run the complete application (PocketBase + React App):
+
+## Cross-Platform Scripts:
+
+**Linux/macOS:**
+```bash
+# Start everything
+./start.sh
+
+# Stop everything
+./stop.sh
+```
+
+**Windows:**
+```cmd
+# Start everything
+start.bat
+
+# Stop everything
+stop.bat
+```
+
+## Manual Docker Compose
+```bash
+# Start all services
+docker-compose up --build -d
+
+# Stop all services
+docker-compose down
+```
+
+The application will be available at:
+- **React App**: http://localhost:3000
+- **PocketBase Admin**: http://localhost:8090/_/
+
 # Docker
 
-this project includes 4 bat files to make handling the database easier.
+## Full Application (PocketBase + React App)
+
+This project includes Docker Compose configuration to run both the database and the React application:
+
+- **PocketBase**: Database and API backend
+- **React App**: Frontend application served by nginx
+
+### Commands:
+```bash
+# Start all services
+docker-compose up --build -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild and restart
+docker-compose up --build -d
+```
+
+## PocketBase Only
+
+If you only want to run PocketBase (for development), this project includes 4 bat files to make handling the database easier:
+
 > pb_backup
     - stops the database, backs it up and restarts it
 > pb_restore
