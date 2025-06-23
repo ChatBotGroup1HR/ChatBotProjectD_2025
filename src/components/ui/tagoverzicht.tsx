@@ -14,6 +14,7 @@ const TagOverzicht: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTagIdx, setSelectedTagIdx] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -73,131 +74,137 @@ const TagOverzicht: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const filteredTags = tagsWithFiles.filter(({ tag }) =>
+    tag.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="ndw-container">
       <h1>📁 Tagoverzicht</h1>
 
+      <input
+        type="text"
+        placeholder="Zoek op tag..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="ndw-search"
+      />
+
       {loading && <p>⏳ Bestanden laden...</p>}
       {error && <p className="ndw-error">{error}</p>}
-      {!loading && tagsWithFiles.length === 0 && <p>📭 Geen bestanden gevonden.</p>}
+      {!loading && filteredTags.length === 0 && <p>📭 Geen bestanden gevonden.</p>}
 
-      <table className="ndw-table">
-        <thead>
-          <tr>
-            <th>Tag</th>
-            <th>Gekoppelde Bestanden</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tagsWithFiles.map(({ tag, files }, idx) => {
-            const isSelected = idx === selectedTagIdx;
-            const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
+      <div className="ndw-table-container">
+        <table className="ndw-table">
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Gekoppelde Bestanden</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTags.map(({ tag, files }, idx) => {
+              const isSelected = idx === selectedTagIdx;
+              const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
 
-            return (
-              <React.Fragment key={idx}>
-                <tr
-                  style={{ cursor: sortedFiles.length > 3 ? 'pointer' : 'default', verticalAlign: 'top' }}
-                  onClick={() => sortedFiles.length > 3 && setSelectedTagIdx(isSelected ? null : idx)}
-                >
-                  <td>
-                    <span
-                      style={{
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 8px',
-                        borderRadius: '16px',
-                        fontSize: '0.95rem',
-                        display: 'inline-block',
-                      }}
-                    >
-                      ☁️ {tag}
-                    </span>
-                  </td>
-                  <td>
-                    {sortedFiles.length === 0 ? (
+              return (
+                <React.Fragment key={idx}>
+                  <tr
+                    style={{ cursor: sortedFiles.length > 3 ? 'pointer' : 'default', verticalAlign: 'top' }}
+                    onClick={() => sortedFiles.length > 3 && setSelectedTagIdx(isSelected ? null : idx)}
+                  >
+                    <td>
                       <span
                         style={{
-                          backgroundColor: '#fbe9e7',
-                          color: '#d84315',
+                          backgroundColor: '#e0f7fa',
+                          color: '#00796b',
                           padding: '4px 8px',
                           borderRadius: '16px',
-                          fontSize: '0.85rem',
-                          fontStyle: 'italic',
+                          fontSize: '0.95rem',
+                          display: 'inline-block',
                         }}
                       >
-                        🚫 Geen bestanden
+                        ☁️ {tag}
                       </span>
-                    ) : (
-                      <>
-                        {isSelected
-                          ? (() => {
-                              const rows = [];
-                              for (let i = 0; i < sortedFiles.length; i += 3) {
-                                rows.push(sortedFiles.slice(i, i + 3));
-                              }
-                              return rows.map((row, rowIdx) => (
-                                <div key={rowIdx}>
-                                  {row.map((file, i) => {
-                                    const isLast =
-                                      rowIdx === rows.length - 1 && i === row.length - 1;
-                                    return (
-                                      <React.Fragment key={i}>
-                                        <a
-                                          href={file.url}
-                                          download
-                                          style={{
-                                            color: '#1a73e8',
-                                            textDecoration: 'underline',
-                                            cursor: 'pointer',
-                                          }}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          {file.name}
-                                        </a>
-                                        {isLast ? '.' : ',' + (i === row.length - 1 ? '' : ' ')}
-                                      </React.Fragment>
-                                    );
-                                  })}
-                                </div>
-                              ));
-                            })()
-                          : (
-                            <>
-                              {sortedFiles.slice(0, 3).map((file, i, arr) => (
-                                <React.Fragment key={i}>
-                                  <a
-                                    href={file.url}
-                                    download
-                                    style={{
-                                      color: '#1a73e8',
-                                      textDecoration: 'underline',
-                                      cursor: 'pointer',
-                                    }}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    {file.name}
-                                  </a>
-                                  {i < arr.length - 1
-                                    ? ', '
-                                    : sortedFiles.length > 3
-                                    ? ', ...'
-                                    : ''}
-                                </React.Fragment>
-                              ))}
-                            </>
-                          )
-                        }
-                      </>
-                    )}
-                  </td>
-                </tr>
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+                    </td>
+                    <td>
+                      {sortedFiles.length === 0 ? (
+                        <span
+                          style={{
+                            backgroundColor: '#fbe9e7',
+                            color: '#d84315',
+                            padding: '4px 8px',
+                            borderRadius: '16px',
+                            fontSize: '0.85rem',
+                            fontStyle: 'italic',
+                          }}
+                        >
+                          🚫 Geen bestanden
+                        </span>
+                      ) : (
+                        <>
+                          {isSelected
+                            ? (() => {
+                                const rows = [];
+                                for (let i = 0; i < sortedFiles.length; i += 3) {
+                                  rows.push(sortedFiles.slice(i, i + 3));
+                                }
+                                return rows.map((row, rowIdx) => (
+                                  <div key={rowIdx}>
+                                    {row.map((file, i) => {
+                                      const isLast =
+                                        rowIdx === rows.length - 1 && i === row.length - 1;
+                                      return (
+                                        <React.Fragment key={i}>
+                                          <a
+                                            href={file.url}
+                                            download
+                                            className="ndw-link"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                          >
+                                            {file.name}
+                                          </a>
+                                          {isLast ? '.' : ', '}
+                                        </React.Fragment>
+                                      );
+                                    })}
+                                  </div>
+                                ));
+                              })()
+                            : (
+                              <>
+                                {sortedFiles.slice(0, 3).map((file, i, arr) => (
+                                  <React.Fragment key={i}>
+                                    <a
+                                      href={file.url}
+                                      download
+                                      className="ndw-link"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {file.name}
+                                    </a>
+                                    {i < arr.length - 1
+                                      ? ', '
+                                      : sortedFiles.length > 3
+                                      ? ', ...'
+                                      : ''}
+                                  </React.Fragment>
+                                ))}
+                              </>
+                            )
+                          }
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
