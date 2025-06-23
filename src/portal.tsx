@@ -11,6 +11,7 @@ import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
+import Profile from './components/ui/profile';
 
 const pb = new PocketBase('http://localhost:8090');
 
@@ -44,15 +45,13 @@ const PortalBody = () => {
       case 'fileupload':
         return <FileUpload />;
       case 'profile':
-        return <h1>Profiel Pagina</h1>;
+        return <Profile />;
       case 'settings':
         return <h1>Instellingen Pagina</h1>;
       case 'addtags':
         return <AddTagPage />;
       case 'tagoverzicht':
-        return (
-          <TagOverzicht />
-        );
+        return <TagOverzicht />
       default:
         return (
           <>
