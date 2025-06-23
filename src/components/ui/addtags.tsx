@@ -18,7 +18,7 @@ const AddTagPage: React.FC = () => {
     const formattedTagName = formatTagNames(tagName);
 
     if (formattedTagName.trim() === '') {
-      setStatusMessage('Tagnaam mag niet leeg zijn');
+      setStatusMessage('Tagnaam mag niet leeg zijn.');
       return;
     }
 
@@ -26,7 +26,7 @@ const AddTagPage: React.FC = () => {
       const existingTags = await pb.collection('tags').getFullList({ filter: `tag="${formattedTagName}"` });
 
       if (existingTags.length > 0) {
-        setStatusMessage('Tag bestaat al');
+        setStatusMessage('Tag bestaat al.');
         return;
       }
 
@@ -42,7 +42,7 @@ const AddTagPage: React.FC = () => {
   return (
     <div className="add-tag-page">
       <div className="add-tag-content">
-        <h2>Tag toevoegen</h2>
+        <h2>Tag Toevoegen</h2>
         <input
           type="text"
           placeholder="Voer tagnaam in"
