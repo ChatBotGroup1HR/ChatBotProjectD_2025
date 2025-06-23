@@ -4,16 +4,18 @@ import './addtags.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
+export const formatTagNames = (name: string): string => {
+  if (!name) return '';
+  const trimmed = name.trim();
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+};
+
 const AddTagPage: React.FC = () => {
   const [tagName, setTagName] = useState('');
   const [statusMessage, setStatusMessage] = useState<string>('');
 
-  const formatTagName = (name: string) => {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
-
   const handleAddTag = async () => {
-    const formattedTagName = formatTagName(tagName);
+    const formattedTagName = formatTagNames(tagName);
 
     if (formattedTagName.trim() === '') {
       setStatusMessage('Tagnaam mag niet leeg zijn');

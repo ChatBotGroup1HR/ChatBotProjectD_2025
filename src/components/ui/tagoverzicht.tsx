@@ -9,6 +9,12 @@ interface FileLink {
   url: string;
 }
 
+export function filterTags(tags: { tag: string; files: FileLink[] }[], term: string) {
+  return tags.filter(({ tag }) =>
+    tag.toLowerCase().includes(term.toLowerCase())
+  );
+}
+
 const TagOverzicht: React.FC = () => {
   const [tagsWithFiles, setTagsWithFiles] = useState<{ tag: string; files: FileLink[] }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -74,9 +80,7 @@ const TagOverzicht: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const filteredTags = tagsWithFiles.filter(({ tag }) =>
-    tag.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTags = filterTags(tagsWithFiles, searchTerm);
 
   return (
     <div className="ndw-container">

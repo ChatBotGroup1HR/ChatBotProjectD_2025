@@ -4,6 +4,12 @@ import './DocumentPage.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
+export function filterDocuments(documents: any[], searchTerm: string): any[] {
+  return documents.filter(doc =>
+    (doc.name || doc.file || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+}
+
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
@@ -50,9 +56,7 @@ export default function DocumentsPage() {
     }
   };
 
-  const filteredDocuments = documents.filter((doc) =>
-    (doc.name || doc.file || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredDocuments = filterDocuments(documents, searchTerm);
 
   return (
     <div className="ndw-container">
