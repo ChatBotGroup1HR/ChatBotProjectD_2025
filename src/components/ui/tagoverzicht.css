@@ -22,7 +22,7 @@
 .ndw-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 0;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
@@ -71,4 +71,35 @@
 
 .dark-mode .ndw-container h1 {
   color: #fff;
+}
+
+.ndw-search {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid var(--ndw-border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.ndw-table-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  background-color: var(--bg-color);
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.dark-mode .ndw-search {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border-color: #555;
+}
+
+.ndw-link {
+  color: #1a73e8;
+  text-decoration: underline;
+  cursor: pointer;
 }
