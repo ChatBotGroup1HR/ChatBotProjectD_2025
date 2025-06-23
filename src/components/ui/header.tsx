@@ -52,7 +52,7 @@ export default function Header() {
       )}
       <div className='loginButton'>
         <button className='redirectbutton' onClick={handleAuth}>
-          {user ? `Welkom (${user.name})` : 'Login'}
+          {user ? `Uitloggen` : 'Login'}
         </button>
       </div>
     </div>
