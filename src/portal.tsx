@@ -9,29 +9,61 @@ import DocumentsPage from './components/ui/DocumentPage';
 import FileUpload from './components/ui/fileupload';
 import Login from './components/ui/login';
 import PocketBase from 'pocketbase';
+import { POCKETBASE_URL } from './config';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
 import Dashboard from './components/ui/dashboard';
 import Profile from './components/ui/profile';
 
 
-const pb = new PocketBase('http://localhost:8090');
+const pb = new PocketBase(POCKETBASE_URL);
 
 const PortalBody = () => {
   const [activePage, setActivePage] = useState<string>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('PortalBody: Checking authentication status');
+    console.log('PortalBody: PocketBase URL:', POCKETBASE_URL);
     setIsAuthenticated(pb.authStore.isValid);
+    
+    // Test connection to PocketBase
+    fetch(`${POCKETBASE_URL}/api/health`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        console.log('PortalBody: PocketBase connection successful');
+        setConnectionError(null);
+      })
+      .catch(error => {
+        console.error('PortalBody: PocketBase connection failed:', error);
+        setConnectionError(`Cannot connect to PocketBase: ${error.message}`);
+      });
   }, []);
 
   const handleLoginSuccess = () => {
+    console.log('PortalBody: Login successful');
     setIsAuthenticated(true);
   };
 
+  if (connectionError) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h2>Connection Error</h2>
+        <p>{connectionError}</p>
+        <p>Please check if PocketBase is running at: {POCKETBASE_URL}</p>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
+    console.log('PortalBody: Not authenticated, showing login');
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
+
+  console.log('PortalBody: Authenticated, rendering content for page:', activePage);
 
   const renderContent = () => {
     switch (activePage) {
