@@ -18,7 +18,7 @@
 }
 
 .add-tag-content h2 {
-  color: orangered;
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -51,5 +51,20 @@
 
 .dark-mode .add-tag-content {
   background-color: rgb(33, 33, 33);
+  color: white;
+}
+
+.dark-mode .add-tag-content input {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark-mode .add-tag-content input:focus {
+  border-color: #fff;
+  outline: none;
+}
+
+.dark-mode .add-tag-content h2 {
   color: white;
 }

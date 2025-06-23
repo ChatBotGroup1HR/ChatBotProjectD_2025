@@ -12,12 +12,18 @@
     font-weight: 600;
 }
 
+.dark-mode .dashboard h2 {
+    color: #fff;
+}
+
 .logs-container {
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     margin-bottom: 24px;
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .log-entry {
@@ -155,4 +161,53 @@
 
 .pagination-controls span {
     font-size: 14px;
+}
+
+.dark-mode .logs-container {
+    background: #222;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .log-entry {
+    background: #333;
+    border-bottom: 1px solid #444;
+    color: #eee;
+}
+
+.dark-mode .log-entry:hover {
+    background-color: #444; 
+}
+
+.dark-mode .log-level {
+    background: #444;
+    color: #fe5101;
+    border-color: #fe5101;
+}
+
+.dark-mode .log-level.error {
+    background-color: #5a1a1a;
+    color: #f28b82;
+    border-color: #f28b82;
+}
+
+.dark-mode .log-level.warn {
+    background-color: #5a3d1a;
+    color: #f9a825;
+    border-color: #f9a825;
+}
+
+.dark-mode .log-level.info {
+    background-color: #1a3d5a;
+    color: #90caf9;
+    border-color: #90caf9;
+}
+
+.dark-mode .log-level.debug {
+    background-color: #4a2f5a;
+    color: #ce93d8;
+    border-color: #ce93d8;
+}
+
+.dark-mode .log-message {
+    color: #fff;
 }
