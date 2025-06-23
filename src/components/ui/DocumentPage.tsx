@@ -4,11 +4,14 @@ import './DocumentPage.css';
 
 const pb = new PocketBase('http://localhost:8090');
 
-export default function DocumentsPage() {
+export default function DocumentPage() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // Zoekterm
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     fetchDocuments();
@@ -42,34 +45,77 @@ export default function DocumentsPage() {
       await pb.collection('files').update(updatedDoc.id, {
         name: updatedDoc.name,
       });
-      await fetchDocuments(); // Refresh de lijst met bijgewerkte data
+      await fetchDocuments();
       setSelectedDocument(null);
     } catch (err) {
       setError('Kan document niet bijwerken.');
     }
   };
 
+  // Filter documenten op naam of tag
+  const filteredDocuments = documents.filter((doc) => {
+    const nameMatch = doc.name?.toLowerCase().includes(searchTerm.toLowerCase());
+    const tagMatch = doc.expand?.tag?.some((tag: any) =>
+      (tag.tag || tag.name)?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    return nameMatch || tagMatch;
+  });
+
+  // Sorteer documenten alfabetisch op naam
+  const sortedDocuments = [...filteredDocuments].sort((a, b) => {
+    const nameA = a.name?.toLowerCase() || '';
+    const nameB = b.name?.toLowerCase() || '';
+    return nameA.localeCompare(nameB);
+  });
+
+  // Paginatie berekeningen
+  const totalPages = Math.ceil(sortedDocuments.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentDocuments = sortedDocuments.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="ndw-container">
       <h1>📁 Documenten</h1>
 
+      {/* Zoekbalk */}
+      <input
+        type="text"
+        placeholder="🔍 Zoek op naam of tag..."
+        className="ndw-searchbar"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setCurrentPage(1); // reset naar pagina 1 bij zoeken
+        }}
+      />
+
       {loading && <p>⏳ Bezig met laden...</p>}
       {error && <p className="ndw-error">{error}</p>}
-      {!loading && documents.length === 0 && <p>📭 Geen documenten gevonden.</p>}
+      {!loading && sortedDocuments.length === 0 && <p>📭 Geen documenten gevonden.</p>}
 
-      <table className="ndw-table">
+      {/* Tabel zonder scroll container */}
+      <table
+        className="ndw-table"
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          border: 'none',
+          marginTop: '10px',
+          borderRadius: '4px',
+        }}
+      >
         <thead>
           <tr>
-            <th>Naam</th>
-            <th>Tags</th>
-            <th>Download</th>
-            <th>Actie</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #eee', textAlign: 'left' }}>Naam</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #eee', textAlign: 'left' }}>Tags</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #eee', textAlign: 'left' }}>Download</th>
+            <th style={{ padding: '8px', borderBottom: '1px solid #eee', textAlign: 'left' }}>Actie</th>
           </tr>
         </thead>
         <tbody>
-          {documents.map((doc) => (
+          {currentDocuments.map((doc) => (
             <tr key={doc.id}>
-              <td>
+              <td style={{ padding: '8px', borderBottom: '1px solid #f5f5f5' }}>
                 {selectedDocument?.id === doc.id ? (
                   <input
                     type="text"
@@ -86,7 +132,7 @@ export default function DocumentsPage() {
                 )}
               </td>
 
-              <td>
+              <td style={{ padding: '8px', borderBottom: '1px solid #f5f5f5' }}>
                 {doc.expand?.tag?.length > 0 ? (
                   doc.expand.tag.map((tag: any) => (
                     <span
@@ -120,7 +166,7 @@ export default function DocumentsPage() {
                 )}
               </td>
 
-              <td>
+              <td style={{ padding: '8px', borderBottom: '1px solid #f5f5f5' }}>
                 {doc.file ? (
                   <a
                     href={pb.files.getUrl(doc, doc.file)}
@@ -135,7 +181,7 @@ export default function DocumentsPage() {
                 )}
               </td>
 
-              <td>
+              <td style={{ padding: '8px', borderBottom: '1px solid #f5f5f5' }}>
                 {selectedDocument?.id === doc.id ? (
                   <>
                     <button onClick={() => handleUpdateDocument(selectedDocument)}>Opslaan</button>
@@ -150,6 +196,27 @@ export default function DocumentsPage() {
           ))}
         </tbody>
       </table>
+
+      {/* Paginatie onder de tabel */}
+      {totalPages > 1 && (
+        <div className="ndw-pagination" style={{ marginTop: '10px' }}>
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Vorige
+          </button>
+          <span style={{ margin: '0 10px' }}>
+            Pagina {currentPage} van {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Volgende
+          </button>
+        </div>
+      )}
     </div>
   );
 }

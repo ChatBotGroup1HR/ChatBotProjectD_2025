@@ -17,7 +17,6 @@
   color: white; /* bijvoorbeeld oranje in dark mode */
 }
 
-
 .ndw-error {
   color: red;
   font-weight: bold;
@@ -128,5 +127,114 @@
 
 .dark-mode .ndw-table button:hover {
   background-color: #777777;
+}
+
+.ndw-searchbar {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  border: 1px solid var(--ndw-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: var(--ndw-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ndw-searchbar::placeholder {
+  color: var(--ndw-orange);
+  opacity: 0.8;
+}
+
+.ndw-searchbar:focus {
+  border-color: var(--ndw-orange);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(244, 124, 32, 0.2);
+}
+
+.dark-mode .ndw-searchbar {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border-color: #555;
+}
+
+.dark-mode .ndw-searchbar::placeholder {
+  color: var(--ndw-light-orange);
+  opacity: 0.8;
+}
+/* Paginatie container */
+.ndw-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--ndw-text);
+  font-size: 1rem;
+}
+
+/* Paginatie knoppen */
+.ndw-pagination button {
+  background-color: var(--ndw-orange);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(244, 124, 32, 0.4);
+}
+
+.ndw-pagination button:hover:not(:disabled) {
+  background-color: var(--ndw-light-orange);
+  box-shadow: 0 4px 8px rgba(251, 176, 76, 0.6);
+}
+
+.ndw-pagination button:disabled {
+  background-color: var(--ndw-border);
+  color: #aaa;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Pagina nummer tekst */
+.ndw-pagination span {
+  align-self: center;
+  color: var(--ndw-orange);
+  user-select: none;
+}
+
+/* Dark mode overrides */
+.dark-mode .ndw-pagination {
+  color: #f5f5f5;
+}
+
+.dark-mode .ndw-pagination button {
+  background-color: var(--ndw-orange);
+  box-shadow: 0 2px 4px rgba(244, 124, 32, 0.8);
+}
+
+.dark-mode .ndw-pagination button:hover:not(:disabled) {
+  background-color: var(--ndw-light-orange);
+  box-shadow: 0 4px 8px rgba(251, 176, 76, 0.9);
+}
+
+.dark-mode .ndw-pagination button:disabled {
+  background-color: #555;
+  color: #999;
+}
+
+.dark-mode .ndw-pagination span {
+  color: var(--ndw-light-orange);
+}
+.ndw-container {
+  padding-bottom: 80px; /* ruimte voor footer onderaan */
+}
+.ndw-container {
+  flex-grow: 1;
+  max-height: 360px;
 }
 

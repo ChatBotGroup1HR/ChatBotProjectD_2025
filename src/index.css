@@ -51,3 +51,7 @@ code {
   --error-color: #ff6b6b;
   --box-shadow-color: rgba(0, 0, 0, 0.3);
 }
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
