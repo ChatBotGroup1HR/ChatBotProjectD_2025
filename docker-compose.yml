@@ -18,3 +18,25 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
+
+  app:
+    build: .
+    container_name: chatbot-app
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    environment:
+      - REACT_APP_POCKETBASE_URL=http://pocketbase:8090
+      - REACT_APP_PB_SUPER_EMAIL=pocketbase@ndw.com
+      - REACT_APP_PB_SUPER_PW=pocketbaseEnjoyer
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
