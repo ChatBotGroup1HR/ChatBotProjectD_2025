@@ -68,7 +68,7 @@ export default function Chatbox({ selectedTags, setSelectedTags }: ChatboxProps)
       setBotTyping(true);
 
       const response = await pb.collection('files').getFullList({
-        filter: `(${tagFilter})`,
+        filter: `(${tagFilter}) && archived = false`,
         expand: 'tag',
       });
 

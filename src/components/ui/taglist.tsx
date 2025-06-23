@@ -10,16 +10,22 @@ interface TagListProps {
   setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>; // Functie om tags bij te werken
 }
 
-export function filterTags(tags: string[], search: string): string[] {
+interface Tag {
+  id: string;
+  tag: string;
+  archived: boolean;
+}
+
+export function filterTags(tags: Tag[], search: string): Tag[] {
   return tags.filter(tag =>
-    tag.toLowerCase().includes(search.toLowerCase())
+    !tag.archived && tag.tag.toLowerCase().includes(search.toLowerCase())
   );
 }
 
 const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
   // State voor zoekinput, beschikbare tags en laadstatus
   const [search, setSearch] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
 
   // useEffect wordt één keer uitgevoerd bij het laden van de component
@@ -30,8 +36,12 @@ const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
         const records = await pb.collection('tags').getFullList();
 
         // Haal de tags uit de records
-        const tagNames = records.map(record => record.tag);
-        setTags(tagNames);
+        const tagObjects = records.map(record => ({
+          id: record.id,
+          tag: record.tag,
+          archived: record.archived || false,
+        }));
+        setTags(tagObjects);
       } catch (error) {
         console.error('Fout bij het ophalen van tags', error);
       } finally {
@@ -57,8 +67,8 @@ const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
 
   // Zorg dat geselecteerde tags eerst getoond worden, daarna de rest
   const sortedTags = [
-    ...selectedTags,
-    ...filteredTags.filter(tag => !selectedTags.includes(tag))
+    ...selectedTags.map(st => tags.find(t => t.tag === st)).filter(Boolean) as Tag[],
+    ...filteredTags.filter(t => !selectedTags.includes(t.tag))
   ];
 
   return (
@@ -80,11 +90,11 @@ const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
           {sortedTags.map((tag, index) => (
             <div 
               key={index} 
-              className={`taglist-tag ${selectedTags.includes(tag) ? 'selected' : ''}`}
-              onClick={() => toggleTagSelection(tag)}
+              className={`taglist-tag ${selectedTags.includes(tag.tag) ? 'selected' : ''}`}
+              onClick={() => toggleTagSelection(tag.tag)}
             >
               <div className="taglist-tag-inner">
-                {tag}
+                {tag.tag}
               </div>
             </div>
           ))}

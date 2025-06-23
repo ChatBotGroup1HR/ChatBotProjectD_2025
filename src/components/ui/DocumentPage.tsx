@@ -58,6 +58,17 @@ export default function DocumentsPage() {
 
   const filteredDocuments = filterDocuments(documents, searchTerm);
 
+  const handleArchiveToggle = async (doc: any) => {
+    try {
+      await pb.collection('files').update(doc.id, {
+        archived: !doc.archived,
+      });
+      await fetchDocuments();
+    } catch (err) {
+      setError('Kan archiefstatus niet wijzigen.');
+    }
+  };
+
   return (
     <div className="ndw-container">
       <h1>📁 Documenten</h1>
@@ -81,28 +92,29 @@ export default function DocumentsPage() {
               <th>Naam</th>
               <th>Tags</th>
               <th>Download</th>
-              <th>Actie</th>
+              <th>Bewerk</th>
+              <th>Archiveer</th>
             </tr>
           </thead>
-          <tbody>
-            {filteredDocuments.map((doc) => (
-              <tr key={doc.id}>
-                <td>
-                  {selectedDocument?.id === doc.id ? (
-                    <input
-                      type="text"
-                      value={selectedDocument.name || ''}
-                      onChange={(e) =>
-                        setSelectedDocument({
-                          ...selectedDocument,
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    doc.name || doc.file
-                  )}
-                </td>
+            <tbody>
+              {filteredDocuments.map((doc) => (
+                <tr key={doc.id}>
+                  <td>
+                    {selectedDocument?.id === doc.id ? (
+                      <input
+                        type="text"
+                        value={selectedDocument.name || ''}
+                        onChange={(e) =>
+                          setSelectedDocument({
+                            ...selectedDocument,
+                            name: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      doc.name || doc.file
+                    )}
+                  </td>
 
                 <td>
                   {doc.expand?.tag?.length > 0 ? (
@@ -164,9 +176,20 @@ export default function DocumentsPage() {
                     <button onClick={() => handleSelectDocument(doc)}>Bewerk</button>
                   )}
                 </td>
-              </tr>
-            ))}
-          </tbody>
+
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={!doc.archived}
+                        onChange={() => handleArchiveToggle(doc)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
         </table>
       </div>
     </div>
