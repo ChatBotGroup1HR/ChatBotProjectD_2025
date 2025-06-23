@@ -7,6 +7,7 @@ const pb = new PocketBase('http://localhost:8090');
 interface Tag {
   id: string;
   tag: string;
+  archived?: boolean;
 }
 
 const FileUpload: React.FC = () => {
@@ -27,7 +28,8 @@ const FileUpload: React.FC = () => {
         const records = await pb.collection('tags').getFullList();
         const mappedTags: Tag[] = records.map(record => ({
           id: record.id,
-          tag: record.tag
+          tag: record.tag,
+          archived: record.archived || false,
         }));
         setAvailableTags(mappedTags);
       } catch (error) {
@@ -57,6 +59,9 @@ const FileUpload: React.FC = () => {
   };
 
   const handleTagToggle = (tagId: string) => {
+    const tag = availableTags.find(t => t.id === tagId);
+    if (tag?.archived) return;
+
     setSelectedTags(prev => 
       prev.includes(tagId) 
         ? prev.filter(id => id !== tagId)
@@ -83,6 +88,7 @@ const FileUpload: React.FC = () => {
 
   const filteredTags = availableTags.filter(tag => {
     if (!tag || !tag.tag) return false;
+    if (tag.archived) return false; 
     return tag.tag.toLowerCase().includes(searchTerm.toLowerCase());
   });
 

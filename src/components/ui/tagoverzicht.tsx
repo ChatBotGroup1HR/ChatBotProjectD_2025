@@ -9,14 +9,20 @@ interface FileLink {
   url: string;
 }
 
-export function filterTags(tags: { tag: string; files: FileLink[] }[], term: string) {
+interface TagWithFiles {
+  tag: string;
+  files: FileLink[];
+  archived: boolean;
+}
+
+export function filterTags(tags: TagWithFiles[], term: string) {
   return tags.filter(({ tag }) =>
     tag.toLowerCase().includes(term.toLowerCase())
   );
 }
 
 const TagOverzicht: React.FC = () => {
-  const [tagsWithFiles, setTagsWithFiles] = useState<{ tag: string; files: FileLink[] }[]>([]);
+  const [tagsWithFiles, setTagsWithFiles] = useState<TagWithFiles[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTagIdx, setSelectedTagIdx] = useState<number | null>(null);
@@ -36,10 +42,10 @@ const TagOverzicht: React.FC = () => {
           throw new Error('Tags of files zijn geen array');
         }
 
-        const tagMap: { [tagId: string]: { tag: string; files: FileLink[] } } = {};
+        const tagMap: { [tagId: string]: TagWithFiles } = {};
         tags.forEach((tag: any) => {
           if (tag && tag.id && typeof tag.tag === 'string') {
-            tagMap[tag.id] = { tag: tag.tag, files: [] };
+            tagMap[tag.id] = { tag: tag.tag, files: [], archived: tag.archived || false, };
           }
         });
 
@@ -82,6 +88,25 @@ const TagOverzicht: React.FC = () => {
 
   const filteredTags = filterTags(tagsWithFiles, searchTerm);
 
+  const handleToggleArchived = async (tagName: string) => {
+    const tagIdx = tagsWithFiles.findIndex((t) => t.tag === tagName);
+    const tag = tagsWithFiles[tagIdx];
+
+    try {
+      const tagRecord = await pb.collection('tags').getFirstListItem(`tag="${tagName}"`);
+      const newArchived = !tag.archived;
+      await pb.collection('tags').update(tagRecord.id, {
+        archived: newArchived,
+      });
+
+      const updated = [...tagsWithFiles];
+      updated[tagIdx] = { ...tag, archived: newArchived };
+      setTagsWithFiles(updated);
+    } catch (err) {
+      console.error('Fout bij updaten archived status:', err);
+    }
+  };
+
   return (
     <div className="ndw-container">
       <h1>📁 Tagoverzicht</h1>
@@ -104,10 +129,11 @@ const TagOverzicht: React.FC = () => {
             <tr>
               <th>Tag</th>
               <th>Gekoppelde Bestanden</th>
+              <th>Archiveer</th>
             </tr>
           </thead>
           <tbody>
-            {filteredTags.map(({ tag, files }, idx) => {
+            {filteredTags.map(({ tag, files, archived }, idx) => {
               const isSelected = idx === selectedTagIdx;
               const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -201,6 +227,16 @@ const TagOverzicht: React.FC = () => {
                           }
                         </>
                       )}
+                    </td>
+                    <td>
+                      <label className="switch" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={!archived}
+                          onChange={() => handleToggleArchived(tag)}
+                        />
+                        <span className="slider"></span>
+                      </label>
                     </td>
                   </tr>
                 </React.Fragment>
