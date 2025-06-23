@@ -10,6 +10,12 @@ interface TagListProps {
   setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>; // Functie om tags bij te werken
 }
 
+export function filterTags(tags: string[], search: string): string[] {
+  return tags.filter(tag =>
+    tag.toLowerCase().includes(search.toLowerCase())
+  );
+}
+
 const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
   // State voor zoekinput, beschikbare tags en laadstatus
   const [search, setSearch] = useState('');
@@ -38,9 +44,7 @@ const TagList: React.FC<TagListProps> = ({ selectedTags, setSelectedTags }) => {
   }, []); // Lege dependency array betekent dat dit effect maar 1 keer draait
 
   // Filter tags op basis van de zoekopdracht
-  const filteredTags = tags.filter(tag =>
-    tag.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredTags = filterTags(tags, search);
 
   // Voeg of verwijder tag uit de selected door te klikken
   const toggleTagSelection = (tag: string) => {
