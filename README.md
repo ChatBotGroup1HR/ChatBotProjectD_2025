@@ -10,6 +10,23 @@ This is the repository for Team 1's Project D.
 
 To run the complete application (PocketBase + React App):
 
+## Setup Environment Variables
+
+1. **Copy the example environment file:**
+   ```bash
+   cp env.example .env
+   ```
+
+2. **Edit the .env file** with your own credentials:
+   ```bash
+   # Edit .env file with your preferred text editor
+   nano .env
+   # or
+   notepad .env
+   ```
+
+3. **Important:** Never commit the `.env` file to version control!
+
 ## Cross-Platform Scripts:
 
 **Linux/macOS:**

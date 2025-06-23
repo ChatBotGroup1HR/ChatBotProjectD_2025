@@ -12,6 +12,20 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
+# Set production environment
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
+
+# Accept build arguments for environment variables
+ARG REACT_APP_POCKETBASE_URL
+ARG REACT_APP_PB_SUPER_EMAIL
+ARG REACT_APP_PB_SUPER_PW
+
+# Set as environment variables for the build
+ENV REACT_APP_POCKETBASE_URL=$REACT_APP_POCKETBASE_URL
+ENV REACT_APP_PB_SUPER_EMAIL=$REACT_APP_PB_SUPER_EMAIL
+ENV REACT_APP_PB_SUPER_PW=$REACT_APP_PB_SUPER_PW
+
 # Build the app
 RUN npm run build
 

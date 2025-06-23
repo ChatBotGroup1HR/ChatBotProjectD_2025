@@ -2,6 +2,19 @@
 echo Starting ChatBot Project D...
 echo This will start both PocketBase and the React application.
 
+REM Check if .env file exists
+if not exist .env (
+    echo ❌ Error: .env file not found!
+    echo.
+    echo 📝 Please set up your environment variables:
+    echo 1. Copy the example file: copy env.example .env
+    echo 2. Edit .env with your credentials
+    echo 3. Run this script again
+    echo.
+    pause
+    exit /b 1
+)
+
 REM Check if Docker is running
 docker info >nul 2>&1
 if errorlevel 1 (

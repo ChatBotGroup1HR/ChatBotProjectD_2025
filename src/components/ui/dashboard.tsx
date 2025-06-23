@@ -26,7 +26,7 @@ const Dashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
-    const [perPage] = useState(20); // You can make this adjustable if you want
+    const perPage = 20; // You can make this adjustable if you want
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [hideHealthChecks, setHideHealthChecks] = useState(false);
@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
         return () => {
             abortController.abort();
         };
-    }, [page, perPage]);
+    }, [page]);
 
     const handlePrevPage = () => {
         setPage((prev) => Math.max(1, prev - 1));
