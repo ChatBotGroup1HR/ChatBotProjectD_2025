@@ -16,6 +16,10 @@ const Dashboard: React.FC = () => {
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [page, setPage] = useState(1);
+    const [perPage] = useState(20); // You can make this adjustable if you want
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -40,9 +44,8 @@ const Dashboard: React.FC = () => {
                 await pb.collection("_superusers").authWithPassword(email, password, { signal });
                 console.log('Authentication successful');
 
-                
                 console.log('Attempting to fetch logs...');
-                const response = await fetch('http://localhost:8090/api/logs', {
+                const response = await fetch(`http://localhost:8090/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
                     headers: {
                         'Authorization': pb.authStore.token
                     },
@@ -58,8 +61,12 @@ const Dashboard: React.FC = () => {
                 
                 if (logsData.items) {
                     setLogs(logsData.items);
+                    setTotalPages(logsData.totalPages || 1);
+                    setTotalItems(logsData.totalItems || 0);
                 } else {
                     setLogs([]);
+                    setTotalPages(1);
+                    setTotalItems(0);
                 }
                 setError(null); 
                 console.log('fetchLogs completed successfully');
@@ -83,6 +90,7 @@ const Dashboard: React.FC = () => {
 
                 console.error('Error in dashboard (unexpected):', err);
                 setError(err instanceof Error ? err.message : 'An unknown error occurred during authentication or fetching logs.');
+                setPage(1);
             } finally {
                 console.log('Finally block executed.');
                 setLoading(false);
@@ -94,7 +102,20 @@ const Dashboard: React.FC = () => {
         return () => {
             abortController.abort();
         };
-    }, []);
+    }, [page, perPage]);
+
+    const handlePrevPage = () => {
+        setPage((prev) => Math.max(1, prev - 1));
+    };
+    const handleNextPage = () => {
+        setPage((prev) => Math.min(totalPages, prev + 1));
+    };
+    const handleFirstPage = () => {
+        setPage(1);
+    };
+    const handleLastPage = () => {
+        setPage(totalPages);
+    };
 
     if (loading) {
         return <div className="dashboard">Loading logs...</div>;
@@ -126,6 +147,16 @@ const Dashboard: React.FC = () => {
                         );
                     })
                 )}
+            </div>
+            {/* Pagination Controls */}
+            <div className="pagination-controls" style={{ marginTop: 20, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+                <button onClick={handleFirstPage} disabled={page === 1}>&laquo; Eerste</button>
+                <button onClick={handlePrevPage} disabled={page === 1}>&lsaquo; Vorige</button>
+                <button onClick={handleNextPage} disabled={page === totalPages}>&rsaquo; Volgende</button>
+                <button onClick={handleLastPage} disabled={page === totalPages}>&raquo; Laatste</button>
+                <span style={{ marginLeft: 16, color: '#888' }}>
+                    Pagina {page} van {totalPages} ({totalItems} logs)
+                </span>
             </div>
         </div>
     );
