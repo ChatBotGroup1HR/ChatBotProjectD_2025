@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PocketBase from 'pocketbase';
+import { POCKETBASE_URL } from '../../config';
 import './dashboard.css';
 
-const pb = new PocketBase('http://localhost:8090');
+const pb = new PocketBase(POCKETBASE_URL);
 
 interface LogEntry {
     id: string;
@@ -12,6 +13,14 @@ interface LogEntry {
     [key: string]: any;
 }
 
+// Mapping for log level numbers to descriptive text
+const LOG_LEVEL_MAP: Record<string | number, string> = {
+    '-4': 'DEBUG',
+    '0': 'INFO',
+    '4': 'WARN',
+    '8': 'ERROR',
+};
+
 const Dashboard: React.FC = () => {
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [loading, setLoading] = useState(true);
@@ -20,6 +29,7 @@ const Dashboard: React.FC = () => {
     const [perPage] = useState(20); // You can make this adjustable if you want
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
+    const [hideHealthChecks, setHideHealthChecks] = useState(false);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -45,7 +55,7 @@ const Dashboard: React.FC = () => {
                 console.log('Authentication successful');
 
                 console.log('Attempting to fetch logs...');
-                const response = await fetch(`http://localhost:8090/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
+                const response = await fetch(`${POCKETBASE_URL}/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
                     headers: {
                         'Authorization': pb.authStore.token
                     },
@@ -128,25 +138,49 @@ const Dashboard: React.FC = () => {
     return (
         <div className="dashboard">
             <h2>PocketBase Logs</h2>
+            <div className="switch-row">
+                <label className="switch-label">
+                    <span style={{marginRight: 10}}>Health requests verbergen</span>
+                    <span className="switch">
+                        <input
+                            type="checkbox"
+                            checked={hideHealthChecks}
+                            onChange={() => setHideHealthChecks((v) => !v)}
+                        />
+                        <span className="slider" />
+                    </span>
+                </label>
+            </div>
             <div className="logs-container">
-                {logs.length === 0 ? (
-                    <p>No logs found</p>
-                ) : (
-                    logs.map((log) => {
-                        console.log(`Log ID: ${log.id}, Level: ${log.level}, Type of Level: ${typeof log.level}`);
-                        return (
-                        <div key={log.id} className="log-entry">
-                            <div className="log-header">
-                                <span className={`log-level ${String(log.level || '').toLowerCase()}`}>{String(log.level || '')}</span>
-                                <span className="log-date">
-                                    {new Date(log.created).toLocaleString()}
-                                </span>
-                            </div>
-                            <div className="log-message">{log.message}</div>
-                        </div>
-                        );
-                    })
-                )}
+                {
+                    (logs.filter(log => {
+                        if (!hideHealthChecks) return true;
+                        const msg = (log.message || '').toLowerCase();
+                        return !msg.includes('/api/health');
+                    })).length === 0 ? (
+                        <p>No logs found</p>
+                    ) : (
+                        logs.filter(log => {
+                            if (!hideHealthChecks) return true;
+                            const msg = (log.message || '').toLowerCase();
+                            return !msg.includes('/api/health');
+                        }).map((log) => {
+                            let levelText = LOG_LEVEL_MAP[log.level] || String(log.level || '');
+                            let levelClass = levelText.toLowerCase();
+                            return (
+                                <div key={log.id} className="log-entry">
+                                    <div className="log-header">
+                                        <span className={`log-level ${levelClass}`}>{levelText}</span>
+                                        <span className="log-date">
+                                            {new Date(log.created).toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <div className="log-message">{log.message}</div>
+                                </div>
+                            );
+                        })
+                    )
+                }
             </div>
             {/* Pagination Controls */}
             <div className="pagination-controls" style={{ marginTop: 20, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>

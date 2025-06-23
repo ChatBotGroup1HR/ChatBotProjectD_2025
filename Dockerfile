@@ -1,22 +1,31 @@
-FROM alpine:latest
+# Build stage
+FROM node:18-alpine as build
 
-ARG PB_VERSION=0.26.1
+WORKDIR /app
 
-RUN apk add --no-cache \
-    unzip \
-    ca-certificates
+# Copy package files
+COPY package*.json ./
 
-# download and unzip PocketBase
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
-RUN unzip /tmp/pb.zip -d /pb/
+# Install dependencies
+RUN npm ci --only=production
 
-# uncomment to copy the local pb_migrations dir into the image
-# COPY ./pb_migrations /pb/pb_migrations
+# Copy source code
+COPY . .
 
-# uncomment to copy the local pb_hooks dir into the image
-# COPY ./pb_hooks /pb/pb_hooks
+# Build the app
+RUN npm run build
 
-EXPOSE 8080
+# Production stage
+FROM nginx:alpine
 
-# start PocketBase
-CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
+# Copy built app from build stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
