@@ -1,0 +1,248 @@
+.chatbox-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  max-width: 80%;
+}
+
+.chatbox-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow: hidden; /* very important */
+  height: 100%; /* important to stretch */
+}
+
+.chatbox-messages {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--search-bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatbox-message {
+  border-radius: 18px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  max-width: 70%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  word-break: break-word;
+}
+
+.chatbox-message.bot {
+  background-color: #FE5000;
+  color: white;
+  align-self: flex-start;
+  text-align: left;
+  max-width: 100ch;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+
+.chatbox-message.user {
+  background-color: #FF7D00;
+  color: white;
+  align-self: flex-end;
+  text-align: left;
+}
+
+.chatbox-input-area {
+  display: flex;
+  align-items: center;
+  bottom: 0;
+  gap: 8px;
+  border-radius: 8px;
+  background-color: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  width: 100%; 
+}
+
+.chatbox-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  background-color: var(--search-bg-color);
+  color: var(--not-bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.chatbox-input::placeholder {
+  color: var(--text-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.chatbox-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--search-bg-color);
+  color: var(--not-bg-color);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  flex-shrink: 0;
+}
+
+.chatbox-text-preview {
+  background-color: #FE5000;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.chatbox-text-preview {
+  background-color: #FE5000;
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  color: white;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.chatbox-button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  background-color: #FE5000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.chatbox-button:hover {
+  background-color: #0056b3;
+}
+
+.chatbox-files {
+  margin-top: 8px;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 5px;
+  padding: 8px 0;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 5px;
+  padding: 8px 0;
+}
+
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.chatbox-file-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.chatbox-file-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.chatbox-file-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}

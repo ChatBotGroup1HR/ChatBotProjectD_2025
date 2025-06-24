@@ -1,0 +1,108 @@
+/* Algemene styling voor heel de container */
+.taglist-container {
+  width: 350px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background-image: var(--bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  height: 75vh;
+}
+
+/* Styling voor het input veld */
+.taglist-search {
+  width: 100%;
+  max-width: 320px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--search-bg-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  color: var(--not-bg-color);
+  border: none;
+}
+
+
+/* Styling voor "Zoek tags..." tekst */
+.taglist-search::placeholder {
+  color: var(--text-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+  
+/* Zorgt ervoor dat de tags goed in de container staan */
+.taglist-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+  flex: 1;
+  align-content: flex-start;
+  max-height: 70vh;
+}
+
+.taglist-tag {
+  background-color: var(--bg-color);
+  color: #FE5000;
+  border: 2px solid #FE5000;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.taglist-tag:hover {
+  color: white;
+  border-color: #FE5000;
+  background: linear-gradient(
+    120deg,
+    #FF7D00 0%,
+    #ff7D00 40%,
+    #ffffff 50%,
+    #FF7D00 60%,
+    #FF7D00 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-wash-out 0.4s forwards;
+}
+
+
+/* Selected */
+.taglist-tag.selected {
+  color: white;
+  border-color: #FE5000;
+  background: linear-gradient(
+    120deg,
+    #FE5000 0%,
+    #FE5000 40%,
+    #ffffff 50%,
+    #FF7D00 60%,
+    #FF7D00 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-wash-in 0.4s forwards;
+}
+
+/* Animations */
+@keyframes gradient-wash-in {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes gradient-wash-out {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}

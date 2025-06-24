@@ -1,46 +1,104 @@
-# Getting Started with Create React App
+# ProjectD_Team1_2025
+This is the repository for Team 1's Project D.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Software Requirements
+ - docker desktop
+ - docker compose
+ - bun/npm
 
-## Available Scripts
+# Quick Start (Recommended)
 
-In the project directory, you can run:
+To run the complete application (PocketBase + React App):
 
-### `npm start`
+## Setup Environment Variables
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Copy the example environment file:**
+   ```bash
+   cp env.example .env
+   ```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+2. **Edit the .env file** with your own credentials:
+   ```bash
+   # Edit .env file with your preferred text editor
+   nano .env
+   # or
+   notepad .env
+   ```
 
-### `npm test`
+3. **Important:** Never commit the `.env` file to version control!
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Cross-Platform Scripts:
 
-### `npm run build`
+**Linux/macOS:**
+```bash
+# Start everything
+./start.sh
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Stop everything
+./stop.sh
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Windows:**
+```cmd
+# Start everything
+start.bat
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Stop everything
+stop.bat
+```
 
-### `npm run eject`
+## Manual Docker Compose
+```bash
+# Start all services
+docker-compose up --build -d
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Stop all services
+docker-compose down
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application will be available at:
+- **React App**: http://localhost:3000
+- **PocketBase Admin**: http://localhost:8090/_/
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Docker
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Full Application (PocketBase + React App)
 
-## Learn More
+This project includes Docker Compose configuration to run both the database and the React application:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **PocketBase**: Database and API backend
+- **React App**: Frontend application served by nginx
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Commands:
+```bash
+# Start all services
+docker-compose up --build -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Rebuild and restart
+docker-compose up --build -d
+```
+
+## PocketBase Only
+
+If you only want to run PocketBase (for development), this project includes 4 bat files to make handling the database easier:
+
+> pb_backup
+    - stops the database, backs it up and restarts it
+> pb_restore
+    - starts database from last backup (PERMANENT!)
+> pb_start
+    - starts database
+> pb_stop
+    - stops database
+    
+# Pocketbase
+
+When creating tables, make sure Lookup Tables are present for linking tables.
+
+[![](https://mermaid.ink/img/pako:eNqFkU1vwyAMhv9K5HNUhTTkg-t2nbTzlItV3BStQGRI91Hlv48m23LYpPpg8GPZr8FXOHhNoID40eDAaHuXJZsCcciua3CzENm4ITN6Q2TRnFe_wQvy4YScPWMIb57134xDSxs9mjNleMGIvMJ5PW783gBL7c3dE4nGUohox-zAhJH0f6lp1FtqmQJyGNhoUJEnysESp7emEJaxeognSiqg0lUjv_bQuznVjOhevLc_Zeyn4QTqiOeQolXl-69_KZPTxA9-chGULMTSBNQV3kGVZbuTdVkLIctOdqVscvhIWFS7qu26bi-krFsh93MOn4tusZNl0TRlK6pGFnUjqhxIm-j5aV32svP5C8_Blx0?type=png)](https://mermaid.live/edit#pako:eNqFkU1vwyAMhv9K5HNUhTTkg-t2nbTzlItV3BStQGRI91Hlv48m23LYpPpg8GPZr8FXOHhNoID40eDAaHuXJZsCcciua3CzENm4ITN6Q2TRnFe_wQvy4YScPWMIb57134xDSxs9mjNleMGIvMJ5PW783gBL7c3dE4nGUohox-zAhJH0f6lp1FtqmQJyGNhoUJEnysESp7emEJaxeognSiqg0lUjv_bQuznVjOhevLc_Zeyn4QTqiOeQolXl-69_KZPTxA9-chGULMTSBNQV3kGVZbuTdVkLIctOdqVscvhIWFS7qu26bi-krFsh93MOn4tusZNl0TRlK6pGFnUjqhxIm-j5aV32svP5C8_Blx0)

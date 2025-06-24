@@ -5,9 +5,49 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  min-height: 85vh; 
+}
+
+.taglist-container, .chatbox-container {
+  min-width: 300px;
+}
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: rgb(33, 33, 33);
+  --not-bg-color: rgb(33, 33, 33);
+  --search-bg-color: rgb(210, 210, 210);
+  --border-color: #e0e0e0;
+  --input-bg-color: #ffffff;
+  --primary-color: #fe5101;
+  --primary-color-hover: #d44300;
+  --error-color: #dc3545;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+  --bg-color: rgb(33, 33, 33);
+  --text-color: #f1f1f1;
+  --not-bg-color: #ffffff;
+  --search-bg-color: #444444;
+  --border-color: #444444;
+  --input-bg-color: #2d2d2d;
+  --primary-color: #fe5101;
+  --primary-color-hover: #d44300;
+  --error-color: #ff6b6b;
+  --box-shadow-color: rgba(0, 0, 0, 0.3);
 }

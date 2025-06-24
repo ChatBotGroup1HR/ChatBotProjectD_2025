@@ -1,0 +1,125 @@
+.sidebar {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  width: 250px;
+}
+
+.sidebar.closed {
+  width: 50px;
+  background-color: var(--bg-color);
+}
+
+.sidebar.closed nav {
+  display: none;
+}
+
+.hamburger-button {
+  position: absolute;
+  right: 0;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 24px;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #fe5101;
+  transition: all 0.3s ease;
+}
+
+.sidebar.open .hamburger-icon span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.sidebar.open .hamburger-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.sidebar.open .hamburger-icon span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.sidebar nav {
+  padding: 50px 0 20px 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 10px 20px;
+  transition: all 0.5s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-left: 3px solid #fe5101;
+}
+
+.sidebar li.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-left: 3px solid #fe5101;
+}
+
+.sidebar a {
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar.closed a {
+  display: none;
+}
+
+.sidebar.closed .sidebar-item {
+  display: none;
+}
+
+.sidebar.closed .hamburger-button {
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+
+.dark-mode .sidebar.open {
+  background-color: #2d2d2d;
+}
+
+.dark-mode .sidebar li:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .sidebar li.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
