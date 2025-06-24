@@ -112,7 +112,13 @@ export default function DocumentsPage() {
                         }
                       />
                     ) : (
-                      doc.name || doc.file
+                      <>
+                      {doc.name || doc.file}
+                      {doc.file && (() => {
+                        const ext = doc.file.split('.').pop();
+                        return "." + ext;
+                      })()}
+                      </>
                     )}
                   </td>
 
