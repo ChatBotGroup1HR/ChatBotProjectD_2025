@@ -115,7 +115,8 @@ const FileUpload: React.FC = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('name', referenceName);
-      formData.append('originalName', file.name);
+      const normalizedOriginalName = file.name.toLowerCase().replace(/[\s+-]/g, '_');
+      formData.append('originalName', normalizedOriginalName);
       
       const record = await pb.collection('files').create(formData);
       
