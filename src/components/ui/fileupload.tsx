@@ -33,7 +33,7 @@ const FileUpload: React.FC = () => {
         }));
         setAvailableTags(mappedTags);
       } catch (error) {
-        console.error('Error fetching tags:', error);
+        console.error('Fout bij ophalen tags:', error);
       }
     };
 
@@ -81,7 +81,7 @@ const FileUpload: React.FC = () => {
       });
       return results.items.length > 0;
     } catch (err) {
-      console.error('Error checking for duplicates:', err);
+      console.error('Fout bij controleren op duplicaten:', err);
       return false;
     }
   };
@@ -135,7 +135,7 @@ const FileUpload: React.FC = () => {
       setSearchTerm('');
       setNoTags(false);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Fout bij uploaden van bestand:', error);
       setUploadStatus('Error uploading file. Please try again.');
     }
   };

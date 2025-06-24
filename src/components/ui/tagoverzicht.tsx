@@ -69,7 +69,7 @@ const TagOverzicht: React.FC = () => {
               tagMap[tags.id].files.push(fileObj);
             }
           } catch (e) {
-            console.error('Fout bij verwerken file:', file, e);
+            console.error('Fout bij verwerken bestand:', file, e);
           }
         });
 
@@ -80,7 +80,7 @@ const TagOverzicht: React.FC = () => {
           console.warn('PocketBase request werd geannuleerd:', err);
           return;
         }
-        console.error('PocketBase error:', err, JSON.stringify(err));
+        console.error('PocketBase fout:', err, JSON.stringify(err));
         setError(err?.message || 'Fout bij ophalen tags/bestanden');
       })
       .finally(() => setLoading(false));
@@ -103,7 +103,7 @@ const TagOverzicht: React.FC = () => {
       updated[tagIdx] = { ...tag, archived: newArchived };
       setTagsWithFiles(updated);
     } catch (err) {
-      console.error('Fout bij updaten archived status:', err);
+      console.error('Fout bij updaten van de archived status:', err);
     }
   };
 

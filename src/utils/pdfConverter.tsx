@@ -15,7 +15,7 @@ export async function extractTextFromPdf(url: string): Promise<string> {
         return text;
 
     } catch (error) {
-        console.error('Fout bij het converten van PDF:', error);
+        console.error('Fout bij het converteren van PDF:', error);
         return '';
     }
 }

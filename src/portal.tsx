@@ -37,8 +37,8 @@ const PortalBody = () => {
         setConnectionError(null);
       })
       .catch(error => {
-        console.error('PortalBody: PocketBase connection failed:', error);
-        setConnectionError(`Cannot connect to PocketBase: ${error.message}`);
+        console.error('PortalBody: PocketBase verbinding mislukt:', error);
+        setConnectionError(`Kan geen verbinding maken met PocketBase: ${error.message}`);
       });
   }, []);
 

@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
         };
         setUserData(mappedUser);
       } catch (err) {
-        console.error('Error fetching user:', err);
+        console.error('Fout bij ophalen gebruiker:', err);
       }
     };
 

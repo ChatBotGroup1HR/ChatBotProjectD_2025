@@ -34,7 +34,7 @@ const AddTagPage: React.FC = () => {
       setStatusMessage('Tag succesvol toegevoegd!');
       setTagName('');
     } catch (error) {
-      console.error('Error adding tag:', error);
+      console.error('Fout bij toevoegen van tag:', error);
       setStatusMessage('Toevoegen van tag mislukt. Probeer het opnieuw.');
     }
   };

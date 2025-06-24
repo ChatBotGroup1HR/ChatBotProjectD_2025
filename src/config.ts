@@ -5,7 +5,7 @@ export const POCKETBASE_URL = process.env.REACT_APP_POCKETBASE_URL || 'http://lo
 export const getPocketBaseUrl = () => POCKETBASE_URL;
 
 // Debug logging
-console.log('🔧 Config loaded:');
+console.log('🔧 Configuratie geladen:');
 console.log('  POCKETBASE_URL:', POCKETBASE_URL);
-console.log('  REACT_APP_PB_SUPER_EMAIL:', process.env.REACT_APP_PB_SUPER_EMAIL ? 'Set' : 'Not set');
-console.log('  REACT_APP_PB_SUPER_PW:', process.env.REACT_APP_PB_SUPER_PW ? 'Set' : 'Not set'); 
+console.log('  REACT_APP_PB_SUPER_EMAIL:', process.env.REACT_APP_PB_SUPER_EMAIL ? 'Ingesteld' : 'Niet ingesteld');
+console.log('  REACT_APP_PB_SUPER_PW:', process.env.REACT_APP_PB_SUPER_PW ? 'Ingesteld' : 'Niet ingesteld'); 

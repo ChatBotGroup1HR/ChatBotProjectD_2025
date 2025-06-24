@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
         const signal = abortController.signal;
 
         const fetchLogs = async () => {
-            console.log('fetchLogs started');
+            console.log('fetchLogs gestart');
             setLoading(true); 
             setError(null);   
 
@@ -49,12 +49,12 @@ const Dashboard: React.FC = () => {
                     throw new Error('Missing PocketBase superuser credentials. Please check your .env file contains REACT_APP_PB_SUPER_EMAIL and REACT_APP_PB_SUPER_PW');
                 }
 
-                console.log('Attempting authentication...');
+                console.log('Authenticatie wordt geprobeerd...');
                 
                 await pb.collection("_superusers").authWithPassword(email, password, { signal });
-                console.log('Authentication successful');
+                console.log('Authenticatie succesvol');
 
-                console.log('Attempting to fetch logs...');
+                console.log('Proberen logs op te halen...');
                 const response = await fetch(`${POCKETBASE_URL}/api/logs?page=${page}&perPage=${perPage}&sort=-created`, {
                     headers: {
                         'Authorization': pb.authStore.token
@@ -79,30 +79,30 @@ const Dashboard: React.FC = () => {
                     setTotalItems(0);
                 }
                 setError(null); 
-                console.log('fetchLogs completed successfully');
+                console.log('fetchLogs succesvol afgerond');
             } catch (err: unknown) {
-                console.log('Caught error:', { typeOfErr: typeof err, fullErr: err });
+                console.log('Fout opgevangen:', { typeOfErr: typeof err, fullErr: err });
 
                 if (err instanceof Error) { 
-                    console.log('Error properties:', { name: err.name, message: err.message });
+                    console.log('Error eigenschappen:', { name: err.name, message: err.message });
                     if (err.name === 'AbortError' || err.message.includes('autocancelled')) {
-                        console.log('Request aborted (expected):', err.message);
+                        console.log('Request afgebroken (verwacht):', err.message);
                         return;
                     }
                 } else if (typeof err === 'object' && err !== null && 'message' in err) {
                     
                     const msg = (err as { message?: string }).message;
                     if (msg && msg.includes('autocancelled')) {
-                        console.log('Request aborted (expected - non-Error object with message):', msg);
+                        console.log('Request afgebroken (verwacht - niet-Error object met message):', msg);
                         return; 
                     }
                 }
 
-                console.error('Error in dashboard (unexpected):', err);
+                console.error('Fout in dashboard (onverwacht):', err);
                 setError(err instanceof Error ? err.message : 'An unknown error occurred during authentication or fetching logs.');
                 setPage(1);
             } finally {
-                console.log('Finally block executed.');
+                console.log('Finally block uitgevoerd.');
                 setLoading(false);
             }
         };
