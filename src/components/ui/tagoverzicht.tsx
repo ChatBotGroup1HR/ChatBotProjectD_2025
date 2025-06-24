@@ -129,7 +129,7 @@ const TagOverzicht: React.FC = () => {
             <tr>
               <th>Tag</th>
               <th>Gekoppelde Bestanden</th>
-              <th>Archiveer</th>
+              <th>Actief</th>
             </tr>
           </thead>
           <tbody>

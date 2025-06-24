@@ -13,7 +13,6 @@ import { POCKETBASE_URL } from './config';
 import AddTagPage from './components/ui/addtags';
 import TagOverzicht from './components/ui/tagoverzicht';
 import Dashboard from './components/ui/dashboard';
-import Profile from './components/ui/profile';
 
 
 const pb = new PocketBase(POCKETBASE_URL);
@@ -80,10 +79,6 @@ const PortalBody = () => {
         return <DocumentsPage />;
       case 'fileupload':
         return <FileUpload />;
-      case 'profile':
-        return <Profile />;
-      case 'settings':
-        return <h1>Instellingen Pagina</h1>;
       case 'addtags':
         return <AddTagPage />;
       case 'tagoverzicht':

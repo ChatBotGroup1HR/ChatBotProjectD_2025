@@ -93,7 +93,7 @@ export default function DocumentsPage() {
               <th>Tags</th>
               <th>Download</th>
               <th>Bewerk</th>
-              <th>Archiveer</th>
+              <th>Actief</th>
             </tr>
           </thead>
             <tbody>
